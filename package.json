@@ -1,0 +1,44 @@
+{
+  "name": "teamSUDO Language Portal",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andreas Schmueckert, Tino Rusch",
+  "license": "MIT",
+  "dependencies": {
+    "exec": "^0.1.1",
+    "grunt": "^0.4.5",
+    "grunt-clear": "^0.2.1",
+    "grunt-concurrent": "^0.5.0",
+    "grunt-contrib": "^0.11.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "*",
+    "grunt-newer": "*",
+    "grunt-shell": "^0.7.0",
+    "grunt-replace": "*",
+    "grunt-sudo-components": "0.0.1",
+    "grunt-sudo-subcomponents": "0.0.5",
+    "grunt-contrib-jade": "~0.11.0",
+    "load-grunt-tasks": "^0.5.0",
+    "superspawn": "^0.1.0",
+    "time-grunt": "^0.3.2",
+    "bower": "*"
+  },
+  "project": {
+    "directories": {
+      "bin": "backend/assets/",
+      "backend": "backend/",
+      "src": "src/",
+      "vendor": "bower_components/",
+      "test": "test/",
+      "build": "build/",
+      "build-tasks": "build/tasks"
+    },
+    "components": {
+      "emil": "src/emil"
+    }
+  }
+}

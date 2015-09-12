@@ -1,0 +1,1512 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "a15311027803f4cadd4cfe3e8d7ffb0d",
+    "packages": [
+        {
+            "name": "fabpot/yaml",
+            "version": "1.0.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fabpot/yaml/zipball/8a266aadce",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "sfYaml": "lib/"
+                }
+            }
+        },
+        {
+            "name": "leafo/lessphp",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafo/lessphp.git",
+                "reference": "51f3f06f0fe78a722dabfd14578444bdd078d9de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/51f3f06f0fe78a722dabfd14578444bdd078d9de",
+                "reference": "51f3f06f0fe78a722dabfd14578444bdd078d9de",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "lessphp is a compiler for LESS written in PHP.",
+            "homepage": "http://leafo.net/lessphp/",
+            "time": "2013-08-09 17:09:19"
+        },
+        {
+            "name": "sallycms/backend",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/sallycms-backend/",
+                "reference": "69b0cee73cee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-backend-0.8.x-dev-22bdde.zip",
+                "reference": "69b0cee73cee",
+                "shasum": "c0286f572b0f675bb2a570d340fc47b0897ecf9e"
+            },
+            "require": {
+                "php": ">=5.2.1",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/core": "0.8.x-dev",
+                "sallycms/less-mixins": ">=2.2.0,<3.0.0"
+            },
+            "type": "sallycms-app",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "The legacy backend for SallyCMS projects.",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "administration",
+                "backend",
+                "cms",
+                "sallycms",
+                "ui"
+            ],
+            "time": "2014-08-20 13:14:51"
+        },
+        {
+            "name": "sallycms/be-search",
+            "version": "1.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/be-search/",
+                "reference": "6e8a5ab46fc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-be-search-1.x-dev-2ab0b4.zip",
+                "reference": "6e8a5ab46fc2",
+                "shasum": "a49e95ea3df0d87a52b9a83332a8c0156531c949"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "1.x-dev",
+                    "imex-ignore": true
+                },
+                "branch-alias": {
+                    "dev-default": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "besearch_": "lib/",
+                    "sly_Controller_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing enhancements for the backend UI in structure and mediapool views",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-07-06 03:34:42"
+        },
+        {
+            "name": "sallycms/composer-installer",
+            "version": "v1.2.1",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/composer-installer/",
+                "reference": "df21870355a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-composer-installer-v1.2.1-09cda7.zip",
+                "reference": "df21870355a8",
+                "shasum": "ecef3670ddca99bad7f2bf42d484e1bf4dcc802f"
+            },
+            "require": {
+                "composer-plugin-api": "~1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "sly\\Composer\\Plugin",
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly\\Composer": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "time": "2014-05-15 13:27:37"
+        },
+        {
+            "name": "sallycms/core",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/sallycms-core/",
+                "reference": "b81b6d25e6cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-core-0.8.x-dev-cd5982.zip",
+                "reference": "b81b6d25e6cc",
+                "shasum": "041e2fa1ffcb0519c6a8ffd9e87ec28d52dba231"
+            },
+            "require": {
+                "fabpot/yaml": "1.0.6",
+                "leafo/lessphp": ">=0.3,<0.5",
+                "php": ">=5.2.1",
+                "sallycms/composer-installer": "~1.1",
+                "webvariants/babelcache": "~1.2.0",
+                "xrstf/composer-php52": "~1.0.3"
+            },
+            "require-dev": {
+                "doctrine/dbal": "~2.3.2",
+                "phpunit/dbunit": "1.2.*",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "sallycms-app",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_": "lib/"
+                },
+                "files": [
+                    "lib/functions.php",
+                    "lib/compatibility.php"
+                ]
+            },
+            "scripts": {
+                "post-install-cmd": [
+                    "xrstf\\Composer52\\Generator::onPostInstallCmd"
+                ],
+                "post-update-cmd": [
+                    "xrstf\\Composer52\\Generator::onPostInstallCmd"
+                ],
+                "post-autoload-dump": [
+                    "xrstf\\Composer52\\Generator::onPostInstallCmd"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "Core Framework for SallyCMS",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "cms",
+                "framework",
+                "mysql",
+                "php",
+                "sallycms"
+            ],
+            "time": "2014-12-02 13:15:41"
+        },
+        {
+            "name": "sallycms/frontend",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/sallycms-frontend/",
+                "reference": "9b9879af110a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-frontend-0.8.x-dev-7e7819.zip",
+                "reference": "9b9879af110a",
+                "shasum": "acdc192b632a2443ed2ec9cb110c3539f5430c8c"
+            },
+            "require": {
+                "php": ">=5.2.1",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/core": "0.8.x-dev"
+            },
+            "type": "sallycms-app",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "Frontend Application for SallyCMS, handling articles, assets and custom routes.",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "cms",
+                "frontend",
+                "mysql",
+                "php",
+                "sallycms"
+            ],
+            "time": "2014-01-17 10:30:33"
+        },
+        {
+            "name": "sallycms/image-resize",
+            "version": "3.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/image-resize/",
+                "reference": "866fa46dcf36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-image-resize-3.x-dev-d8eb6f.zip",
+                "reference": "866fa46dcf36",
+                "shasum": "14bf9005e31f227513db9cd116ac0daa21f4d819"
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "3.x-dev",
+                    "imex-ignore": true
+                },
+                "branch-alias": {
+                    "dev-default": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "A2_": "lib/",
+                    "sly_Controller_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing URL-based resizing and cropping for images",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-02-20 11:42:16"
+        },
+        {
+            "name": "sallycms/import-export",
+            "version": "3.3.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/import-export/",
+                "reference": "0edb0b69c003"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-import-export-3.3.x-dev-f60635.zip",
+                "reference": "0edb0b69c003",
+                "shasum": "77ab30ba8b9e8cfeea9bdf8ab8699d9f4cdb48ad"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "3.3.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing file and database backup and restore capabilities",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-06-11 12:34:25"
+        },
+        {
+            "name": "sallycms/less-mixins",
+            "version": "v2.2.2",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/less-mixins/",
+                "reference": "v2.2.2"
+            },
+            "suggest": {
+                "leafo/lessphp": "MIT licensed LESS compiler, written in PHP."
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Wagerfield",
+                    "homepage": "https://github.com/MatthewWagerfield"
+                },
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "Collection of shared LESS mixins for all apps and addOns.",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "css",
+                "less",
+                "lesscss",
+                "lessphp",
+                "mixin"
+            ],
+            "time": "2012-10-16 14:56:02"
+        },
+        {
+            "name": "sallycms/setup",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/sallycms-setup/",
+                "reference": "f3551c452e22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/sallycms-setup-0.8.x-dev-aae5b5.zip",
+                "reference": "f3551c452e22",
+                "shasum": "1d297f7f796d2a4baeeb8a43493a44f4fd089f7a"
+            },
+            "require": {
+                "php": ">=5.2.1",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/core": "0.8.*"
+            },
+            "type": "sallycms-app",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "The default setup application for SallyCMS projects",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "administration",
+                "backend",
+                "cms",
+                "install",
+                "sallycms",
+                "setup",
+                "ui"
+            ],
+            "time": "2013-12-18 00:39:23"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "v5.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "32edc3b0de0fdc1b10f5c4912e8677b3f411a230"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/32edc3b0de0fdc1b10f5c4912e8677b3f411a230",
+                "reference": "32edc3b0de0fdc1b10f5c4912e8677b3f411a230",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "lib/swift_required.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Chris Corbyn"
+                }
+            ],
+            "description": "Swiftmailer, free feature-rich PHP mailer",
+            "homepage": "http://swiftmailer.org",
+            "keywords": [
+                "mail",
+                "mailer"
+            ],
+            "time": "2013-12-03 13:33:24"
+        },
+        {
+            "name": "webvariants/babelcache",
+            "version": "v1.2.17",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/webvariants/babelcache",
+                "reference": "v1.2.17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/webvariants/babelcache/get/v1.2.17.zip",
+                "reference": "v1.2.17",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "BabelCache": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christoph Mewes",
+                    "email": "christoph@webvariants.de"
+                }
+            ],
+            "description": "Generic caching library with namespace support",
+            "homepage": "http://docs.webvariants.de/babelcache/latest/",
+            "keywords": [
+                "apc",
+                "cache",
+                "caching",
+                "eaccelerator",
+                "memcache",
+                "memcached",
+                "xcache",
+                "zendserver"
+            ],
+            "time": "2013-02-20 23:29:34"
+        },
+        {
+            "name": "webvariants/deployer",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/deployer/",
+                "reference": "d3d109e429a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-deployer-dev-default-e1ce5b.zip",
+                "reference": "d3d109e429a1",
+                "shasum": "250f917f32c6dcd89b040e216bf5ded4673ab720"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "3.x-dev",
+                    "imex-ignore": true
+                },
+                "branch-alias": {
+                    "dev-default": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV5_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS to join and compress CSS and JS files.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-03-30 06:26:39"
+        },
+        {
+            "name": "webvariants/developer-utils",
+            "version": "5.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/developer-utils/",
+                "reference": "fa8fb8234d8e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-developer-utils-5.x-dev-390f10.zip",
+                "reference": "fa8fb8234d8e",
+                "shasum": "d41546f2121167a5df5bc676e096b24367907a7f"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "5.x-dev",
+                    "imex-ignore": true
+                },
+                "branch-alias": {
+                    "dev-default": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV_": "lib/",
+                    "sly": "lib/",
+                    "Textile": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing additional API",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-10-30 09:45:52"
+        },
+        {
+            "name": "webvariants/error-handler",
+            "version": "4.3.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/error-handler/",
+                "reference": "0d664bb98512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-error-handler-4.3.x-dev-fc13ac.zip",
+                "reference": "0d664bb98512",
+                "shasum": "8be416cd702a5c772a84af372bbdcb1076e2a2e1"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "imex-ignore": true,
+                    "version": "4.3.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS to act as a more full-featured error handler",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-11-18 13:13:20"
+        },
+        {
+            "name": "webvariants/feedback",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/feedback/",
+                "reference": "ace36b460382"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-feedback-1.0.x-dev-729e3b.zip",
+                "reference": "ace36b460382",
+                "shasum": "c4ebc61594d3c416dc219acadf12759bec18963c"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7.1,<0.9"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "1.0.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_Controller_": "lib/",
+                    "WV_Feedback": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "provides an enhanced feedback mechanism for backend users",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-05-28 14:06:40"
+        },
+        {
+            "name": "webvariants/frontenduser",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/frontenduser/",
+                "reference": "d3543cad8b8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-frontenduser-dev-default-16756b.zip",
+                "reference": "d3543cad8b8a",
+                "shasum": "8b6da5401ef7fcf03ac20f827fa2670958de5800"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1",
+                "webvariants/global-settings": "~5.4"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "3.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV16_": "lib/",
+                    "sly_Controller_Frontenduser": "lib/",
+                    "_WV16": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing an extended user management.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-03-11 16:04:01"
+        },
+        {
+            "name": "webvariants/fullpagecache",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/fullpagecache/",
+                "reference": "c8981094e750"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-fullpagecache-dev-default-85034e.zip",
+                "reference": "c8981094e750",
+                "shasum": "70e43afc7897beb9375a7df0d926af10dc637e02"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.8,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "2.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV35_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS to cache complete HTML pages and don't load Sally on every request.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-11-04 11:51:30"
+        },
+        {
+            "name": "webvariants/global-settings",
+            "version": "5.5.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/global-settings/",
+                "reference": "4f6379381d4f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-global-settings-5.5.x-dev-9371cc.zip",
+                "reference": "4f6379381d4f",
+                "shasum": "cb95507fa209de7b0b3bfbe28e18ac4b232e0ec5"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "5.5.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing a generic configuration backend",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-01-11 01:12:05"
+        },
+        {
+            "name": "webvariants/maintenance",
+            "version": "1.1.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/maintenance/",
+                "reference": "1a44b013c222"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-maintenance-1.1.x-dev-a35701.zip",
+                "reference": "1a44b013c222",
+                "shasum": "8e5b26c7199d866a6b1be770ba2020881c6b3c52"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/global-settings": "~5.4"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "1.1.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV29_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS to put a website into a maintenance mode and restrict access to it.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-08-05 14:07:31"
+        },
+        {
+            "name": "webvariants/metainfo",
+            "version": "5.11.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/metainfo/",
+                "reference": "c1330235c3b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-metainfo-5.11.x-dev-518828.zip",
+                "reference": "c1330235c3b9",
+                "shasum": "dc92e41e7b96af2c3fa6cd5793e3c2951c525737"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "5.11.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing an extensible metadata system for articles, categories, media and users.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-12-01 12:55:18"
+        },
+        {
+            "name": "webvariants/pac",
+            "version": "v1.0.3",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/webvariants/pac",
+                "reference": "ed37873d8b19bdc2bcd69f8e663db2c0edaa269c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/webvariants/pac/get/ed37873d8b19bdc2bcd69f8e663db2c0edaa269c.zip",
+                "reference": "ed37873d8b19bdc2bcd69f8e663db2c0edaa269c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "pac_": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Zozmann"
+                }
+            ],
+            "description": "a simple role-based access control implementation",
+            "homepage": "http://www.sallycms.de/",
+            "keywords": [
+                "rbac"
+            ],
+            "time": "2014-03-16 21:54:45"
+        },
+        {
+            "name": "webvariants/rbac",
+            "version": "0.5.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/rbac/",
+                "reference": "bc88f14910df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-rbac-0.5.x-dev-d8118b.zip",
+                "reference": "bc88f14910df",
+                "shasum": "f00ed797b99087954985ea3233856871c668ed04"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/pac": "~1.0"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "0.5.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV24_": "lib/",
+                    "sly_Controller_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Zozmann"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing a role-based permission management.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-09-01 13:32:14"
+        },
+        {
+            "name": "webvariants/rbac-treeview",
+            "version": "0.4.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/rbac-treeview/",
+                "reference": "ab96736572b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-rbac-treeview-0.4.x-dev-873c2c.zip",
+                "reference": "ab96736572b1",
+                "shasum": "7822d930eb7f6d6e47217884c913cdca720fd95b"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/rbac": "~0.4"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "parent": "webvariants/rbac",
+                    "version": "0.4.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WV42_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "provides a much better UI for managing permissions",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-10-28 18:12:39"
+        },
+        {
+            "name": "webvariants/realurl2",
+            "version": "4.2.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/realurl2/",
+                "reference": "baf9d8ae218d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-realurl2-4.2.x-dev-112ecd.zip",
+                "reference": "baf9d8ae218d",
+                "shasum": "b9fea988fc15e5378d46be2bce4eba0f03306978"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.6,<0.9",
+                "webvariants/developer-utils": "~5.1",
+                "webvariants/global-settings": "~5.4"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "4.2.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing clean, canonical 'SEO' URLs",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-02-26 13:22:25"
+        },
+        {
+            "name": "webvariants/redirect",
+            "version": "1.3.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/redirect/",
+                "reference": "e4887ef61c24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-redirect-1.3.x-dev-3ef3a6.zip",
+                "reference": "e4887ef61c24",
+                "shasum": "5b0985eb7ac7decffd5e4712057e4eb0417abfff"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/metainfo": "~5.8"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "1.3.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_Form_Widget_": "lib/",
+                    "WV44_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Zozmann"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing article based redirects.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2013-10-28 14:25:12"
+        },
+        {
+            "name": "webvariants/swiftmailer",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/swiftmailer/",
+                "reference": "cba719fb9bb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-swiftmailer-dev-default-cdf1a9.zip",
+                "reference": "cba719fb9bb1",
+                "shasum": "6ca5b6d2332e1b61a26f29d78882d5aaade4513b"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.10",
+                "swiftmailer/swiftmailer": "5.0.*"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "0.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_Controller_": "lib/",
+                    "WV36_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Schnabel"
+                }
+            ],
+            "description": "AddOn for SallyCMS, integrating the Swiftmailer library.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-04-16 20:22:18"
+        },
+        {
+            "name": "webvariants/translator",
+            "version": "dev-default",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/translator/",
+                "reference": "0c8dae0e3ee7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-translator-dev-default-2c1918.zip",
+                "reference": "0c8dae0e3ee7",
+                "shasum": "bfc507ad34f973d9f5f7c7e7f8acc24bb1f500a1"
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.8,<0.10"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "5.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_Controller_": "lib/",
+                    "WV_Translator_": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR",
+                    "homepage": "http://www.webvariants.de/"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing a backend UI for editing translations and generating language files.",
+            "homepage": "https://bitbucket.org/webvariants/translator",
+            "keywords": [
+                "backend",
+                "i18n",
+                "sallycms",
+                "translation"
+            ],
+            "support": {
+                "source": "https://bitbucket.org/webvariants/translator",
+                "issues": "https://bitbucket.org/webvariants/translator/issues"
+            },
+            "time": "2014-05-14 15:09:37"
+        },
+        {
+            "name": "webvariants/userworkflows",
+            "version": "1.8.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/userworkflows/",
+                "reference": "cbf12ba8ae9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-userworkflows-1.8.x-dev-cb7f8c.zip",
+                "reference": "cbf12ba8ae9a",
+                "shasum": "76419fee0a4137bbb69f5fdc2f120bac5d5f69f6"
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "1.8.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "sly_Controller_": "lib/",
+                    "WV_UserWorkflows": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing an abstract user management.",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-08-12 14:51:35"
+        },
+        {
+            "name": "webvariants/utilities",
+            "version": "2.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://repositories.webvariants.de/Sally-Basis/AddOns/utilities/",
+                "reference": "df6c5b7964bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://dexter.webvariants.de/composer-repo/dist/webvariants-utilities-2.x-dev-a09c19.zip",
+                "reference": "df6c5b7964bc",
+                "shasum": "df06962cadbda0c0a8fdbfd2bc2c992e24084642"
+            },
+            "require": {
+                "sallycms/composer-installer": "~1.1",
+                "sallycms/sallycms": ">=0.7,<0.9",
+                "webvariants/developer-utils": "~5.1"
+            },
+            "type": "sallycms-addon",
+            "extra": {
+                "sallycms": {
+                    "version": "2.x-dev"
+                },
+                "branch-alias": {
+                    "dev-default": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "webvariants GbR"
+                }
+            ],
+            "description": "AddOn for SallyCMS, providing custom functionality for webvariants projects",
+            "homepage": "http://www.sallycms.de/",
+            "time": "2014-03-10 13:44:03"
+        },
+        {
+            "name": "xrstf/composer-php52",
+            "version": "v1.0.17",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/xrstf/composer-php52",
+                "reference": "70b853668d6c3f97b63dafcfaeebb622bf08fd30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/xrstf/composer-php52/get/70b853668d6c3f97b63dafcfaeebb622bf08fd30.zip",
+                "reference": "70b853668d6c3f97b63dafcfaeebb622bf08fd30",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-default": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "xrstf\\Composer52": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.xrstf.de/",
+            "time": "2015-02-01 14:28:15"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "sallycms/core": 20,
+        "sallycms/backend": 20,
+        "sallycms/frontend": 20,
+        "sallycms/setup": 20,
+        "sallycms/be-search": 20,
+        "webvariants/userworkflows": 20,
+        "webvariants/deployer": 20,
+        "webvariants/developer-utils": 20,
+        "webvariants/error-handler": 20,
+        "webvariants/feedback": 20,
+        "webvariants/frontenduser": 20,
+        "webvariants/fullpagecache": 20,
+        "webvariants/global-settings": 20,
+        "sallycms/image-resize": 20,
+        "sallycms/import-export": 20,
+        "webvariants/metainfo": 20,
+        "webvariants/realurl2": 20,
+        "webvariants/rbac": 20,
+        "webvariants/swiftmailer": 20,
+        "webvariants/translator": 20,
+        "webvariants/rbac-treeview": 20,
+        "webvariants/utilities": 20,
+        "webvariants/maintenance": 20,
+        "webvariants/redirect": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.2.1"
+    },
+    "platform-dev": []
+}

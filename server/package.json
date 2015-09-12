@@ -1,0 +1,13 @@
+{
+  "name": "restless",
+  "description": "a model based api server",
+  "author": "Tino Rusch <tino.rusch@webvariants.de>",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-babel": "*",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-watch": "*",
+    "grunt-shell": "*"
+  }
+}

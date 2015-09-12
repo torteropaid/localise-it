@@ -1,0 +1,35 @@
+include ../spawn/spawn
+include ../modules/icon/icon
+
+div#item-list
+    //-#pseudo-scroll-element-top.pseudo-scroll-element.row.top
+    #main.container-fluid.row.panel-container
+        if allTranslations
+            each translation, id in allTranslations
+                .item-panel.col-md-12(data-id=translation.id, data-value=id)
+                    dl(data-value=id, data-id=translation.id, class="#{translation.selected ? 'selected' : ''}")
+                        .header-panel(data-id=translation.id)
+                            dt
+                                label Key:
+                                span #{id}
+                            dt
+                                label Locale:
+                                span #{translation.mapping[selectedLocale]}
+
+                        .item-button-panel(data-id=id)
+                            dt.item-delete-panel(data-id=id)
+                                span.item-delete-icon
+                                    +icon({type: "glyphicon glyphicon-trash"})
+                            dt.item-status-panel(data-id=id)
+                                if translation.done
+                                    +icon({type: "ok glyphicon glyphicon-ok"})
+                                else
+                                    +icon({type: "new glyphicon glyphicon-exclamation-sign"})
+                                //-.item-status-icon(class="#{status}")
+                    .item-confirm-delete-panel(data-target="#{id}")
+                        .item-confirm-text Confirm
+    //-#pseudo-scroll-element-bottom.pseudo-scroll-element.row.bottom
+
+    //-#scrollbar-container.scrollbar-container
+
+    //-+spawn('savebar', 'savebar', {})

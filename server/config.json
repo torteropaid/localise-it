@@ -1,0 +1,18 @@
+{
+  "address": ":8080",
+  "assets": "./bin/assets",
+  "jsBase": "./bin/server.js",
+  "db": "/tmp/restless.db",
+  "endpoints" : [
+    {
+      "url": "/project",
+      "model": "Project"
+    },
+    {
+      "url": "/translation",
+      "model": "Translation"
+    }
+  ],
+  "certfile": "cert.pem",
+  "keyfile": "key.pem"
+}

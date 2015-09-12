@@ -1,0 +1,46 @@
+//- @TODO rewrite in topdoc syntax
+//- Options:
+    label      : caption - will be translated
+    icon       : Icon Class (from icons.less (.icon)) - will be passed to __buttonIconLabel Mixin
+    classes    : several css classes like grey, loginBtn etc.
+    selected   : Define Selected State
+    dataTarget : data-target attribute for target handling
+    dataLang   : data-lang attribute for language handling
+    dataIndex  : data-index attribute for indexing
+    dataHelp   : data-help attribute to handle help Button event
+    dataEvent  : data-event attribute to handle trigger event
+    loader     : true, to enable loading animation
+
+mixin button(options)
+    //- Set default values
+    - options             =                  options          || {};
+    - options['classes']  =                  options.classes  || '';
+    - options['priority'] =                  options.priority || 'default';
+    - options['id']       =                  options.id       || '';
+    - options['target']   =                  options.target   || '';
+    - options['toggle']   =                  options.toggle   || '';
+    - options['size']     =                  options.size     || 'md';
+    - options['navbar']   =                  options.navbar   || false;
+    - options['block']    =                  options.block    || false;
+    - options['simple']   =                  options.simple   || false;
+    - if (options.disabled)                  options.classes  = options.classes + ' disabled ';
+    - if (options.navbar)                    options.classes  = options.classes + ' navbar-btn ';
+    - if (options.block)                     options.classes  = options.classes + ' btn-block ';
+    - if (options.simple)                    options.classes  = options.classes + ' emil-btn-simple ';
+    .emil-btn(class='emil-btn-#{options.size} #{options.classes} #{options.priority} ', id='#{options.id}', data-target="#{options.target}", data-toggle="#{options.toggle}")
+        block
+
+mixin button-loader
+    span.button-loader
+
+mixin button-group(options)
+    //- @FIXME data redefine options structure
+    - options['id']           = options.id   || '';
+    - options['data']         = options.data || [];
+    - options['selectedData'] = options.selectedData || [];
+    - options['buttons']      = options.buttons || [];
+    - options['classes']      = options.classes || '';
+    - options['size']      = options.size || '';
+    - if(options.buttons.length > 0 && options.classes.indexOf('justified') < 0) options.classes = options.classes + ' btn-group-justified'
+    div(id='#{options.id}', class='btn-group btn-group-#{options.size} #{options.classes}')
+        block

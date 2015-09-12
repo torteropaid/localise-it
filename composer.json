@@ -1,0 +1,106 @@
+{
+    "name": "sallycms/sallycms",
+    "description": "Content Management System for Professionals",
+    "keywords": [
+        "cms",
+        "php",
+        "mysql",
+        "sallycms"
+    ],
+    "authors": [
+        {
+            "name": "webvariants GbR",
+            "homepage": "http://www.webvariants.de/"
+        }
+    ],
+    "support": {
+        "issues": "https://bitbucket.org/SallyCMS/sallycms/issues",
+        "forum": "https://projects.webvariants.de/projects/sallycms/boards",
+        "wiki": "http://docs.webvariants.de/sallycms/latest/index.html"
+    },
+    "version": "0.8.x-dev",
+    "homepage": "http://www.sallycms.de/",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "fabpot/yaml",
+                "version": "1.0.6",
+                "autoload": {
+                    "psr-0": {
+                        "sfYaml": "lib/"
+                    }
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/fabpot/yaml/zipball/8a266aadce"
+                }
+            }
+        },
+        {
+            "type": "composer",
+            "url": "https://dexter.webvariants.de/composer-repo/"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "develop/lib"
+        }
+    },
+    "require": {
+        "php": ">=5.2.1",
+        "sallycms/composer-installer": "~1.1",
+        "sallycms/core": "self.version",
+        "sallycms/backend": "self.version",
+        "sallycms/frontend": "self.version",
+        "sallycms/setup": "self.version",
+        "xrstf/composer-php52": ">=1.0.3,<2.0",
+        "sallycms/be-search": "~1.0@dev",
+        "webvariants/userworkflows": "~1.8@dev",
+        "webvariants/deployer": "~3.0@dev",
+        "webvariants/developer-utils": "~5.0@dev",
+        "webvariants/error-handler": "~4.3@dev",
+        "webvariants/feedback": "~1.0@dev",
+        "webvariants/frontenduser": "~3.0@dev",
+        "webvariants/fullpagecache": "~2.0@dev",
+        "webvariants/global-settings": "~5.5@dev",
+        "sallycms/image-resize": "~3.0@dev",
+        "sallycms/import-export": "~3.3@dev",
+        "webvariants/metainfo": "~5.10@dev",
+        "webvariants/realurl2": "~4.2@dev",
+        "webvariants/rbac": "~0.5@dev",
+        "webvariants/swiftmailer": "~0.0@dev",
+        "webvariants/translator": "~5.0@dev",
+        "webvariants/rbac-treeview": "~0.4@dev",
+        "webvariants/utilities": "~2.0@dev",
+        "webvariants/maintenance": "~1.1@dev",
+        "webvariants/redirect": "~1.3@dev"
+    },
+    "suggest": {
+        "sallycms/be-search": "Provides more fine grained navigation option for the backend.",
+        "sallycms/import-export": "Provides file and database backup and restore capabilities.",
+        "sallycms/image-resize": "Provides URL-based resizing of images."
+    },
+    "config": {
+        "vendor-dir": "sally/vendor",
+        "bin-dir": "sally/vendor/bin"
+    },
+    "scripts": {
+        "post-package-install": [
+            "sly\\Composer\\Installer::onPostPkgInstall"
+        ],
+        "post-package-update": [
+            "sly\\Composer\\Installer::onPostPkgInstall"
+        ],
+        "post-install-cmd": [
+            "xrstf\\Composer52\\Generator::onPostInstallCmd"
+        ],
+        "post-update-cmd": [
+            "xrstf\\Composer52\\Generator::onPostInstallCmd"
+        ],
+        "post-autoload-dump": [
+            "xrstf\\Composer52\\Generator::onPostInstallCmd"
+        ]
+    }
+}

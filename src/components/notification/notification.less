@@ -1,0 +1,86 @@
+
+.notification {
+    position: absolute;
+    left: 25%;
+    width: 50%;
+    -webkit-transition: margin-top 0.25s;
+    -moz-transition: margin-top 0.25s;
+    -ms-transition: margin-top 0.25s;
+    -o-transition: margin-top 0.25s;
+    transition: margin-top 0.25s;
+    margin-top: -100px;
+    height: 40px;
+    //.moving(move_out, 0.3);
+
+    &.shown {
+        //.moving(move_in, 0.5);
+        margin-top: 6px;
+    }
+
+    p { 
+        text-align: center; 
+    }
+
+    .close {
+        display: table;
+        opacity: 0.8;
+        top: 0px;
+        padding: 0px 2px 0px 3px;
+
+        .icon {
+            margin: 0px;
+            height: 16px;
+            line-height: 1;
+            display: table-cell;
+            vertical-align: middle;
+            color: white;
+        }
+    }
+
+    &.alert-warning { .alert(@state-warning-text); }
+    &.alert-success { .alert(@state-success-text); }
+    &.alert-danger  { .alert(@state-danger-text);  }
+    &.alert-info    { .alert(@state-info-text);    }
+}
+
+// Keyframes & Mixins
+@-webkit-keyframes move_in {
+    0%   { top: -65px; }
+    100% { top: 6px; }
+}
+@-webkit-keyframes move_out {
+    0%   { top: 6px; }
+    100% { top: -65px; }
+}
+@keyframes move_in {
+    0%   { top: -65px; }
+    100% { top: 6px; }
+}
+@keyframes move_out {
+    0%   { top: 6px; }
+    100% { top: -65px; }
+}
+
+.moving(@direction, @time) {
+    -webkit-animation: @direction @time*1s;
+    -moz-animation: @direction @time*1s;
+    -ms-animation: @direction @time*1s;
+    -o-animation: @direction @time*1s;
+    animation: @direction @time*1s;
+}
+
+.alert(@alert-color) {
+    
+    .close {  
+        background-color: @alert-color;
+        
+        &:hover { 
+            border-color: @alert-color;
+            background-color: white;
+            
+            .icon {      
+                color: @alert-color; 
+            }
+        }
+    }
+}

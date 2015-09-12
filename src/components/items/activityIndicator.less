@@ -1,0 +1,134 @@
+.activity-indicator-overlay{
+    .transition(0.2s, ease-in-out, all);
+    background: rgba(255,255,255,0.8);
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    opacity: 0;
+    z-index: 1000;
+    pointer-events: none;
+    visibility: hidden;
+    left: 5px;
+
+    .activity-indicator-box{
+        margin: 0 auto;
+        width: 75px;
+        position: relative;
+        top: calc(~"50% - 25px");
+        .clearfix;
+    }
+
+    &.loading {
+        opacity: 1;
+        pointer-events: all;
+        visibility: visible;
+    }
+}
+
+.circleG {
+    .square(20px);
+    opacity: 0;
+    float:left;
+    margin-right: 5px;
+    border-radius: 50%;
+    -moz-animation-name:bounce_circleG;
+    -moz-animation-duration: 2.4s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-direction: linear;
+    -webkit-animation-name: bounce_circleG;
+    -webkit-animation-duration: 2.4s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: linear;
+    -ms-animation-name: bounce_circleG;
+    -ms-animation-duration: 2.4s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-direction: linear;
+    -o-animation-name: bounce_circleG;
+    -o-animation-duration: 2.4s;
+    -o-animation-iteration-count: infinite;
+    -o-animation-direction: linear;
+    animation-name: bounce_circleG;
+    animation-duration: 2.4s;
+    animation-iteration-count: infinite;
+    animation-direction: linear;
+}
+
+.circleG_1{
+    -moz-animation-delay: 0.48s;
+    -webkit-animation-delay: 0.48s;
+    -ms-animation-delay: 0.48s;
+    -o-animation-delay: 0.48s;
+    animation-delay: 0.48s;
+}
+
+.circleG_2{
+    -moz-animation-delay: 1.12s;
+    -webkit-animation-delay: 1.12s;
+    -ms-animation-delay: 1.12s;
+    -o-animation-delay: 1.12s;
+    animation-delay: 1.12s;
+}
+
+.circleG_3{
+    -moz-animation-delay: 1.44s;
+    -webkit-animation-delay: 1.44s;
+    -ms-animation-delay: 1.44s;
+    -o-animation-delay: 1.44s;
+    animation-delay: 1.44s;
+}
+
+@-moz-keyframes bounce_circleG{
+    0%{
+    }
+
+    50%{
+        background-color: #26AFE8;
+        opacity: 1;
+    }
+
+    100%{
+    }
+
+}
+
+@-webkit-keyframes bounce_circleG{
+    0%{
+    }
+
+    50%{
+        background-color: #26AFE8;
+        opacity: 1;
+    }
+
+    100%{
+    }
+
+}
+
+@-ms-keyframes bounce_circleG{
+    0%{
+    }
+
+    50%{
+        background-color: #26AFE8;
+        opacity: 1;
+    }
+
+    100%{
+    }
+
+}
+
+@-o-keyframes bounce_circleG{
+    0%{
+    }
+
+    50%{
+        background-color: #26AFE8;
+        opacity: 1;
+    }
+
+    100%{
+    }
+
+}

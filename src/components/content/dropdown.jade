@@ -1,0 +1,22 @@
+include ../modules/button/button
+
+mixin dropdown(options)
+    - options             = options          || {};
+    - options['id']       = options.id       || '';
+    - options['size']     = options.size     || '';
+    - options['classes']  = options.classes  || '';
+    - options['selected'] = options.selected || 0;
+    - options['items']    = options.items    || '';
+    - options['current']  = options.current  || 'English';
+
+    .locale-dropdown(id=options.id)
+        +button-group({ size: options.size, classes: options.classes })
+            +button({ classes: 'dropdown-toggle input-box', toggle: 'dropdown' })
+                span.caret
+                span.locale-title #{options.current}
+            ul(class='dropdown-menu', role='menu')
+                if options.items==''
+                    li(class='item') no items available
+                else
+                    each item, index in options.items
+                        li(class='locale #{item.selected === true ? "hidden" : ""}', data-id=item.id, data-target=item.key) #{item.title}

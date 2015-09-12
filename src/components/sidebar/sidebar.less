@@ -1,0 +1,184 @@
+#menu-container {
+    position: fixed;
+    background-color: rgba(0,0,0,0.4);
+    overflow-x: hidden;
+    z-index: -1;
+    color: white;
+
+    #left-sidebar-container {
+        position: absolute;
+        top: 0;
+        left: -50%;
+        bottom: 0;
+        height: 100%;
+    }
+
+    #right-sidebar-container {
+        position: absolute;
+        top: 0;
+        right: -50%;
+        bottom: 0;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        min-width: 350px;
+        -webkit-transition: all .2s ease;
+        -moz-transition: all .2s ease;
+        -ms-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        transition: all .2s ease;
+    }
+
+    &.open {
+        right: 0;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        z-index: 4000;
+
+        #right-sidebar-container {
+            right: 0;
+            z-index: 5000;
+        }
+
+        #left-sidebar-container {
+            left: 0;
+            width: 100%;
+            z-index: 4001;
+        }
+    }
+
+    .logout-button-container {
+        position: absolute;
+        bottom: 10px;
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    #logout-button {
+        width: 90%;
+        position: relative;
+        background-color: #F96A66;
+        border-color: #F96A66;
+        cursor: pointer;
+    }
+
+    .action-button-container {
+        position: absolute;
+        top: 50px;
+        bottom: 100px;
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+        overflow-y: auto;
+
+        .btn {
+            width: 90%;
+            position: relative;
+            margin-bottom: 10px;
+        }
+    }
+
+    .user-management-button-container {
+        position: absolute;
+        bottom: 50px;
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+
+        .btn {
+            width: 90%;
+            position: relative;
+            margin-bottom: 10px;
+        }
+    }
+
+    .sidebar-locale-selector-container {
+        top: 38px;
+        position: relative;
+        margin-left: 19px;
+
+        .locale-title-container {
+            float: left;
+            padding-top: 18px;
+        }
+
+        .locale-dropdown-container {
+            margin-left: 100px;
+            color: black;
+        }
+    }
+
+    .locale-dropdown-container {
+        margin-left: 0 !important;
+
+        .locale-selector-btn-group {
+            min-width: 315px;
+
+            .dropdown-toggle{
+                background-color: transparent;
+                color: white;
+
+                &:hover {
+                    background-color: #555;
+                    color: white;
+                }
+            }
+
+            .dropdown-menu {
+                background-color: #555;
+                color: white;
+            }
+        }
+    }
+
+    @media(max-width: 992px) {
+        .action-button-container {
+            top: 100px;
+        }
+    }
+
+    .add-key-input-fields, .add-locale-input-field {
+        width: 90%;
+        position: relative;
+        margin: 0 auto;
+        margin-top: 20px;
+        margin-bottom: 25px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-top: 1px solid @brand-info;
+        border-bottom: 1px solid @brand-info;
+    }
+
+    input.sidebar-input-field {
+        width: 90%;
+        position: relative;
+        margin: 0 auto;
+        margin-bottom: 15px;
+        background-color: transparent;
+        border: 0;
+        border-radius: 0;
+        border-bottom: 1px solid white;
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -ms-transition: all .3s;
+        -o-transition: all .3s;
+        transition: all .3s;
+        color: white;
+
+        &:focus {
+            border: 0;
+            box-shadow: none;
+            border-bottom: 3px solid @brand-info;
+        }
+
+        &:focus::-webkit-input-placeholder {
+            color: @brand-info;
+            font-size: 11px;
+            -webkit-transform: translateY(-20px);
+            -moz-transform: translateY(-20px);
+            transform: translateY(-20px);
+            visibility: visible !important;
+        }
+    }
+}

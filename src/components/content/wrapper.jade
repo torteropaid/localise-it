@@ -1,0 +1,11 @@
+include ../spawn/spawn
+
+.wrapper
+    +spawn('search', 'search', {translations: translations, defaultLocale: defaultLocale, locales: locales, selectedLocale: selectedLocale})
+    if projects
+        +spawn('content', 'projects', {})
+    +spawn('items', 'list', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
+    +spawn('items', 'item', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
+    if usermanagement
+        +spawn('usermanagement', 'usermanagement', {})
+    +spawn('sidebar', 'sidebar', {translations: translations, defaultLocale: defaultLocale, locales: locales})

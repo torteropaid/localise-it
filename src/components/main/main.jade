@@ -1,0 +1,18 @@
+include ../spawn/spawn
+
+#page
+    +spawn('header', 'header', {login: login, loggedIn: loggedIn})
+    +spawn('items', 'activityindicator', {})
+    if !loggedIn
+        +spawn('login', 'login', {login: login})
+    else
+        //-+spawn('sidebar', 'sidebar', { languages: languages})
+        //-if globalSearch
+            +spawn('content', 'globalsearch', {languages: languages})
+        //-else
+            //-+spawn('items', 'items', { languages: languages})
+
+        +spawn('content', 'wrapper', {})
+        //-+spawn('content', 'overlay', {})
+    +spawn('notification', 'notification', {})
+

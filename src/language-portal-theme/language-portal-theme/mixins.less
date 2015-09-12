@@ -1,0 +1,70 @@
+@import 'elements.less';
+
+/// mixins
+.has-layout()
+{
+    zoom:1;
+}
+
+/**
+* Quick Clearfix
+*
+* Clears an element of its floated children. The quick way.
+*/
+
+.clear()
+{
+    overflow:auto;
+}
+
+/**
+* Clearfix
+*
+* Clears an element of its floated children.
+*/
+.clearfix()
+{
+    .has-layout;
+    display:block;
+
+    &:after
+    {
+        content:"\\0020";
+        display:block;
+        height:0;
+        clear:both;
+        visibility:hidden;
+        font-size:0;
+    }
+}
+
+.opacity(@opacity: 1) {
+    @opacityPercentage: @opacity * 100;
+
+    filter:         ~"alpha(opacity=@{opacityPercentage})";
+    -ms-filter:     ~"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{opacityPercentage})";
+    -khtml-opacity: @opacity;
+    -moz-opacity:   @opacity;
+    opacity:        @opacity;
+}
+
+.colored-drop-shadow(@x-axis: 0, @y-axis: 1px, @blur: 2px, @color: rgba(0,0,0,0.45)) {
+  -webkit-box-shadow: @x-axis @y-axis @blur @color;
+  -moz-box-shadow: @x-axis @y-axis @blur @color;
+  box-shadow: @x-axis @y-axis @blur @color;
+}
+
+.transition-color (@duration:0.2s, @ease:ease-out) {
+  -webkit-transition: color @duration @ease;
+  -moz-transition: color @duration @ease;
+  -o-transition: color @duration @ease;
+  transition: color @duration @ease;
+}
+.transition-background (@duration:0.2s, @ease:ease-out) {
+  -webkit-transition: background @duration @ease;
+  -moz-transition: background @duration @ease;
+  -o-transition: background @duration @ease;
+  transition: background @duration @ease;
+}
+
+

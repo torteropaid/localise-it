@@ -1,0 +1,30 @@
+Probleme:
+  jquery-datatables braucht jquery version 1.8 und funktioniert nicht mit einer neueren version:
+      ☐ rausfinden, warum datatables verwendet wird
+          für table-rendering mit filtern und sortieren
+
+      ✔ Nach alternativen zu datatables suchen @done (13-08-14 12:53)
+           - tinysort 1.5.6 (http://tinysort.sjeiti.com/)
+              sehr flexible sortierung
+              jquery 1.10.2
+              keine filterung
+
+           - Flexigrid 1.1 (https://github.com/paulopmx/Flexigrid)
+               filtern und sortieren
+               jquery 1.9
+               MIT-License
+
+           - Jquery Table (http://codecanyon.net/item/jquery-table/2392027)
+               filtern und sortieren
+               Kostet 6$ - spezielle Lizenz
+
+           - tQuery (http://codecanyon.net/item/tquery-dynamic-tables/89478)
+               filtern und sortieren
+               6$ - spezielle Lizenz
+
+
+      ☐ brauche ich eine neuere jquery version?
+   
+ Ideen:
+  ☐ KLick auf "Show All" löscht filtermaske
+  ☐ Filter-feld mit (x) versehen (button zum löschen des gesamten texts)

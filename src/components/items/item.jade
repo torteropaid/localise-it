@@ -1,0 +1,58 @@
+include ../modules/icon/icon
+
+div#item(class="#{displayItem ? 'isOpened' : 'isClosed'}")
+    div.item-container(tabindex="-1", style="display: inline-block;")
+        div.container-item
+            div.container-content
+                div.item-header
+                    button#item-close.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+                    h4#item-title.modal-title.container-title Key:
+                        if key
+                            b #{key}
+                div.modal-body.container-body
+                    .default-container
+                        span.first Locale:
+                        if defaultText
+                            span#item-default-field #{defaultText}
+                        else
+                            span#item-default-field No translation for this locale set yet
+                    div#item-translations-container
+                        if locales && translation && selectedLanguages
+                            //-div#item-language-selection.col-12
+                                each language, index in languages
+                                  .checkbox.col-xl-3.col-lg-4.col-md-4.col-sm-6.col-xs-6(data-target="#{index}", data-index="#{language.id}")
+                                    label(class="#{language.flag}", data-icon="#{language.flag}") #{language.name}
+                                      if index == selectedLanguage
+                                        input(type="checkbox", name="languages[]", value="#{index}", checked="checked")
+                                      else
+                                        input(type="checkbox", name="languages[]", value="#{index}")
+                            each locale, index in locales
+                                -open = false
+                                div#item-default-language 
+                                    .item-language-selector(data-target="#{locale.key}") 
+                                        .iten-language-title #{locale.title}
+                                        .item-language-status
+                                            if translation.mapping[locale.key] == undefined || translation.mapping[locale.key] == ''
+                                                +icon({type: "new glyphicon glyphicon-exclamation-sign"})
+                                            else
+                                                +icon({type: "ok glyphicon glyphicon-ok"})
+                                            //-.item-status-icon(class="#{status}")
+                                    each item in selectedLanguages
+                                        if item == locale.key
+                                            -open = true
+                                    textarea.item-translation(data-target="#{locale.key}", data-value="#{translation.mapping[locale.key]}", class="#{open ? '' : 'hidden'}")
+                                        |#{translation.mapping[locale.key]}
+                div.modal-footer.container-footer
+                    div#item-navigation
+                        button.btn-left.glyphicon.glyphicon-step-backward.btn.btn-default(class="#{index > 0 ? '' : 'disabled'}", type="button", data-type="first", data-id="0") 
+                        button.btn-left.glyphicon.glyphicon-chevron-left.btn.btn-default(class="#{index > 0 ? '' : 'disabled'}", type="button", data-type="prev", data-id="#{index-1}") 
+                        span#item-info
+                            if footerindex && count
+                                span#item-currentIndex #{footerindex}
+                                span#item-seperator /
+                                span#item-count #{count}
+                        button.btn-right.glyphicon.glyphicon-chevron-right.btn.btn-default(class="#{index < (count-1) ? '' : 'disabled'}", type="button", data-type="next", data-id="#{footerindex}")
+                        button.btn-right.glyphicon.glyphicon-step-forward.btn.btn-default(class="#{index < (count-1) ? '' : 'disabled'}", type="button", data-type="last", data-id="#{count-1}")
+                    //-button#item-save.btn.btn-primary.pull-right(data-target="#{index}", type="button") Save
+                    //-button#item-discard.btn.btn-default.pull-right(type="button", data-target="#{index}", data-dismiss="modal") Discard
+                    //-button#item-check.glyphicon.glyphicon-ok.btn.pull-right(type="button", class="#{checked ? 'checked btn-success' : 'btn-default'}", data-target="#{index}",)

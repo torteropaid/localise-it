@@ -1,0 +1,150 @@
+.users {
+	border: 0px none;
+	margin: 0px 0px;
+
+	.emil-btn.emil-btn-simple {
+		margin-bottom: 0px;
+	}
+
+	.emil-btn.success,
+	.emil-btn.danger {
+		border: 1px solid transparent;
+		
+		&:hover {
+			&.success { border:1px solid @brand-success; }
+			&.danger  { border:1px solid @brand-danger; }
+		}
+	}
+
+	#user_name, 
+	#password, 
+	#roleselect, 
+	#roleselect div,
+	.user,
+	.role {
+		color: @grey100;
+	}
+
+	.panel-left-side,
+	.panel-right-side {
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+
+	.panel-heading {
+		#add, #add_role {
+			&.open { display: none; }
+		}
+		
+		#discard, #discard_role {
+			display: none;
+			&.open { display: block; }
+		}
+	}
+
+	.panel-body {
+		.transition(0.25s, ease-in-out, all);
+		padding: 0px;
+		margin: 0px 15px 0px;
+		height: 0px;
+		z-index: 10;
+		overflow: hidden;
+		opacity: 0;
+		border-bottom: 1px solid #dddddd;
+
+		&.open {
+			margin: 12px 15px 20px;
+			opacity: 1;
+			
+			&.newuser {	height: 160px; }
+			&.newrole {	height: 110px; }
+		}
+
+		input {
+			margin: 0px 0px 12px 0px;
+		}
+
+		#roleselect {
+			position: absolute;
+			z-index: 1000;
+			padding: 0px;
+			
+			.dropdown-toggle {
+				width: 100%;
+				min-width: 160px;
+				text-align: left;
+				
+				.caret {
+					float: right;
+					margin-top: 8px;
+				}
+			}
+
+			.dropdown-menu {
+				width: 100%;
+
+				.item {
+					padding: 0px 12px;
+					cursor: pointer;
+
+					&:hover {
+						background-color: @brand-info;
+					}
+				}
+			}
+		}
+	}
+
+	.panel-footer {
+		border-top: 0px none;
+
+		.list-group-item {
+			margin-bottom: 0px;
+			.transition(0.15s, ease-in-out, background);
+			
+			.emil-btn.emil-btn-simple {
+				padding: 0px 3px;
+
+				.icon {
+					margin: 0px;
+				}
+			}
+
+			&:hover:not(:active) {
+				background: darken(#fff, 2.5%);
+			}
+
+			&.user {
+				border: 1px solid #dddddd;
+				margin-right: -1px;
+				margin-bottom: 15px;
+				padding: 10px 15px;
+				background: #efefef;
+				border-radius: 0;
+
+				span.role {
+					margin-left: 12px;
+					font-size: 80%;
+				}
+
+				.dots.sm {
+					position: absolute;
+					left: 50%;
+					margin-left: -12px;
+				}
+			}
+			
+			&.role {
+				background: #efefef;
+			}
+		}
+		
+		.list-group {
+			min-height: 24px;
+
+			.list-group-item {
+				cursor: pointer;
+			}
+		}
+	}
+}

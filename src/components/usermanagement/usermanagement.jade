@@ -1,0 +1,57 @@
+mixin dots
+  .icon.dots.sm.pull-right
+    span.dot
+    span.dot
+    span.dot
+
+mixin usercard(user)
+  .usermanagement-card(data-target=user.id)
+    .usermanagement-card-labels(class="#{user.projects == undefined || user.projects == null || user.projects == [] ? 'hidden' : ''}")
+      if user.projects && user.projects != null && user.projects != []
+        each project in user.projects
+          span.usermanagement-card-label(class="#{project.color}", data-title=project.label)
+    .usermanagement-card-information
+      .usermanagement-card-name #{user.name}
+      .usermanagement-card-actions-container
+        button.edit-user-button
+          span.edit-card.glyphicon.glyphicon-pencil
+        button.delete-user-button
+          span.edit-card.glyphicon.glyphicon-trash
+    .usermanagement-card-edit-container.hidden
+      .usermanagement-card-edit-password
+        input(type="text", placeholder="*******")
+
+mixin projectcard(project)
+  .usermanagement-card(data-target=project.id)
+    .usermanagement-card-labels
+        span.usermanagement-card-label(class="#{project.color}", data-title=project.label)
+    .usermanagement-card-information
+      .usermanagement-card-name #{project.name}
+      .usermanagement-card-actions-container
+        button.edit-user-button
+          span.edit-card.glyphicon.glyphicon-pencil
+        button.delete-user-button
+          span.edit-card.glyphicon.glyphicon-trash
+
+.usermanagement-container
+  if roles
+    each role in roles
+      .usermanagement-list(data-target=role)
+        .usermanagement-list-header
+          span.title #{role}
+          span.add-new-card.glyphicon.glyphicon-add(data-target=role)
+        .usermanagement-list-cards
+          if users
+            each user in users
+              +usercard(user)
+  if project
+    .usermanagement-list(data-target="projects")
+      .usermanagement-list-header
+        span.title Projects
+        span.add-new-card.glyphicon.glyphicon-add(data-target=role)
+      .usermanagement-list-cards
+        each project in projects
+            +projectcard(project)
+  .usermanagement-action-buttons
+    button.usermanagement-export Export In CSV
+      span.glyphicon.glyphicon-download

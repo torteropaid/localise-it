@@ -1,0 +1,127 @@
+/* Main Layout */
+body {
+    font-size: 13px;
+    margin: 0;
+    overflow: hidden;
+    background-color: @grey0;
+}
+
+#page {
+    width: 100%;
+}
+
+#top {
+    z-index: 10;
+    width: 100%;
+    height: 48px;
+    background: @black;
+
+    .logo {
+        position: absolute;
+        top: 12px;
+        left: 26px;
+    }
+    .version {
+        color: @grey0;
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        font-weight: bold;
+    }
+}
+
+#left {
+    bottom: 0px;
+    top: 48px;
+}
+
+#main {
+
+    .hide {
+        display: none;
+    }
+    .modalView {
+        position: absolute;
+        width: 720px;
+        height: 44px;
+    }
+}
+
+/* LEFT START */
+#left {
+    background-color: @surface_grey15;
+    border-right: 1px solid #ccc;
+    z-index: 8;
+    position: absolute;
+    top: 48px;
+    left: 0px;
+    right: auto;
+    bottom: 0px;
+    z-index: 1;
+
+    width: 245px;
+    overflow: hidden;
+
+    #filterInputDiv {
+    }
+
+    h2 {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 50px;
+
+        font-size: 12px;
+
+        padding: 18px 12px 0;
+        padding-right: 15px;
+
+        margin: 0px;
+
+        border-right: 1px solid @grey60;
+        .gradient(@grey7, @grey7, @grey0);
+
+        span.badge {
+            border-radius: 2px;
+            padding: 3px 5px;
+        }
+    }
+}
+
+#item-list {
+    position: absolute;
+    left: 0;
+    top: 120px;
+    bottom: 0px;
+    right: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.greybold {
+    color: @textcolor_grey80;
+}
+
+.greyicon {
+    color: @surface_grey30;
+}
+
+span.glyphicon {
+    font-size: 90%;
+}
+
+
+#saveBar {
+    bottom: 0px;
+    right: 0px;
+    left:  0px;
+}
+
+#translation {
+    display: none;
+}
+
+#logout_without_saving {
+    color: #fff;
+}

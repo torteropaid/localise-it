@@ -1,0 +1,24 @@
+syntax:regexp
+^data/dyn/.*
+^data/config/.*
+^\.project
+^\.buildpath
+^\.settings/.*
+^nbproject/.*
+^sally/docs/.*
+^sally/vendor/.*
+^sally/addons/.*
+^test-coverage/.*
+/\.git/
+\.hg_archival.txt
+syntax: glob
+*.bat
+node_modules
+data/translator/*
+laguageportal.sublime-workspace
+laguageportal.sublime-project
+adminer.php
+assets/*
+bower_components
+backend/translation.leveldb
+backend/passwords.leveldb

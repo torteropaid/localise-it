@@ -1,0 +1,6 @@
+mixin spawn(module, template, content, payload)
+	- var uid = ++viewHelper.increment;
+	- viewHelper.addAnchor({uid: uid, module: module, template: template, content: content, payload: payload});
+	- templatePath = 'templates/' + module +'/' + template;
+	div(data-anchor="#{uid}", data-module="#{module}", data-template="#{templatePath}", class='')
+		

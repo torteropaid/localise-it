@@ -1,0 +1,30 @@
+include ../spawn/spawn
+
+div#global-search
+    +spawn('items', 'activityindicator', {})
+    #search-container.container-fluid.col-md-12
+        .input-field-group
+            span#clear-search-filter.glyphicon.glyphicon-remove(class="#{searchValue && searchValue != '' && searchValue != null ? '' : 'hidden'}")
+            input#global-search-filter.form-control(type="text", placeholder="Search for keys and translations", value="#{searchValue}")
+            .global-search-autocomplete-panel
+    #main.container-fluid.row.panel-container.col-md-12
+        if resultList
+            each trans, idx in resultList
+                .col-md-6.col-sm-12.item-panel(data-id="#{trans.identifier}", data-value="#{idx}")
+                    dl
+                        .header-panel(data-id="#{trans.identifier}")
+                            dt
+                                label Key:
+                                span #{trans.namespace+'.'}
+                                    b #{trans.name}
+                            dt
+                                label Default:
+                                span #{trans.texts[defaultLanguage.id]}
+                        .translations-panel
+                            if languages
+                                each lang, id in languages
+                                    dd.translation-field(class="#{trans.checks[lang.id] ? 'checked' : ''} #{lang.selected ? '' : 'hidden'}", data-target="#{id}")
+                                        label #{lang.name}:
+                                        input.translations-panel-inputfield(data-target="#{idx}", type="text", value="#{trans.texts[lang.id]}")
+                                        span.glyphicon.glyphicon-ok(data-target="#{trans.identifier}", data-key="#{trans.namespace}", data-type="check")
+    +spawn('savebar', 'savebar', {})
