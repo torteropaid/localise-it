@@ -27,7 +27,7 @@ app.Controller('main-main', {
     init: function() {
         this.globalSearch = false;
         this.__checkLogin();
-        this.apiLoggedInCheck();
+        app.meta.title();
     },
 
     __checkLogin: function() {
@@ -36,7 +36,17 @@ app.Controller('main-main', {
         var value    = false;
 
         if(loggedin && loggedin !== undefined && loggedin !== null && loggedin == 1) {
-            value = true;
+            this.apiLoggedInCheck();
+        } else {
+            this.trigger('toggleLoggedIn', {flag: false});
+            app.apiAdapter.logout(function(res, message) {
+                console.log('cookie expired so you have been logged out:', res, message);
+                app.cookie.delete({cname: 'user'});
+                app.cookie.delete({cname: 'logged_in'});
+                app.cookie.delete({cname: 'usertoken'});
+            }, function(res, message) {
+                console.log('logout out failed:', res, message);
+            });
         }
     },
 
@@ -47,19 +57,19 @@ app.Controller('main-main', {
                 if(exception && exception == 'success') {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status !== 200){
                     if(exception === 'success') {
                         jqXHR = JSON.parse(jqXHR);
                         self.trigger('toggleLoggedIn', {flag: true});
                         app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
+                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                         app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                     } else {
                         self.trigger('toggleLoggedIn', {flag: false});
@@ -73,19 +83,19 @@ app.Controller('main-main', {
                 if(exception && exception == 'success') {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status !== 200){
                     if(exception === 'success') {
                         jqXHR = JSON.parse(jqXHR);
                         self.trigger('toggleLoggedIn', {flag: true});
                         app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
+                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                         app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                     } else {
                         self.trigger('toggleLoggedIn', {flag: false});

@@ -1,6 +1,6 @@
-ion.view = ion.view || {};
+app.view = app.view || {};
 
-ion.view.filebox = {
+app.view.filebox = {
     browseButton: '.ion-btn.browseForFile',
     events: [
         {

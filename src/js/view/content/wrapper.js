@@ -2,7 +2,7 @@ app.view('content-wrapper', {
     events: [
         {
             type: 'hashchange',
-            action: 'hashchange'
+            action: 'checkHash'
         },
         {
             type: 'showItem',

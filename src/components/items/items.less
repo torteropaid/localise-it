@@ -1,0 +1,109 @@
+#main {
+    div {
+        transition: all 1s;
+    }
+
+    dl {
+        display: inline-block;
+        border: 1px solid #ddd;
+        width: 100%;
+        margin: 5px 0px;
+        padding: 0px;
+        color: #242424;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        
+        dt {
+            padding-top: 5px;
+            background: #efefef;
+            
+            label {
+                font-weight: bold;
+            }
+            
+            span {
+                overflow: hidden;
+                display: inline-block;
+                width: 70%;
+                padding: 5px 5px;
+                line-height: 1.1;
+                vertical-align: top;
+                word-break: break-all;
+            }
+
+            &:nth-child(2) {
+                padding-bottom: 5px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+
+        dd {
+            padding-top: 5px;
+            background: #FBFBFB;
+            
+            input {
+                width: 68%;
+                line-height: 1.1;
+                padding: 3px 5px;
+                border: 1px solid transparent;
+                background: #FBFBFB;
+                
+                &:focus {
+                    border: 1px solid #ddd;
+                    border-radius: 2px;
+                    background-color: #D3D396;
+                }
+            }
+
+            span.glyphicon {
+                margin-left: 2%;
+                width: 5%;
+                opacity: 0;
+                cursor: pointer;
+                font-size: 100%;
+                color: #bbb;
+            }
+
+            &:hover {
+                input {
+                    border: 1px solid #ddd;
+                    border-radius: 2px;
+                    background-color: #D3D396;
+                }
+
+                span.glyphicon {
+                    opacity: 1;
+                }
+            }
+            &.checked {
+                input {
+                    color: green;
+                }
+                span.glyphicon {
+                    color: green;
+                    opacity: 1;
+                }
+            }
+        }
+
+        label {
+            font-weight: bold;
+            width: 25%;
+            display: inline-block;
+            padding: 5px 5px;
+            line-height: 1.1;
+            overflow: hidden;
+            vertical-align: top;
+        }
+
+    }
+}
+
+.pseudo-scroll-element {
+    height: 50px;
+    position: relative;
+
+    &.top {
+        margin-top: -50px;
+    }
+}
+

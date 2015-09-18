@@ -1,57 +1,80 @@
-mixin dots
-  .icon.dots.sm.pull-right
-    span.dot
-    span.dot
-    span.dot
-
 mixin usercard(user)
-  .usermanagement-card(data-target=user.id)
-    .usermanagement-card-labels(class="#{user.projects == undefined || user.projects == null || user.projects == [] ? 'hidden' : ''}")
-      if user.projects && user.projects != null && user.projects != []
+  .usermanagement-card(data-target=user.name)
+    if user.projects && user.projects != null && user.projects.length != 0
+      .usermanagement-card-labels(class="")
         each project in user.projects
-          span.usermanagement-card-label(class="#{project.color}", data-title=project.label)
+          span.usermanagement-card-label(class="#{project.color}", data-target=project.name)
     .usermanagement-card-information
-      .usermanagement-card-name #{user.name}
-      .usermanagement-card-actions-container
-        button.edit-user-button
-          span.edit-card.glyphicon.glyphicon-pencil
-        button.delete-user-button
-          span.edit-card.glyphicon.glyphicon-trash
-    .usermanagement-card-edit-container.hidden
-      .usermanagement-card-edit-password
-        input(type="text", placeholder="*******")
+      span.username-title #{user.name}
+      input.username-input-field(type="text", value=user.name, data-target=user.name, data-type='user')
+    input.password-input-field(type="text", placeholder="change password", data-target=user.name, data-type='user')
+    .usermanagement-card-actions-container
+      button.edit-user-button
+        span.edit-card.glyphicon.glyphicon-pencil
+      button.delete-user-button(data-target=user.name)
+        span.edit-card.glyphicon.glyphicon-trash
 
 mixin projectcard(project)
-  .usermanagement-card(data-target=project.id)
-    .usermanagement-card-labels
-        span.usermanagement-card-label(class="#{project.color}", data-title=project.label)
-    .usermanagement-card-information
-      .usermanagement-card-name #{project.name}
-      .usermanagement-card-actions-container
-        button.edit-user-button
+  .projectmanagement-card(data-target=project.name)
+    .projectmanagement-card-labels
+        span.projectmanagement-card-label(class="#{project.color}", data-title=project.name)
+    .projectmanagement-card-information
+      .projectmanagement-card-name #{project.name}
+      input.project-name-input-field(type="text", value=project.name, data-target=project.name, data-type='project')
+      .projectmanagement-card-actions-container
+        button.edit-project-button
           span.edit-card.glyphicon.glyphicon-pencil
-        button.delete-user-button
+        button.delete-project-button
           span.edit-card.glyphicon.glyphicon-trash
 
-.usermanagement-container
+#usermanagement-container.open
+  if projectManagement
+    if projects
+      .projectmanagement-list(data-type="projects")
+        .projectmanagement-list-header
+          span.title Projects
+          span.add-new-card.glyphicon.glyphicon-plus(data-target='project')
+        .projectmanagement-list-cards
+          each project in projects
+              +projectcard(project)
+    else 
+      .projectmanagement-card
+        .projectmanagement-card-information
+          .projectmanagement-card-name Loading Projects ...
+
+  if addProject
+    button.add-project-button
+      span.title Add Project
+      span.glyphicon.glyphicon-plus
+
   if roles
     each role in roles
-      .usermanagement-list(data-target=role)
+      .usermanagement-list(data-type="role", data-target=role)
+        .usermanagement-list-wrapper
+          .usermanagement-list-header
+            span.title #{role}
+            span.add-new-card.glyphicon.glyphicon-plus(data-target='user')
+          .usermanagement-list-cards
+            if users 
+              each user in users
+                if user.role == role
+                  +usercard(user)
+  else
+    .usermanagement-list
+      .usermanagement-list-wrapper
         .usermanagement-list-header
-          span.title #{role}
-          span.add-new-card.glyphicon.glyphicon-add(data-target=role)
+          span.title Please Wait ...
+          span.add-new-card.glyphicon.glyphicon-add
         .usermanagement-list-cards
-          if users
-            each user in users
-              +usercard(user)
-  if project
-    .usermanagement-list(data-target="projects")
-      .usermanagement-list-header
-        span.title Projects
-        span.add-new-card.glyphicon.glyphicon-add(data-target=role)
-      .usermanagement-list-cards
-        each project in projects
-            +projectcard(project)
-  .usermanagement-action-buttons
-    button.usermanagement-export Export In CSV
-      span.glyphicon.glyphicon-download
+          .usermanagement-card
+            .usermanagement-card-labels Receiving Data
+
+  if addRoleEnabled
+    button.add-role-button
+      span.title Add Role
+      span.glyphicon.glyphicon-plus
+
+  if exportOfUserManagement
+    .usermanagement-action-buttons
+      button.usermanagement-export
+        span.glyphicon.glyphicon-download

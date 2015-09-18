@@ -9,6 +9,7 @@
     "chance": "*",
     "FileSaver": "*",
     "jquery-ui": "*",
-    "fuse": "*" 
+    "fuse": "*",
+    "clusterize": "*" 
   }
 }

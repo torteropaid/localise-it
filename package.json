@@ -32,7 +32,7 @@
       "bin": "backend/assets/",
       "backend": "backend/",
       "src": "src/",
-      "vendor": "bower_components/",
+      "vendor": "vendor/",
       "test": "test/",
       "build": "build/",
       "build-tasks": "build/tasks"

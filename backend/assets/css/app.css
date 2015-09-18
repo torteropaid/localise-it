@@ -12120,7 +12120,7 @@ img.right {
   float: left;
 }
 #main .item-button-panel {
-  width: 35px;
+  width: 50px;
   float: right;
 }
 #main .item-button-panel .item-delete-panel {
@@ -12429,6 +12429,49 @@ img.right {
     background-color: #26AFE8;
     opacity: 1;
   }
+}
+.scrollbar-container {
+  position: fixed;
+  right: 0;
+  width: 1%;
+  background: white;
+  bottom: 0;
+  height: 100%;
+  top: 110px;
+  opacity: 0.4;
+  -webkit-transition: opacity 0.2 ease-in-out;
+  -moz-transition: opacity 0.2 ease-in-out;
+  -ms-transition: opacity 0.2 ease-in-out;
+  -o-transition: opacity 0.2 ease-in-out;
+  transition: opacity 0.2 ease-in-out;
+}
+.scrollbar-container:hover {
+  opacity: 1;
+}
+.scrollbar-container > .dot {
+  z-index: 50;
+  cursor: pointer;
+}
+.scrollbar-container > .dot.active {
+  background-color: grey;
+}
+.scrollbar-container > .dot .snap-label {
+  margin-top: 2%;
+  padding-top: 2px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.scrollbar-container > .dot .snap-label span.value {
+  cursor: text;
+  top: 15px;
+  position: absolute;
+  height: 25px;
+  width: 40px;
+  border: none;
+  display: block;
+  padding: 0;
+  left: -20px;
+  padding-top: 3px;
+  text-align: center;
 }
 #mainMenu {
   text-align: center;
@@ -12928,7 +12971,7 @@ span.glyphicon {
   padding: 0px;
   min-width: 150px;
   margin-top: 5px;
-  z-index: 4000;
+  z-index: 1004;
 }
 .locale-dropdown .dropdown-toggle,
 .locale-selector-btn-group .dropdown-toggle {
@@ -13002,16 +13045,16 @@ span.glyphicon {
   bottom: 0;
   top: 0;
   left: 0;
-  z-index: 4000;
+  z-index: 2000;
 }
 #menu-container.open #right-sidebar-container {
   right: 0;
-  z-index: 5000;
+  z-index: 3000;
 }
 #menu-container.open #left-sidebar-container {
   left: 0;
   width: 100%;
-  z-index: 4001;
+  z-index: 2001;
 }
 #menu-container .logout-button-container {
   position: absolute;
@@ -13594,4 +13637,221 @@ span.glyphicon {
   cursor: pointer;
   border-radius: 2px;
   margin-top: 15px;
+}
+#usermanagement-container {
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  right: 0px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: white;
+  z-index: -1;
+  top: 100%;
+  -webkit-transition: top .2s;
+  -moz-transition: top .2s;
+  -ms-transition: top .2s;
+  -o-transition: top .2s;
+  transition: top .2s;
+  overflow: hidden;
+  overflow-x: auto;
+}
+#usermanagement-container .usermanagement-list {
+  position: relative;
+  width: 330px;
+  height: 100%;
+  float: left;
+  padding: 10px;
+  min-width: 300px;
+}
+#usermanagement-container .usermanagement-list .add-new-card {
+  cursor: pointer;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper {
+  background-color: #eee;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  height: 100%;
+  min-height: 200px;
+  overflow: hidden;
+  padding-bottom: 75px;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-header {
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  line-height: 30px;
+  padding: 6px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  text-transform: capitalize;
+  font-size: 20px;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards {
+  position: relative;
+  margin: 6px;
+  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
+  display: block;
+  min-height: 100px;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card-labels {
+  min-height: 15px;
+  background-color: transparent;
+  width: 100%;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card-information {
+  padding: 0;
+  position: relative;
+  line-height: 30px;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card-actions-container {
+  min-height: 50px;
+  padding: 0;
+  position: relative;
+  margin-bottom: 0 auto;
+  width: 100%;
+  margin-top: -25px;
+  text-align: center;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card-actions-container button {
+  position: relative;
+  background-color: #eee;
+  border-radius: 50%;
+  font-size: 25px;
+  margin: 10px;
+  height: 35px;
+  width: 35px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card-actions-container button.delete-user-button {
+  background-color: #F96A66;
+  color: white;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card {
+  background-color: white;
+  min-height: 100px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 6px;
+  font-size: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  z-index: 3000;
+  position: relative;
+  width: 100% !important;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card .password-input-field {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card .username-input-field {
+  display: none;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.dragged {
+  -ms-transform: rotate(3deg);
+  /* IE 9 */
+  -webkit-transform: rotate(3deg);
+  /* Safari */
+  transform: rotate(3deg);
+  /* Standard syntax */
+  position: absolute;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.dragged.tilt.right {
+  transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -webkit-transform: rotate(3deg);
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.dragged.tilt.left {
+  transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -webkit-transform: rotate(-3deg);
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open {
+  min-height: 120px;
+  height: 120px;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open .password-input-field,
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open .username-input-field {
+  width: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  visibility: visible;
+  height: auto;
+  width: auto;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open .password-input-field:focus,
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open .username-input-field:focus {
+  box-shadow: none;
+  border: none;
+  border-bottom: 3px solid #5bc0de;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-cards .usermanagement-card.open .usermanagement-card-actions-container {
+  margin-top: 0;
+}
+#usermanagement-container .usermanagement-list .usermanagement-list-wrapper .usermanagement-list-footer {
+  width: 100%;
+  height: 20px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+}
+#usermanagement-container .usermanagement-action-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  font-size: 40px;
+  background-color: #eee;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+#usermanagement-container .usermanagement-action-buttons button {
+  background-color: transparent;
+  width: 100%;
+}
+#usermanagement-container .usermanagement-action-buttons button .glyphicon {
+  background-color: transparent;
+}
+#usermanagement-container .add-role-button,
+#usermanagement-container .add-project-button {
+  width: 330px;
+  border: 2px dashed #a7c3c9;
+  background-color: transparent;
+  color: #a7c3c9;
+  text-align: center;
+  line-height: 40px;
+  font-size: 25px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+#usermanagement-container .add-role-button .glyphicon,
+#usermanagement-container .add-project-button .glyphicon {
+  margin-left: 10px;
+}
+#usermanagement-container.open {
+  top: 60px;
+  z-index: 1005;
+}
+#usermanagement-container .add-new-card {
+  position: absolute;
+  right: 10px;
+  width: 100%;
+  text-align: right;
+  top: 10px;
 }

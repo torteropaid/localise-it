@@ -1,8 +1,14 @@
 app.Controller('items-list', {
     init: function() {
+        this.scrollInitialized = false;
         this.trigger('toggleLoading', {flag: true});
         this.__filterTranslations();
         this.scrollToSelected();
+
+        var self = this;
+    },
+
+    notify: function() {
     },
 
     toggleLocale: function(opt) {
@@ -132,14 +138,63 @@ app.Controller('items-list', {
                     this.showSelectedItem({id: filteredTranslationsObject[i].id});
                 }
             }
+
+            //this.__renderDom(filteredTranslationsObject);
             this.set('allTranslations', filteredTranslationsObject);
         } else {
             app.filteredTranslationsObject = translations;
+            //this.__renderDom(translations);
             this.set('allTranslations', translations);
         }
 
         this.trigger('toggleLoading', {flag: false});
 
+    },
+
+    __renderDom: function(obj) {
+        var strArray       = [];
+        var size           = Object.size(obj);
+        var selectedLocale = this.get('selectedLocale');
+        var cluster;
+
+        for(var i in obj) {
+            var str = '<div class="item-panel col-md-12" data-id="'+obj[i].id+'" data-value="'+i+'">';
+                str += '<dl class="'+(obj[i].selected ? 'selected' : '')+'" data-value="'+i+'" data-id="'+obj[i].id+'">';
+                    str += '<div class="header-panel" data-id="'+obj[i].id+'">';
+                        str += '<dt>';
+                            str += '<label>Key:</label><span>'+i+'</span>';
+                        str += '</dt>';
+
+                        for(var l in obj[i].mapping) {
+                            str += '<dt class="'+(selectedLocale == i ? '' : 'hidden')+'">';
+                                str += '<label>Locale:</label><span>'+obj[i].mapping[j]+'</span>';
+                            str += '</dt>';
+                        }
+                    str += '</div>';
+
+                    str += '<div class="item-button-panel" data-id="'+i+'">';
+                        str += '<dt class="item-delete-panel" data-id="'+i+'">';
+                            str += '<span class="item-delete-icon"><span class="icon glyphicon glyphicon-trash"></span></span>';
+                        str += '</dt>';
+
+                        str += '<dt class="item-status-panel" data-id="'+i+'">';
+                            str += '<span class="item-delete-icon"><span class="icon glyphicon '+(obj[i].done ? 'glyphicon-ok ok' : 'glyphicon-exclamation-sign new')+'"></span></span>';
+                        str += '</dt>';
+                    str += '</div>';
+                str += '</dl>';
+
+                str += '<div class="item-confirm-delete-panel" data-target="'+i+'">';
+                    str += '<div class="item-confirm-text">Confirm</div>';
+                str += '</div>';
+            str += '</div>';
+
+            strArray.push(str);
+            $('#main').append(str);
+
+            if(strArray.length == size) {
+                this.__initializeScroll();
+            }
+        }
     },
 
 

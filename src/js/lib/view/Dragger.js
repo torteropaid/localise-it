@@ -1,13 +1,6 @@
-/*
- * ION-U web application
- *
- * Copyright (c) 2013, CommScope/webvariants
- * Author: Andreas <andreas.schmueckert@webvariants.de>
- */
+app.view = app.view || {};
 
-ion.view = ion.view || {};
-
-ion.view.Dragger = {
+app.view.Dragger = {
 	events: [
 		{
 			selector: '.dragPanel',

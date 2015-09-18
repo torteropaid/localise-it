@@ -6,6 +6,6 @@ include ../spawn/spawn
         +spawn('content', 'projects', {})
     +spawn('items', 'list', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
     +spawn('items', 'item', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
-    if usermanagement
+    //-if admin
         +spawn('usermanagement', 'usermanagement', {})
-    +spawn('sidebar', 'sidebar', {translations: translations, defaultLocale: defaultLocale, locales: locales})
+    +spawn('sidebar', 'sidebar', {translations: translations, defaultLocale: defaultLocale, locales: locales, admin: admin})

@@ -309,10 +309,12 @@ func SetupAuth(martini *martini.ClassicMartini) {
     if err != nil || len(users) == 0 {
         // create a default user
         hash, err := bcrypt.GenerateFromPassword([]byte("toor"), bcrypt.DefaultCost)
+        //hash, err := bcrypt.GenerateFromPassword([]byte("l4ngu4g3"), bcrypt.DefaultCost)
         if err != nil {
             panic(err)
         }
         defaultUser := httpauth.UserData{Username: "root", Email: "", Hash: hash, Role: "admin"}
+        //defaultUser := httpauth.UserData{Username: "commscope", Email: "", Hash: hash, Role: "admin"}
         err = backend.SaveUser(defaultUser)
         if err != nil {
             panic(err)

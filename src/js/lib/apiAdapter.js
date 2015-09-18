@@ -19,6 +19,84 @@ app.apiAdapter = {
         });
     },
 
+    getCurrentUser: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/currentuser?token='+this.token;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    getUserList: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.token;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    deleteUser: function(username, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user/'+username+'?token='+this.token;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    updateUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/update/?token='+this.token;
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    allowUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/update/?token='+this.token;
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    addUser: function(data, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.token;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: data, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
     putLocale: function(key, locale, data, cb) {
         var url  = this.url+'/translation/'+key+'/'+locale+'?token='+this.token;
         $.ajax ({

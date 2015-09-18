@@ -1,17 +1,32 @@
 app.Controller('content-wrapper', {
     init: function() {
         var self = this;
+        app.apiAdapter.getCurrentUser(function(res, message) {
+            res = JSON.parse(res);
+            if(res.role === 'admin') {
+                self.set('admin', true);
+            }
+        }, function(res, message) {
+            console.error('currentUser', res, message);
+        });
         app.apiAdapter.getData(function(res) {
             self.__getCookieData(res);
         });
-    },,
+        this.checkHash();
+    },
 
 
     ////////////////////////////////////
     // Handle hashchange
     ///////////////////////////////////
-    hashchange: function() {
+    checkHash: function() {
         var hash = window.location.hash;
+        console.log(hash);
+        if(hash === 'usermanagement') {
+            if(app.meta.userManagement === true && this.get('admin') === true) $('#usermanagement-container').addClass('open');
+        } else {
+            $('#usermanagement-container').removeClass('open');
+        }
         //this.trigger('openSidebar');
     },
 
@@ -76,7 +91,7 @@ app.Controller('content-wrapper', {
 
         app.allTranslations = this.__enrichTranslations(res.translations);
 
-        this.set('locales', this.mapLocales(res.Locales));
+        this.set('locales', this.mapLocales(res.locales));
 
         this.set('project', res.pid);
         this.set('translations', this.__enrichTranslations(res.translations));

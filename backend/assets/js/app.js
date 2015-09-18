@@ -913,6 +913,84 @@ app.apiAdapter = {
         });
     },
 
+    getCurrentUser: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/currentuser?token='+this.token;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    getUserList: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.token;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    deleteUser: function(username, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user/'+username+'?token='+this.token;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    updateUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/update/?token='+this.token;
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    allowUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/update/?token='+this.token;
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    addUser: function(data, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.token;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: data, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
     putLocale: function(key, locale, data, cb) {
         var url  = this.url+'/translation/'+key+'/'+locale+'?token='+this.token;
         $.ajax ({
@@ -2048,7 +2126,7 @@ app.controllerHelper = {
     }
 };
 
-ion.dataexport = {
+app.dataexport = {
 
     strDelimiter : ';',
     filterRows: [],
@@ -2155,7 +2233,7 @@ ion.dataexport = {
     },
 
     download:  function(id, name, csvContent) {
-        csvContent = ion.controllerHelper.transform(csvContent); // Is needed for translatekeys
+        csvContent = app.controllerHelper.transform(csvContent); // Is needed for translatekeys
         var downloadLink = document.getElementById('#'+id);
 
         if(downloadLink !== null) downloadLink.parentNode.removeChild(downloadLink);
@@ -2319,7 +2397,7 @@ app.DataRegister = {
     }
 };
 
-app = app || {}
+app = app || {};
 
 app.locales = {
     "Afrikaans": "af_af", 
@@ -2482,6 +2560,21 @@ app.locales = {
     "Xhosa": "xh_xh",
     "Yiddish": "yi_yi",
     "Zulu": "zu_zu"
+};
+app = app || {}
+
+app.meta = {
+    userManagement: true,
+    addRole: true,
+    projectManagement: false,
+    addProject: false,
+    title: function() {
+        $('head title').text('Commscope - Language Portal');
+    },
+    predefinedRoles: ["admin", "user"],
+    exportofusermanagement: true,
+    importoftranslationfiles: true,
+    exportoftranslationfiles: true
 };
 /*global $:false, die:false, Request:false*/
 
@@ -3370,16 +3463,9 @@ app.view.Base = app._merge({
 }, app.view.Button, app.view.Widget);
 // add default functionality here
 
-/*
- * ION-U web application
- *
- * Copyright (c) 2013, CommScope/webvariants
- * Author: Andreas <andreas.schmueckert@webvariants.de>
- */
+app.view = app.view || {};
 
-ion.view = ion.view || {};
-
-ion.view.Dragger = {
+app.view.Dragger = {
 	events: [
 		{
 			selector: '.dragPanel',
@@ -3475,9 +3561,9 @@ ion.view.Dragger = {
 };
 
 
-ion.view = ion.view || {};
+app.view = app.view || {};
 
-ion.view.filebox = {
+app.view.filebox = {
     browseButton: '.ion-btn.browseForFile',
     events: [
         {
@@ -3660,7 +3746,7 @@ app.viewHelper = {
         });
 
         $(window).on('hashchange', function() {
-            //app.controllerHelper.trigger('hashchange');
+            app.controllerHelper.trigger('hashchange');
         });
     },
     add: function (namespace, view) {
@@ -4182,6 +4268,391 @@ app.viewHelper = {
             }
     }
 };
+app = app || {};
+
+app.view.smartscroll = {
+    events: [
+        {
+            type: 'dragstart',
+            action: '_handleDragStart'
+        },
+        {
+            type: 'drag',
+            action: '_handleDrag'
+        },
+        {
+            type: 'dragover',
+            action: '_handleDragOver'
+        },
+        {
+            selector: '.dot',
+            type: 'click',
+            action: 'setScrollHandle'
+        },
+        {
+            selector: '.dot',
+            type: 'mousedown',
+            action: 'dragHandler'
+        }
+    ],
+
+    generate: function(obj) {
+        var containerID = obj.containerID,
+            array       = obj.elements,
+            length      = obj.elements.length;
+
+        app.smartscroll.minimum     = 0;
+        app.smartscroll.maximum     = 199;
+        app.smartscroll.count       = elements.length;
+        app.smartscroll.elements    = elements;
+        app.smartscroll.containerID = obj.containerID;
+
+        $(containerID).append('<div class="">Please wait while the data is being loaded...</div>');
+
+        app.smartscroll.initDom({elements: array, containerID: containerID});
+    },
+
+    filter: function(obj) {
+    },
+
+    update: function(obj) {
+        if(obj.type == 'array') {
+            app.smartscroll.elements = obj.elements;
+        }
+    },
+
+
+    /////////////////////////////////////
+    // Dom Elements
+    ////////////////////////////////////
+    initDom: function(obj) {
+        var activityCounter  = 0;
+        var elementString    = '';
+        var elementCollector = app.smartscroll.elements || [];
+        var min              = app.smartscroll.minimum || 0;
+        var max              = app.smartscroll.maximum || 199;
+
+        for(var i in elementCollector) {
+            ++activityCounter;
+            if(i >= min && i <= max) {
+                elementString = elementString + elementCollector[i];
+
+                if(activityCounter == elementCollector.length) {
+                    $(obj.containerID).empty();
+                    $(obj.containerID).before('<div class="pseudo-scroll-element row top" style="height: 1px; width: 100%;"></div>');
+                    $(obj.containerID).after('<div class="pseudo-scroll-element row bottom" style="height: 100px; width: 100%;"></div>');
+                    $(obj.containerID).after('<div class="scrollbar-container"></div>');
+                    $(obj.containerID).append(elementString);
+                    app.smartscroll.generateScrollbar();
+                }
+            }
+        }
+
+    },
+
+    updateDom: function(opt) {
+        var min             = app.smartscroll.minimum;
+        var max             = app.smartscroll.maximum;
+        var version         = opt.version || null;
+        var type            = opt.type    || null;
+
+        var itemMin         = parseInt($('.item-panel').first().attr('data-id'));
+        var itemMax         = parseInt($('.item-panel').last().attr('data-id'));
+
+        var oldmin          = app.smartscroll.oldMinimum;
+        var oldmax          = app.smartscroll.oldMaximum;
+
+        if(type == 'scroll') {
+
+            if(opt.direction == 'down') {
+                app.smartscroll.__attacheElements({append: true, elements: app.smartscroll.elements, min: itemMax+1, max: itemMax+opt.counter});
+                for(var x = 0; x < ((opt.counter*3)/4); x++) {
+                    $('.item-panel[data-value='+x+']').remove();
+                }
+            } else if(opt.direction == 'up') {
+                app.smartscroll.__attacheElements({append: false, elements: app.smartscroll.element, min: itemMin-opt.counter, max: itemMin-1});
+                for(var y = itemMax; y < ((opt.counter*3)/4); y--) {
+                    $('.item-panel[data-value='+y+']').remove();
+                }
+            }
+
+        } else if(type == 'change') {
+
+            if(version == 'default') {
+                app.smartscroll.initDom({});
+            }
+
+        } else if(type == 'click') {
+            app.smartscroll.generateDom({});
+        } else if(type == 'drag') {
+
+            if(opt.direction == 1 && opt.append === true) {
+                app.smartscroll.__attacheElements({append: true, translations: translations, min: itemMax+1, max: itemMax+col});
+                for(var i = 0; i < col; i++) {
+                    $('.item-panel').first().remove();
+                }
+            } else if(opt.direction == 0 && opt.append === false) {
+                app.smartscroll.__attacheElements({append: false, translations: translations, min: itemMin-col, max: itemMin-1});
+                for(var i = 0; i < col; i++) {
+                    $('.item-panel').last().remove();
+                }
+            }
+
+        }
+    },
+
+    __attacheElements: function(opt) {
+        if(opt.append === true) {
+
+        } else if(opt.append === false) {
+
+        }
+    },
+
+
+    /////////////////////////////////////
+    // Scrollbar
+    ////////////////////////////////////
+    generateScrollbar: function(length) {
+        var length     = app.smartscroll.elements.length;
+        var snappingNz = length+1; // start + num + end
+        var stepsize   = 1.0/(snappingNz);
+        var height     = 100/length;
+        var active     = false;
+        
+        app.smartscroll.count = length;
+        
+        if(length > 100) {
+            var valueMin = ion.minimum + 25;
+
+            $('.scrollbar-container').empty();
+            //$('.scrollbar-container').empty();
+
+            for (var i = 0; i <= snappingNz; i++) {
+                var step       = (stepsize*(i))*100;
+                var activeFlag = active ? 'active' : '';
+                var hidden     = (i == 0 || i == snappingNz) ? 'hide' : '';
+                            
+                var dot = "<div class='dot snapping-dot "+hidden+" "+activeFlag+"' style='top: "+step+"%; height: "+height+"%;'  data-offset='"+step+"' data-snappos='"+i+"'></div>";
+
+                $('.scrollbar-container').append(dot);
+            }
+
+            app.smartscroll.__calcSnappingPosition(valueMin);
+            app.smartscroll.handleScroll();
+        } else {
+            $('.scrollbar-container').empty();
+        }
+
+    },
+
+    __calcSnappingPosition: function(value) {
+        var minimum    = parseInt(value) - 99;
+        var maximum    = parseInt(value) + 99;
+
+        app.smartscroll.oldMinimum = app.smartscroll.minimum;
+        app.smartscroll.oldMaximum = app.smartscroll.maximum;
+
+        if(minimum < 0) {
+            minimum    = 0;
+            maximum    = 200;
+        }
+        if(maximum >= app.smartscroll.elements.length) {
+            minimum    = app.smartscroll.elements.length - 198;
+            maximum    = app.smartscroll.elements.length;
+        }
+
+        $('.snapping-dot').each(function() {
+            var self    = $(this);
+            var snappos = parseInt(self.attr('data-snappos'));
+
+            if(snappos >= minimum && snappos <= maximum) {
+                self.addClass('active');
+            } else {
+                self.removeClass('active');
+            }
+        });
+
+        app.smartscroll.minimum = minimum;
+        app.smartscroll.maximum = maximum;
+
+    },
+
+
+    ////////////////////////////////////
+    // Click Action Handler
+    ///////////////////////////////////
+    handleClick: function (data) {
+        var snapValue = parseInt(data.snappos);
+
+        app.smartscroll.__calcSnappingPosition(snapValue);
+
+        app.smartscroll.__setPositionCookie();
+
+        app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'click'});
+
+        if(app.smartscroll.minimum !== 0) {
+            $('#items').scrollTop(330);
+        }
+    },
+
+
+    /////////////////////////////////////
+    // Scroll Action Handler
+    ////////////////////////////////////
+    handleScroll: function () {
+        var lastScrollTop    = app.smartscroll.lastScrollTop;
+        var singleItemHeight = 0;
+        var singleItem       = $('.item-panel');
+        var scrollPosition   = lastScrollTop + 182;
+
+        $('#items').scroll(function(event){
+            var st               = $(this).scrollTop();
+            var min              = parseInt($('.dot.active').first().attr('data-snappos'));
+            var max              = parseInt($('.dot.active').last().attr('data-snappos'));
+            var valuedown        = min;
+            var valueup          = max;
+
+            if (st > lastScrollTop && max <= app.smartscroll.count){
+                // scrolling down
+                var pseudoBottom = $('.pseudo-scroll-element.bottom');
+                var firstItem    = $('.item-panel').first();
+                var windowHeight = window.innerHeight;
+
+                if(lastScrollTop >= scrollPosition) {
+                    scrollPosition = lastScrollTop;
+                    app.smartscroll.__setScrollValues({type: null, value: valuedown});
+                }
+
+                if(pseudoBottom.position().top > windowHeight && pseudoBottom.position().top < (windowHeight + 2000)) {
+                    app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'scroll', direction: 'down', counter: itemCounter});
+                }
+
+            } else if(st < lastScrollTop && min >= 0) {
+                // scrolling up
+                var pseudoTop    = $('.pseudo-scroll-element.top');
+                var firstItem    = $('.item-panel').first();
+                var windowHeight = window.innerHeight;
+                var heighestItem = 0;
+
+                if(lastScrollTop <= scrollPosition) {
+                    scrollPosition = lastScrollTop;
+                    app.smartscroll.__setScrollValues({type: null, value: valueup});
+                }
+
+                if(pseudoTop.position().top < windowHeight && pseudoTop.position().top > (windowHeight - 3000)) {
+                    app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'scroll', direction: 'up', counter: itemCounter});
+                }
+
+            }
+            lastScrollTop = st;
+        });
+    },
+
+    __setScrollValues: function(opt) {
+        app.smartscroll.__calcSnappingPosition(opt.value);
+        app.smartscroll.__setPositionCookie();
+    },
+
+
+    /////////////////////////////////////
+    // Scroll Action Handler
+    ////////////////////////////////////
+    handleDrag: function (evt) {
+        var direction = 1; // 1 is for dragging down and 0 for dragging up
+        var start     = app.smartscroll.minimum;
+
+        $('.dot').on('mousedown', function() {
+            start          = app.smartscroll.minimum;
+            app.smartscroll.draggable = true;
+        }).on('mouseover', function(e){
+            if (app.smartscroll.draggable) {
+                var elem        = $(this);
+                var oldMinimum  = app.smartscroll.minimum;
+                var oldMaximum  = app.smartscroll.maximum;
+                var snapValue   = parseInt(elem.attr('data-snappos'));
+                var append      = null;
+
+                app.smartscroll.__calcSnappingPosition(snapValue);
+
+                if (!elem.hasClass('active')) {
+                    elem.addClass('active');
+                }
+
+                direction = app.smartscroll.__getDirection({oldMinimum: oldMinimum, oldMaximum: oldMaximum});
+
+                app.smartscroll.__setPositionCookie();
+
+                var validAppend  = start+col-1;
+                var validPrepend = start-col+1;
+
+                if(app.smartscroll.minimum >= validAppend) {
+                    append = true;
+                    start  = app.smartscroll.minimum;
+                }
+
+                if(app.smartscroll.minimum < validPrepend) {
+                    append = false;
+                    start  = app.smartscroll.minimum;
+                }
+
+                app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'drag', direction: direction, append: append});
+            }
+        }).on('mouseup', function() {
+            app.smartscroll.draggable = false;
+        });
+    },
+
+
+    ////////////////////////////////////
+    // General Private Functions
+    ///////////////////////////////////
+    __getDirection: function(opt) {
+        var direction = 1;
+
+        if(opt.oldMinimum < app.smartscroll.minimum) {
+            direction = 1;
+        } else if(opt.oldMaximum > app.smartscroll.maximum) {
+            direction = 0;
+        }
+
+        return direction;
+    },
+
+    __setPositionCookie: function() {
+        app.smartscroll.__cookie.set({cname: 'lastMinPosition', content: app.smartscroll.minimum});
+        app.smartscroll.__cookie.set({cname: 'lastMaxPosition', content: app.smartscroll.maximum});
+    },
+
+    __cookie: {
+    //var __cookie = {
+        set: function (opt) {
+            var d = new Date();
+            var cname = opt.cname;
+            d.setTime(d.getTime() + (opt.exdays*24*60*60*1000));
+            var expires = "expires="+d.toUTCString();
+            var path = "path=/";
+            document.cookie =cname + "=" + opt.content + "; " + expires + ";" + path;
+        },
+
+        get: function (opt) {
+            var name = opt.cname+'=';
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1);
+              if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+            }
+            return "";
+        },
+
+        delete: function(opt) {
+            document.cookie = opt.cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        }
+    },
+
+};
+
 app.Controller('content-globalsearch', {
 
     init: function() {
@@ -4569,17 +5040,32 @@ app.Controller('content-globalsearch', {
 app.Controller('content-wrapper', {
     init: function() {
         var self = this;
+        app.apiAdapter.getCurrentUser(function(res, message) {
+            res = JSON.parse(res);
+            if(res.role === 'admin') {
+                self.set('admin', true);
+            }
+        }, function(res, message) {
+            console.error('currentUser', res, message);
+        });
         app.apiAdapter.getData(function(res) {
             self.__getCookieData(res);
         });
-    },,
+        this.checkHash();
+    },
 
 
     ////////////////////////////////////
     // Handle hashchange
     ///////////////////////////////////
-    hashchange: function() {
+    checkHash: function() {
         var hash = window.location.hash;
+        console.log(hash);
+        if(hash === 'usermanagement') {
+            if(app.meta.userManagement === true && this.get('admin') === true) $('#usermanagement-container').addClass('open');
+        } else {
+            $('#usermanagement-container').removeClass('open');
+        }
         //this.trigger('openSidebar');
     },
 
@@ -4644,7 +5130,7 @@ app.Controller('content-wrapper', {
 
         app.allTranslations = this.__enrichTranslations(res.translations);
 
-        this.set('locales', this.mapLocales(res.Locales));
+        this.set('locales', this.mapLocales(res.locales));
 
         this.set('project', res.pid);
         this.set('translations', this.__enrichTranslations(res.translations));
@@ -4953,11 +5439,763 @@ app.Controller('items-item', {
         this.set('showDialog', true);
     },
 });
+app.Controller('items-items', {
+    col: 0,
+
+    init: function() {
+        ion.__scrollDirection = 1; // 1 is 'down' and 0 is 'up'
+
+        this.setSelectedLanguages();
+
+        this.changes         = false;
+        this.changedData     = [];
+
+        this.lastScrollTop   = 0;
+        this.setItems({});
+
+        this.filterTranslations();
+        this.renderDom({min: ion.minimum, max: ion.maximum, filter: ion.filter, defaultLanguage: ion.defaultLanguage});
+        this.trigger('setSearchValue', {value: ion.filter});
+    },
+
+
+    ////////////////////////////////////////////////////////////////////////
+    // Render all elements for rendering the dom initially or on filtering
+    ///////////////////////////////////////////////////////////////////////
+    renderDom: function(opt) {
+        $('.panel-container').empty();
+        this.trigger('toggleLoading', {flag: true});
+        var translations    = [];
+        var min             = opt.min || ion.minimum;
+        var max             = opt.max || ion.maximum;
+
+        translations = ion.filteredTranslationsArray;
+        ion.count    = translations.length;
+
+        this.__generateElements({min: min, max: max, translations: translations});
+
+        this.__generateScrollbar({});
+        
+        this.trigger('clearAutocomplete');
+
+        var self = this;
+
+        setTimeout(function() {
+            if(window.innerWidth <= 760) {
+                self.showDialogue({id: 0});
+            }
+        }, 200);
+    },
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Generate all elements for the scrollbar according to the total number of translations and for the item panels
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    __generateElements: function(opt) {
+        var id, key, defaultTranslation, selected, text, checked, name, languageKey, elementCounter = 0, loopCounter = 0, elementCollector = [];
+        var defaultLanguage = ion.defaultLanguage, translations = opt.translations, languages = ion.languages;
+        var max             = opt.max, min = opt.min;
+        var append          = opt.append || true;
+
+        for(var i in translations) {
+            if(parseInt(i) >= min && parseInt(i) <= max) {
+                id                 = translations[i].identifier;
+                key                = translations[i].namespace+'.<b>'+translations[i].name+'</b>';
+                defaultTranslation = translations[i].texts[defaultLanguage.id];
+
+                var translationsArray = []
+                for(var j in languages) {
+                    selected    = languages[j].selected;
+                    text        = translations[i].texts[languages[j].id] || "";
+                    checked     = translations[i].checks[languages[j].id] ? true : false;
+                    name        = languages[j].name;
+                    languageKey = j;
+                    translationsArray.push({selected: selected, text: text, checked: checked, name: name, languageKey: languageKey});
+                }
+                element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: translationsArray, counter: elementCounter});
+                elementCollector.push(element);
+                ++elementCounter;
+            }
+            
+            ++loopCounter;
+
+            this.__attachElements({loopCounter: loopCounter, count: ion.count, elementCollector: elementCollector, append: append});
+        }
+    },
+
+    __attacheElements: function(opt) {
+        var elementString    = '';
+        var activityCounter  = opt.activityCounter  || 0;
+        var elementCollector = opt.elementCollector || [];
+
+        if(opt.loopCounter == opt.count) {
+            for(var i in elementCollector) {
+                elementString = elementString + elementCollector[i];
+                ++activityCounter;
+            }
+
+            if(opt.append) {
+                $('.panel-container').append(elementString);
+                //$('.panel-container').html(elementString);
+            } else {
+                $('.panel-container').prepend(elementString);
+            }
+            
+            if(activityCounter == elementCollector.length) {
+                this.trigger('toggleLoading', {flag: false});
+            }
+        }
+    },
+
+    __generateScrollbar: function(opt) {
+        var count           = opt.count || ion.count;
+        var snappingNz      = count+1; // start + num + end
+        var stepsize        = 1.0/(snappingNz);
+        var height          = 100/count;
+        var active          = false;
+        
+        if(ion.count > 100) {
+            var valueMin = ion.minimum + 25;
+
+            for (var i = 0; i <= snappingNz; i++) {
+                var step = (stepsize*(i))*100;
+                var activeFlag = active ? 'active' : '';
+                var hidden = (i == 0 || i == snappingNz) ? 'hide' : '';
+                            
+                var dot = "<div class='dot snapping-dot "+hidden+" "+activeFlag+"' style='top: "+step+"%; height: "+height+"%;'  data-offset='"+step+"' data-snappos='"+i+"'></div>";
+
+                $('.scrollbar-container').append(dot);
+            }
+
+            this.__calcSnappingPosition(valueMin);
+            this.__scrollHandler();
+        } else {
+            $('.scrollbar-container').empty();
+        }
+
+    },
+
+
+    /////////////////////////////////////////////////////////////////
+    // Creating string of all selected languages to save in cookie
+    ////////////////////////////////////////////////////////////////
+    setSelectedLanguages: function() {
+        var languages     = ion.languages;
+        var selectedArray = [];
+        var counter       = 0;
+
+        for(var i in languages) {
+            if(languages[i].selected) {
+                selectedArray.push(i);
+                counter++;
+            }
+        }
+
+        var str = selectedArray.join(',');
+
+        ion.selectedLanguages = str;
+        ion.cookie.set({cname: 'selectedLanguages', content: str});
+    },
+
+
+    ///////////////////////////////////////////////////////////////
+    // Setting of global variables called by differnet controller
+    //////////////////////////////////////////////////////////////
+    setLanguages: function(opt) {
+        var languages = opt.languages;
+        ion.languages = languages;
+
+        this.setSelectedLanguages();
+    },
+
+    setItems: function(opt) {
+        ion.translations = opt.translations || ion.allTranslations;
+        ion.langauges    = opt.languages    || ion.languages;
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // Creating array of all translations that fit the filter data
+    ///////////////////////////////////////////////////////////////
+    filterTranslations: function() {
+        var counter                   = 0;
+        var translationsArray         = [];
+        var filteredTranslationsArray = [];
+        var tab                       = ion.tab;
+        var filter                    = ion.filter;
+        var translations              = ion.allTranslations;
+
+        var filteredByTab = this.__filterByTab({translations: translations, tab: tab});
+        
+        if(filter != '' && filter != null && filter.length > 0) {
+            
+            for(var i in filteredByTab) {
+                var str = filteredByTab[i].namespace+'.'+filteredByTab[i].name;
+
+                if(str.startsWith(filter)) {
+                    filteredTranslationsArray[counter] = filteredByTab[i];
+                    ++counter;
+                } else if(str.indexOf(filter) > 0) {
+                    filteredTranslationsArray[counter] = filteredByTab[i];
+                    ++counter;
+                }
+            }
+
+            ion.filteredTranslationsArray = filteredTranslationsArray;
+        } else {
+            ion.filteredTranslationsArray = filteredByTab;
+        }
+
+    },
+
+    __filterByTab: function(opt) {
+        var array              = opt.translations;
+        var i, j, trans, check, text;
+        var filteredByTabArray = [];
+
+        for (i in array) {
+            trans = array[i];
+            if (opt.tab==3) { // unchecked
+                var unchecked = false;
+
+                for (j=1; j<7; j++) {
+                    check = trans.checks[j];
+                    if (check==false || check==undefined) {
+                        unchecked = true;
+                    }
+                }
+                if (unchecked) filteredByTabArray.push(trans);
+            } else if (opt.tab==2) { // New
+                var newItem = false;
+
+                for (j=1; j<7; j++) {
+                    text = trans.texts[j];
+                    if (text=='' || text==undefined) {
+                        newItem = true;
+                    }
+                }
+                if (newItem) filteredByTabArray.push(trans);
+            } else filteredByTabArray = array;
+        }
+
+        return filteredByTabArray;
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // Display Dialogue according to clicked panel
+    ///////////////////////////////////////////////////////////////
+    showDialogue: function(data, evt, target) {
+        var id = data.id;
+
+        var defaultLanguage = ion.defaultLanguage;
+        var translations    = ion.allTranslations;
+        var languages       = ion.languages;
+        var count           = ion.count;
+
+        this.trigger('showOverlay', {
+            index: parseInt(id),
+            defaultLanguage: defaultLanguage,
+            translations: translations,
+            languages: languages,
+            count: count
+        });
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // Set scroll handle on click
+    ///////////////////////////////////////////////////////////////
+    setScrollHandle: function(data, evt, target) {
+        var snapValue = parseInt(data.snappos);
+
+        this.__calcSnappingPosition(snapValue);
+
+        this.__setPositionCookie();
+
+        this.updateDom({min: ion.minimum, max: ion.maximum, type: 'click'});
+
+        if(ion.minimum !== 0) {
+            $('#items').scrollTop(330);
+        }
+    },
+
+    __setPositionCookie: function() {
+        ion.cookie.set({cname: 'lastMinPosition', content: ion.minimum});
+        ion.cookie.set({cname: 'lastMaxPosition', content: ion.maximum});
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // Set scroll handle on drag
+    ///////////////////////////////////////////////////////////////
+    dragHandler: function(data, evt, target) {
+        var direction = 1; // 1 is for dragging down and 0 for dragging up
+        var col       = this.col
+        var self      = this;
+        var start     = ion.minimum;
+
+        $('.dot').on('mousedown', function() {
+            start          = ion.minimum;
+            self.draggable = true;
+        }).on('mouseover', function(e){
+            if (self.draggable) {
+                var elem        = $(this);
+                var oldMinimum  = ion.minimum;
+                var oldMaximum  = ion.maximum;
+                var snapValue   = parseInt(elem.attr('data-snappos'));
+                var append      = null;
+
+                self.__calcSnappingPosition(snapValue);
+
+                if (!elem.hasClass('active')) {
+                    elem.addClass('active');
+                }
+
+                direction = self.__getDirection({oldMinimum: oldMinimum, oldMaximum: oldMaximum});
+
+                self.__setPositionCookie();
+
+                var validAppend  = start+col-1;
+                var validPrepend = start-col+1;
+
+                if(ion.minimum >= validAppend) {
+                    append = true;
+                    start  = ion.minimum;
+                }
+
+                if(ion.minimum < validPrepend) {
+                    append = false;
+                    start  = ion.minimum;
+                }
+
+                self.updateDom({min: ion.minimum, max: ion.maximum, type: 'drag', direction: direction, append: append});
+            }
+        }).on('mouseup', function() {
+            self.draggable = false;
+        });
+    },
+
+    __getDirection: function(opt) {
+        var direction = 1;
+
+        if(opt.oldMinimum < ion.minimum) {
+            direction = 1;
+        } else if(opt.oldMaximum > ion.maximum) {
+            direction = 0;
+        }
+
+        return direction;
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // private function to catch scroll event and scroll direction
+    ///////////////////////////////////////////////////////////////
+    __scrollHandler: function() {
+        var lastScrollTop    = this.lastScrollTop;
+        var self             = this;
+        var col              = 0;
+        var singleItemHeight = 0;
+        var singleItem       = $('.item-panel');
+        var scrollPosition   = lastScrollTop + 182;
+        
+        singleItem.each(function() { 
+            if($(this).position().top == 0) { 
+                ++col; // number of elements next to each other
+            } 
+        });
+
+        this.col            = col;
+
+        $('#items').scroll(function(event){
+            var st               = $(this).scrollTop();
+            var min              = parseInt($('.dot.active').first().attr('data-snappos'));
+            var max              = parseInt($('.dot.active').last().attr('data-snappos'));
+            var valuedown        = min + (25 + col);
+            var valueup          = max - (25 + col);
+
+            if (st > lastScrollTop && max <= ion.count){
+                // scrolling down
+                var pseudoBottom = $('.pseudo-scroll-element.bottom');
+                var firstItem    = $('.item-panel').first();
+                var windowHeight = window.innerHeight;
+                var heighestItem = 0;
+
+                if(lastScrollTop >= scrollPosition) {
+                    singleItem.each(function() {
+                        var item = $(this);
+                        if(item.position().top >= 0 && item.position().top < 182) {
+                            singleItemHeight = item.innerHeight();
+                            if(item.innerHeight() >= heighestItem) {
+                                heighestItem = item.innerHeight();
+                            }
+                        }
+                    });
+
+                    scrollPosition = lastScrollTop + singleItemHeight;
+                    self.__setScrollValues({type: null, value: valuedown});
+                }
+
+                if(pseudoBottom.position().top > windowHeight && pseudoBottom.position().top < (windowHeight + 2000)) {
+                    var itemCounter = 0;
+                    singleItem.each(function() {
+                        var item = $(this);
+                        if(item.position().top < windowHeight) {
+                            itemCounter++;
+                        }
+                    });
+                    self.updateDom({min: ion.minimum, max: ion.maximum, type: 'scroll', direction: 'down', counter: itemCounter});
+                }
+            } else if(st < lastScrollTop && min >= 0) {
+                // scrolling up
+                var pseudoTop    = $('.pseudo-scroll-element.top');
+                var firstItem    = $('.item-panel').first();
+                var windowHeight = window.innerHeight;
+                var heighestItem = 0;
+
+                if(lastScrollTop <= scrollPosition) {
+                    singleItem.each(function() {
+                        var item = $(this);
+                        if(item.position().top < 0 && item.position().top < -182) {
+                            singleItemHeight = item.innerHeight();
+                            if(item.innerHeight() >= heighestItem) {
+                                heighestItem = item.innerHeight();
+                            }
+                        }
+                    });
+
+                    scrollPosition = lastScrollTop - singleItemHeight;
+                    self.__setScrollValues({type: null, value: valueup});
+                }
+
+                if(pseudoTop.position().top < windowHeight && pseudoTop.position().top > (windowHeight - 3000)) {
+                    var itemCounter = 0;
+                    singleItem.each(function() {
+                        var item = $(this);
+                        if(item.position().top > windowHeight) {
+                            itemCounter++;
+                        }
+                    });
+                    self.updateDom({min: ion.minimum, max: ion.maximum, type: 'scroll', direction: 'up', counter: itemCounter});
+                }
+            }
+            lastScrollTop = st;
+        });
+    },
+
+    __setScrollValues: function(opt) {
+        this.__calcSnappingPosition(opt.value);
+        this.__setPositionCookie();
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // calculating the position of the scroll handle 
+    ///////////////////////////////////////////////////////////////
+    __calcSnappingPosition: function(value) {
+        var minimum    = parseInt(value) - 25;
+        var maximum    = parseInt(value) + 25;
+
+        ion.oldMinimum = ion.minimum;
+        ion.oldMaximum = ion.maximum;
+
+        if(minimum < 0) {
+            minimum    = 0;
+            maximum    = 50;
+        }
+        if(maximum >= ion.count) {
+            minimum    = ion.count - 50;
+            maximum    = ion.count;
+        }
+
+        $('.snapping-dot').each(function() {
+            var self    = $(this);
+            var snappos = parseInt(self.attr('data-snappos'));
+
+            if(snappos >= minimum && snappos <= maximum) {
+                self.addClass('active');
+            } else {
+                self.removeClass('active');
+            }
+        });
+
+        ion.minimum = minimum;
+        ion.maximum = maximum;
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // private function to update the dom according to scrollbar
+    ///////////////////////////////////////////////////////////////
+    updateDom: function(opt) {
+        var min     = opt.min     || ion.minimum;
+        var max     = opt.max     || ion.maximum;
+        var version = opt.version || null;
+        var type    = opt.type    || null;
+
+        var itemMin = parseInt($('.item-panel').first().attr('data-id'));
+        var itemMax = parseInt($('.item-panel').last().attr('data-id'));
+
+        var oldmin          = ion.oldMinimum;
+        var oldmax          = ion.oldMaximum;
+        var translations    = ion.filteredTranslationsArray;
+        var defaultLanguage = ion.defaultLanguage;
+        var languages       = ion.languages;
+        var count           = ion.count;
+        var col             = this.col;
+
+        if(type == 'scroll') {
+
+            if(opt.direction == 'down') {
+                this.__generateElements({append: true, translations: translations, min: itemMax+1, max: itemMax+opt.counter});
+                for(var x = 0; x < ((opt.counter*3)/4); x++) {
+                    $('.item-panel[data-value='+x+']').remove();
+                }
+            } else if(opt.direction == 'up') {
+                this.__generateElements({append: false, translations: translations, min: itemMin-opt.counter, max: itemMin-1});
+                for(var y = itemMax; y < ((opt.counter*3)/4); y--) {
+                    $('.item-panel[data-value='+y+']').remove();
+                }
+            }
+
+        } else if(type == 'change') {
+
+            if(version == 'default') {
+                this.renderDom({});
+            } else if(version == 'language') {
+                this.__hideShowTranslations();
+            }
+
+        } else if(type == 'click') {
+            this.renderDom({});
+        } else if(type == 'drag') {
+
+            if(opt.direction == 1 && opt.append === true) {
+                this.__generateElements({append: true, translations: translations, min: itemMax+1, max: itemMax+col});
+                for(var i = 0; i < col; i++) {
+                    $('.item-panel').first().remove();
+                }
+            } else if(opt.direction == 0 && opt.append === false) {
+                this.__generateElements({append: false, translations: translations, min: itemMin-col, max: itemMin-1});
+                for(var i = 0; i < col; i++) {
+                    $('.item-panel').last().remove();
+                }
+            }
+
+        }
+
+    },
+
+
+    ////////////////////////////////////////////////////////////////////////
+    // private functions to append, prepend and remove elements in the dom 
+    ///////////////////////////////////////////////////////////////////////
+    __hideShowTranslations: function() {
+        var selectedLanguages = ion.selectedLanguages;
+        var languageArray     = selectedLanguages.split(',');
+
+        $('.item-panel').each(function() {
+            var self          = $(this);
+            var translations  = self.find('.translation-field');
+
+            translations.each(function() {
+                var trans     = $(this);
+                var key       = trans.attr('data-target');
+
+                trans.addClass('hidden');
+                for(var i in languageArray) {
+                    if(languageArray[i] == key) {
+                        if(trans.hasClass('hidden')) {
+                            trans.removeClass('hidden');
+                        }
+                    }
+                }
+            });
+        });
+    },
+
+    __appendElements: function(opt) {
+        //append new elements due to scroll direction down and remove old elements that are out of range
+        //each language in languages -> if language.selected
+        var elemnt = null;
+
+        if(opt.itemMin >= (opt.currentMin - 20)) {
+            /* Add Element via append*/
+            //@TODO add for loop for each element that fits condition and get data for create Element 
+
+            //@TODO push values for languages and translations into global array and splice elements from array that don't fit the conditions anymore
+
+            //var key = trans.namespace+'.<b>'+trans.name+'</b>';
+            //element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: transArray});
+
+            //$('.panel-container').append(element);
+
+            //this.__removeElements({min: opt.itemMin, max: opt.itemMax});
+        }
+
+    },
+
+    __prependElements: function(opt) {
+        //prepend new elements due to scroll direction up and remove old elements that are out of range
+        //each language in languages -> if language.selected
+        var elemnt = null;
+
+        if(opt.itemMax <= (opt.currentMax + 20)) {
+            /* Add Element via prepend*/
+
+            //@TODO add for loop for each element that fits condition and get data for create Element 
+
+            //@TODO push values for languages and translations into global array and splice elements from array that don't fit the conditions anymore
+
+            //element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: transArray});
+
+            //$('.panel-container').prepend(element);
+
+            //this.__removeElements({min: opt.itemMin, max: opt.itemMax});
+        }
+    },
+
+    __removeElements: function(opt) {
+        var items = $('.item-panel');
+        var min   = opt.min;
+        var max   = opt.max;
+
+        items.each(function() {
+            var item = $(this);
+
+            if((parseInt(item.attr('data-id')) >= max) || (parseInt(item.attr('data-id')) <= min)) {
+                item.remove();
+            }
+        });
+    },
+
+
+    ////////////////////////////////////////////////////////////////
+    // private function to create translation panels
+    ///////////////////////////////////////////////////////////////
+    __createElement: function(opt) {
+        var element            = null;
+        var data               = opt                     || {};
+
+        var id                 = data.id;
+        var key                = data.key                || null;
+        var counter            = data.counter            || 0;
+        var translations       = data.translations;
+        var defaultTranslation = data.defaultTranslation || null;
+
+        element = '<div data-id="'+id+'" data-value="'+counter+'" class="col-lg-4 col-md-6 col-sm-12 item-panel">' +
+                '<dl>' +
+                    '<div class="header-panel" data-id="'+id+'">'+
+                        '<dt>' +
+                            '<label>Key:</label><span>'+key+'</span>' +
+                        '</dt>' +
+                        '<dt>' +
+                            '<label>Default:</label><span>'+defaultTranslation+'</span>' +
+                        '</dt>'+
+                    '</div>' +
+                    '<div class="translations-panel">';
+
+                    for(var i in translations) {
+                        element = element + 
+                        '<dd class="'+(translations[i].checked ? 'checked' : '')+' translation-field '+(translations[i].selected ? '' : 'hidden')+'" data-target="'+translations[i].languageKey+'">' +
+                            '<label>'+translations[i].name+':</label><input data-target="'+id+'" type="text" class="translations-panel-inputfield" value="'+translations[i].text+'"><span data-target="'+id+'" data-key="'+i+'" data-type="check" class="glyphicon glyphicon-ok"></span>' +
+                        '</dd>';
+                    }
+
+                    element = element+'</div>' +
+                '</dl>' +
+            '</div>';
+        return element;
+    },
+
+
+    ///////////////////////////////////////////////////////////////////
+    // collecting the ids of all changed translations
+    //////////////////////////////////////////////////////////////////
+    changedTranslationsCollector: function(data, evt, target) {
+        var id              = data.target;
+        var translations    = ion.allTranslations;
+        var defaultLanguage = ion.defaultLanguage;
+        var string          = target.val();
+        var comparison      = null;
+        var changedTrans    = ion.changedTranslations || [];
+
+        for(var i in translations) {
+            if(i == id) {
+                comparison = translations[i].texts[defaultLanguage.id];
+                
+                if(string != comparison) {
+                    changedTrans.push(id);
+                    translations[i].texts[defaultLanguage.id] = string;
+                    ion.changedTranslations = changedTrans;
+                    ion.translations = translations;
+                    this.trigger('showSaveButtonBar', {});
+                } else {
+                    for(var x in changedTrans) {
+                        var index = changedTrans[x].indexOf(id);
+                        if(index >= 0) {
+                            changedTrans.splice(index, 1);
+                        }
+                    }
+                    if(changedTrans.length == 0) this.trigger('hideSaveButtonBar');
+                }
+            }
+        }
+
+    },
+
+    checkTranslation: function(data, evt, target) {
+        var parent       = target.closest('dd');
+        var checked      = true;
+        var id           = parseInt(data.target);
+        var key          = parseInt(data.key);
+        var trans        = ion.allTranslations; 
+        var languages    = ion.languages;
+        var changedTrans = ion.changedTranslations || [];
+
+        parent.toggleClass('checked');
+        
+        if(target.hasClass('checked')) {
+            checked = false;
+        }
+        
+        for(var i in trans) {
+            if(i == id) {
+                for(var j in languages) {
+                    if(key == languages[j].id) {
+                        trans[i].checks[languages[j].id] = checked;
+                    }
+                }
+            }
+        }
+
+        changedTrans.push(id);
+        ion.changedTranslations = changedTrans;
+        this.trigger('showSaveButtonBar', {});
+    },
+
+
+    ///////////////////////////////////////////////////////////////////
+    // reset of changesTranslations array to an empty array on cancel
+    //////////////////////////////////////////////////////////////////
+    discardChanges: function() {
+        this.trigger('hideSaveButtonBar');
+        ion.changedTranslations = [];
+    },
+
+});
 app.Controller('items-list', {
     init: function() {
+        this.scrollInitialized = false;
         this.trigger('toggleLoading', {flag: true});
         this.__filterTranslations();
         this.scrollToSelected();
+
+        var self = this;
+    },
+
+    notify: function() {
     },
 
     toggleLocale: function(opt) {
@@ -5087,14 +6325,63 @@ app.Controller('items-list', {
                     this.showSelectedItem({id: filteredTranslationsObject[i].id});
                 }
             }
+
+            //this.__renderDom(filteredTranslationsObject);
             this.set('allTranslations', filteredTranslationsObject);
         } else {
             app.filteredTranslationsObject = translations;
+            //this.__renderDom(translations);
             this.set('allTranslations', translations);
         }
 
         this.trigger('toggleLoading', {flag: false});
 
+    },
+
+    __renderDom: function(obj) {
+        var strArray       = [];
+        var size           = Object.size(obj);
+        var selectedLocale = this.get('selectedLocale');
+        var cluster;
+
+        for(var i in obj) {
+            var str = '<div class="item-panel col-md-12" data-id="'+obj[i].id+'" data-value="'+i+'">';
+                str += '<dl class="'+(obj[i].selected ? 'selected' : '')+'" data-value="'+i+'" data-id="'+obj[i].id+'">';
+                    str += '<div class="header-panel" data-id="'+obj[i].id+'">';
+                        str += '<dt>';
+                            str += '<label>Key:</label><span>'+i+'</span>';
+                        str += '</dt>';
+
+                        for(var l in obj[i].mapping) {
+                            str += '<dt class="'+(selectedLocale == i ? '' : 'hidden')+'">';
+                                str += '<label>Locale:</label><span>'+obj[i].mapping[j]+'</span>';
+                            str += '</dt>';
+                        }
+                    str += '</div>';
+
+                    str += '<div class="item-button-panel" data-id="'+i+'">';
+                        str += '<dt class="item-delete-panel" data-id="'+i+'">';
+                            str += '<span class="item-delete-icon"><span class="icon glyphicon glyphicon-trash"></span></span>';
+                        str += '</dt>';
+
+                        str += '<dt class="item-status-panel" data-id="'+i+'">';
+                            str += '<span class="item-delete-icon"><span class="icon glyphicon '+(obj[i].done ? 'glyphicon-ok ok' : 'glyphicon-exclamation-sign new')+'"></span></span>';
+                        str += '</dt>';
+                    str += '</div>';
+                str += '</dl>';
+
+                str += '<div class="item-confirm-delete-panel" data-target="'+i+'">';
+                    str += '<div class="item-confirm-text">Confirm</div>';
+                str += '</div>';
+            str += '</div>';
+
+            strArray.push(str);
+            $('#main').append(str);
+
+            if(strArray.length == size) {
+                this.__initializeScroll();
+            }
+        }
     },
 
 
@@ -5299,7 +6586,7 @@ app.Controller('main-main', {
     init: function() {
         this.globalSearch = false;
         this.__checkLogin();
-        this.apiLoggedInCheck();
+        app.meta.title();
     },
 
     __checkLogin: function() {
@@ -5308,7 +6595,17 @@ app.Controller('main-main', {
         var value    = false;
 
         if(loggedin && loggedin !== undefined && loggedin !== null && loggedin == 1) {
-            value = true;
+            this.apiLoggedInCheck();
+        } else {
+            this.trigger('toggleLoggedIn', {flag: false});
+            app.apiAdapter.logout(function(res, message) {
+                console.log('cookie expired so you have been logged out:', res, message);
+                app.cookie.delete({cname: 'user'});
+                app.cookie.delete({cname: 'logged_in'});
+                app.cookie.delete({cname: 'usertoken'});
+            }, function(res, message) {
+                console.log('logout out failed:', res, message);
+            });
         }
     },
 
@@ -5319,19 +6616,19 @@ app.Controller('main-main', {
                 if(exception && exception == 'success') {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status !== 200){
                     if(exception === 'success') {
                         jqXHR = JSON.parse(jqXHR);
                         self.trigger('toggleLoggedIn', {flag: true});
                         app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
+                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                         app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                     } else {
                         self.trigger('toggleLoggedIn', {flag: false});
@@ -5345,19 +6642,19 @@ app.Controller('main-main', {
                 if(exception && exception == 'success') {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
+                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                 } else if(jqXHR.status !== 200){
                     if(exception === 'success') {
                         jqXHR = JSON.parse(jqXHR);
                         self.trigger('toggleLoggedIn', {flag: true});
                         app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
+                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                         app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
                     } else {
                         self.trigger('toggleLoggedIn', {flag: false});
@@ -5939,320 +7236,357 @@ app.Controller('sidebar-sidebar', {
                 self.view.obj('authToken').text(res.token);
             }
         });
-    }
+    },
+
+    importFile: function() {
+        var fileInput = this.view.obj("input");
+        var newFile   = fileInput.prop('files')[0];
+        var filename  = newFile.name;
+        var filetype;
+        if (filename.substr(-4) == '.lea') {
+            filetype = 'lea';
+            filename = filename.slice(0,-4);
+        }
+        var textType = /.json/;
+        var existant = false;
+        var files    = this.get('files') || [];
+        var text, i, file;
+        for (i in files) {
+            file = files[i];
+            if (file.name==filename) {
+                existant = true;
+            }
+        }
+        
+        if (newFile.type.match(textType)) {
+            this.readFile(files, newFile);
+        } else if (filetype=='lea') {
+            var self = this;
+            var options = {
+                title:   'Import URF',
+                message: 'Please enter the password to decrypt the file:',
+                input:   'password',
+                cancel:  'Cancel',
+                ok:      'Import',
+                callback: function(result) {
+                    if (result===false) return;
+                    /*var password = result.input;
+                    if (password) {
+                        self.readFile(files, newFile, password);
+                    } else {
+                        text = 'You must enter a password to decrypt this file!';
+                        this.trigger('setResponseContentDialog', text);
+                    }*/
+                    console.log(result);
+                }
+            };
+            //this.trigger('showContentDialog', options);
+        } else {
+            text = "This file type is not supported!";
+            this.trigger('showNotification', {text: text, type: 'danger', time: 5});
+        }
+
+        return false;
+    },
+
+    readFile: function (files, newFile, password) {
+        var self     = this;
+        var existant = false;
+        var text;
+        var reader   = new FileReader();
+        reader.onload = function(e) {
+            var file = {};
+            if (password) {
+                // Dycrypt with user-password
+                file.name = newFile.name.substr(0, newFile.name.length-4);
+                file.data = app.crypter.aesDecrypt(reader.result, password);
+            } else {
+                file.name = newFile.name;
+                file.data = reader.result;
+            }
+            //Enforce file name to be the same as filename tag in URF payload
+            //var serializer = new XMLSerializer();
+            //file.data = serializer.serializeToString(newDom);
+
+            console.log('readFile', file.data);
+
+            if (file.data) {
+                app.urfHandler.create(file, files, function(res) {
+                });
+                text = "File correctly loaded!";
+                //self.trigger('closeContentDialog');
+                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+            } else {
+                text = 'Import failed. Your password seems to be incorrect.';
+                //self.trigger('setResponseContentDialog', text);
+            }
+        };
+        reader.readAsText(newFile);
+    },
 });
-ion.Controller('usermanagement-usermanagement', {
-	
-	preprocess: function(content) {
-		// implement initial a to z sorting here
-		content.userEditAreaOpen = false;
-		content.roleEditAreaOpen = false;
+app.Controller('usermanagement-usermanagement', {
+    
+    init: function() {
+        // get projects and user data here with mapping
+        // implement initial a to z sorting here
+        var self = this;
+        app.apiAdapter.getUserList(function(res, message) {
+            res = JSON.parse(res);
+            self.__mapUsers(res);
+            self.__mapProjects(res);
+        }, function(res, message) {
+            console.error('getUserList', res, message);
+        });
+    },
 
-		if (content.urf) {
-			content.users = content.urf.users || [];
-			content.roles = content.urf.roles || [];
-			content.controllers = content.urf.controllers || [];
-		} else {
-			content.urf = {};
-		}
-		return content;
-	},
+    __mapUsers: function(res) {
+        var users   = res;
+        var roles   = [];
+        var counter = 0;
+        var size    = Object.size(res);
 
-	openUserEditArea: function(username, roleid) {
-		var selectedRole = this.getRole('name', roleid);
-		this.set("userEditAreaOpen", true);
-		this.set('edit_user', username);
-		this.set('username', username);
-		this.set('password', '');
-		this.set('selectedRole', selectedRole);
-	},
-	
-	handleUserInputArea: function(username, password) {
-		var edit_user = this.get('edit_user');
-		var selectedRole = this.get('selectedRole');
-		var roleid = this.getRole('id', selectedRole);
-		
-		if(this.checkUser(username)) {
-			if (edit_user) {
-				if (password === ""){
-					this.updateUser(edit_user, username, this.getUser('', edit_user).password, roleid);
-					this.set('selectedRole', this.getRole('name'));
-					return;
-				}else if (this.checkPwd(password)) {
-					this.updateUser(edit_user, username, password, roleid);
-					this.set('selectedRole', this.getRole('name'));
-					return;
-				}
-			}
-			else {
-				if(this.checkPwd(password)) {
-					this.addUser(username, password, roleid);
-					this.set('selectedRole', this.getRole('name'));
-					return;
-				} 
-			}
-		}
-		console.error("Save failed!");
-	},
-	
-	checkUser: function(username) {
-		var message = "";
-		var edit_user = this.get('edit_user');
+        for(var u in res) {
+            if(roles.indexOf(res[u].role) == -1) {
+                roles.push(res[u].role);
+            }
 
-		if (username === "") {
-			message = "Please enter a username";
-		}
-		else if (username.length <= 3) {
-			message = "Username must have at least 4 characters";
-		}
-		else if (edit_user!=username && this.itemExists(username, 'users')) { 
-			message = "Username is already taken";
-		}
+            counter++;
 
-		if (message) {
-			$('#user_name').addClass('danger');
-			this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-			return false;
-		} 
-		else return true;
-	},
-	
-	checkPwd: function(password) {
-		var message = "";
-		if(password === "") {
-			message = "Please enter a password";
-		}
-		else if(password.length <= 3) {
-			message = "The password must contain at least 4 characters!";
-		}
+            if(counter == size) {
+                this.set('users', users);
+                this.set('roles', roles);
+                this.set('projectManagement', app.meta.projectManagement);
+                this.set('addRoleEnabled', app.meta.addRole);
+                this.set('addRoleEnabled', app.meta.addRole);
+                this.set('exportofusermanagement', app.meta.exportOfUserManagement);
+            }
+        }
+    },
 
-		if (message) {
-			$('#password').addClass('danger');
-			this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-			return false;
-		} else return true;
-	},
-	
-	getUser: function(search, value) {
-		var given = (isNaN(value)) ? 'name' : 'roleid';
-		var users = this.get('users') || [];
-		var i, user;
-		for (i in users) {
-			user = users[i];
-			if (typeof user.name=='undefined') continue;
-			if (value) {
-				if (user[given]==value) {
-					if (!search) return user;
-					else if (search=='idx') return i;
-					else return user[search];
-				}
-			} else return user[search];
-		}
-	},
+    __mapProjects: function() {
 
-	getNextId: function(array) {
-		var id = -1;
-		var i, item;
-		for (i in array) {
-			item = array[i];
-			if (typeof item.name=='undefined') continue;
-			if (parseInt(item.id)>id) {
-				id = item.id;
-			}
-		}
-		return ++id;
-	},
-	
-	addUser: function(user, pwd, roleid) {
-		if (!isNaN(user)) {
-			message = "Username must contain at least one character";
-			this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-			return;
-		}
-		var users = this.get('users') || [];
-		var id = this.getNextId(users);
-		users.push({ name: user, id: id.toString(), roleid: roleid, password: pwd, domNodeType: 'user'}); 
-		this.set('users', users);
-		this.saveChanges();
-		this.set("userEditAreaOpen", false);
-	},
-	
-	updateUser: function(username, newusername, newpassword, newroleid) {
-		if (!isNaN(newusername)) {
-			message = "Username must contain at least one character";
-			this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-			return;
-		}
-		var users = this.get("users") || [];
-		var roles = this.get("roles") || [];
-		var user  = this.getUser('', username);
-		user.name = newusername;
-		user.password = newpassword;
-		user.roleid = newroleid;
-		this.set('users', users);
-		this.set('edit_user', '');
-		this.saveChanges();
-		this.set("userEditAreaOpen", false);
-	},
-	
-	removeUser: function(username) {
-		var users = this.get("users") || [];
-		var idx = this.getUser('idx', username);
-		users.splice(idx,1);
-		this.saveChanges();
-	},
-	
-	rolesChanged: function(event, uidata) {
-		var username = uidata.item.data("user");
-		var newrole = $(event.target).data("role");
-		var oldrole = uidata.item.data("origin");
-		var users = this.get("users") || [];
-		var user  = this.getUser('', username);
-		var roleid = this.getRole('id', newrole);
-		user.roleid = roleid;
-		this.set('users', users);
-		this.saveChanges();
-	},
-	
-	// ROLES
-	getRole: function(search, value) {
-		var given = (isNaN(value)) ? 'name' : 'id';
-		var roles = this.get('roles') || [];
-		var i, role;
-		for (i in roles) {
-			role = roles[i];
-			if (typeof role.name=='undefined') continue;
-			if (value) {
-				if (role[given]==value) {
-					if (!search) return role;
-					else if (search=='idx') return i;
-					else return role[search];
-				}
-			} 
-			else return role[search]; 
-		}
-		return false;
-	},
-	
-	addRole: function(rolename) {
-		if (this.itemExists(rolename, 'roles')) {
-			var text = 'The role name exists already. Please choose a different name!';
-			this.trigger('showNotification', {text: text, type: 'danger', time: 5});
-		} else {
-			var roles = this.get("roles") || [];
-			var roleid = this.getNextId(roles);
-			roles.push({id: roleid.toString(), name: rolename, domNodeType: 'role' });
-			this.set('roles', roles);
-			this.saveChanges();
-			this.adaptPermissions(roleid.toString(), 'add');
-			this.set("roleEditAreaOpen", false);
-			this._rerender();
-		}
-	},
-	
-	updateRole: function(edit_role, rolename) {
-		var role = this.getRole('', edit_role);
-		role.name = rolename;
-		this.saveChanges();
-		this.set("roleEditAreaOpen", false);
-	},
-	
-	removeRole: function(rolename) {
-		var roles = this.get("roles") || [];
-		var users = this.get("users") || [];
-		var roleid = this.getRole('id', rolename);
-		var roleidx = this.getRole('idx', rolename);
-		var user = this.getUser('', roleid);
-		if (user) {
-			var text = 'You can not delete a role which has a user assigned to it.';
-			this.trigger('showNotification', {text: text, type: 'danger', time: 5});
-		} else {
-			roles.splice(roleidx,1);
-			this.adaptPermissions(roleid, 'remove');
-			this.saveChanges();
-		}
-	},
-	
-	handleRoleInputArea: function(rolename) {
-		var edit_role = this.get('edit_role');
-		if(this.checkRole(rolename)) {
-			if (edit_role) {
-				this.updateRole(edit_role, rolename);
-			}
-			else {
-				this.addRole(rolename);
-			}
-			return;
-		}
-		console.error("Save failed!");
-	},
-	
-	checkRole: function(rolename) {
-		var message = "";
-		var edit_role = this.get('edit_role');
+    },
 
-		if (rolename==="") {
-			message = "Please enter a name for the new role.";
-		}
-		else if (rolename.length <= 2) {
-			message = "A role name must contain at least 3 characters.";
-		}
-		else if (edit_role!=rolename && this.itemExists(rolename, 'roles')) { //only check if we are not in edit mode
-			message = "This rolename is already taken. Please choose a different name.";
-		}
-		if (message) {
-			$('#rolename').addClass('danger');
-			this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-			return false;
-		} else return true;
-	},
-	
-	itemExists: function(name, arrayName) {
-		var array = this.get(arrayName) || [];
-		var i, item;
-		for (i in array) {
-			item = array[i];
-			if (typeof item.name=='undefined') continue;
-			if (item.name.toLowerCase()==name.toLowerCase()) {
-				return true;
-			}
-		}
-		return false;
-	},
+    ////////////////////////////////
+    // User Related Part
+    ///////////////////////////////
+    addUser: function(data, evt, target) {
+    },
 
-	saveChanges: function() {
-		this._rerender();
-		ion.controllerHelper.trigger('saveFile');
-	},
-	
-	adaptPermissions: function(roleid, action) {
-		var controllers = this.get('controllers');
-		var permissions, actions, permission;
-		var i, j, k;
-		for (i in controllers) {
-			actions = controllers[i].actions;
-			for (j in actions) {
-				permissions = actions[j].permissions;
-				if (permissions) {
-					if (action=='remove') {
-						for (k in permissions) {
-							permission = permissions[k];
-							if (permission.roleid==roleid) {
-								break;
-							}
-						}
-						permissions.splice(k, 1);
-					} else {
-						permissions.push({ 
-							domNodeType: "permission", 
-							roleid:      roleid, 
-							value:       "false" 
-						});
-					}
-				}
-			}
-		}
-	}
+    toggleUserEditing: function(data, evt, target) {
+        var card = target.closest('.usermanagement-card');
+        
+        target.find('.glyphicon').toggleClass('glyphicon-pencil glyphicon-remove');
+
+        if(card.hasClass('open')) {
+            card.removeClass('open');
+            card.find('.username-title').show();
+            card.find('.username-input-field').hide();
+        } else {
+            card.addClass('open');
+            card.find('.username-title').hide();
+            card.find('.username-input-field').show();
+        }
+    },
+    
+    handleUserInputArea: function(username, password) {
+        var edit_user = this.get('edit_user');
+        var selectedRole = this.get('selectedRole');
+        var roleid = this.getRole('id', selectedRole);
+        
+        if(this.checkUser(username)) {
+            if (edit_user) {
+                if (password === ""){
+                    this.updateUser(edit_user, username, this.getUser('', edit_user).password, roleid);
+                    this.set('selectedRole', this.getRole('name'));
+                    return;
+                }
+            }
+            else {
+                if(this.checkPwd(password)) {
+                    this.addUser(username, password, roleid);
+                    this.set('selectedRole', this.getRole('name'));
+                    return;
+                } 
+            }
+        }
+        console.error("Save failed!");
+    },
+    
+    checkUser: function(username) {
+        var message = "";
+        var edit_user = this.get('edit_user');
+
+        if (username === "") {
+            message = "Please enter a username";
+        }
+        else if (username.length <= 3) {
+            message = "Username must have at least 4 characters";
+        }
+        else if (edit_user!=username && this.itemExists(username, 'users')) { 
+            message = "Username is already taken";
+        }
+
+        if (message) {
+            $('#user_name').addClass('danger');
+            this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
+            return false;
+        } 
+        else return true;
+    },
+    
+    checkPwd: function(password) {
+        var message = "";
+        if(password === "") {
+            message = "Please enter a password";
+        }
+        else if(password.length <= 3) {
+            message = "The password must contain at least 4 characters!";
+        }
+
+        if (message) {
+            $('#password').addClass('danger');
+            this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
+            return false;
+        } else return true;
+    },
+
+    rolesChanged: function() {
+        var self      = this;
+        var lists     = $('.usermanagement-list[data-type="role"]');
+        var userArray = _.cloneDeep(this.get('users'));
+
+        lists.each(function() {
+            var list  = $(this);
+            var role  = list.attr('data-target');
+            var cards = list.find('.usermanagement-card');
+
+            cards.each(function() {
+                var card = $(this);
+                var id   = card.attr('data-target');
+
+                if(userArray[id].role !== role) {
+                    userArray[id].role = role;
+                    self.username      = id;
+                    self.password      = null;
+                    self.role          = role;
+
+                    //self.__updateUser();
+                }
+
+            });
+        });
+    },
+    
+    __updateUser: function(data, evt, target) {
+        var obj = {
+            username: this.username,
+            password: this.password,
+            role: this.role
+        };
+
+        app.apiAdapter.updateUser(
+            obj,
+            function(res, message) {
+                console.log('__updateUser', res, message);
+            },
+            function(res, message) {
+                console.error('__updateUser', res, message);
+            }
+        );
+    },
+    
+    __allowUser: function(data, evt, target) {
+        var obj = {
+            username: this.username,
+            project: this.project
+        };
+
+        app.apiAdapter.updateUser(
+            obj,
+            function(res, message) {
+                console.log('__allowUser', res, message);
+            },
+            function(res, message) {
+                console.error('__allowUser', res, message);
+            }
+        );
+    },
+    
+    deleteUser: function(data, evt, target) {
+        /*app.apiAdapter.deleteUser(
+            data.target,
+            function(res, message) {
+                console.log('deleteUser', res, message):
+            },
+            function(res, message) {
+                console.error('deleteUser', res, message):
+            }
+        );*/
+    },
+
+
+
+    ////////////////////////////////
+    // Project Related Part
+    ///////////////////////////////
+    addProject: function(data, evt, target) {
+    },
+
+    toggleProjectEditing: function(data, evt, target) {
+    },
+    
+    handleProjectInputArea: function(username, password) {
+        var edit_user = this.get('edit_user');
+        var selectedRole = this.get('selectedRole');
+        var roleid = this.getRole('id', selectedRole);
+        
+        if(this.checkUser(username)) {
+            if (edit_user) {
+                if (password === ""){
+                    this.updateUser(edit_user, username, this.getUser('', edit_user).password, roleid);
+                    this.set('selectedRole', this.getRole('name'));
+                    return;
+                }
+            }
+            else {
+                if(this.checkPwd(password)) {
+                    this.addUser(username, password, roleid);
+                    this.set('selectedRole', this.getRole('name'));
+                    return;
+                } 
+            }
+        }
+        console.error("Save failed!");
+    },
+    
+    checkProject: function(username) {
+        var message = "";
+        var edit_user = this.get('edit_user');
+
+        if (username === "") {
+            message = "Please enter a username";
+        }
+        else if (username.length <= 3) {
+            message = "Username must have at least 4 characters";
+        }
+        else if (edit_user!=username && this.itemExists(username, 'users')) { 
+            message = "Username is already taken";
+        }
+
+        if (message) {
+            $('#user_name').addClass('danger');
+            this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
+            return false;
+        } 
+        else return true;
+    },
+    
+    updateProject: function(data, evt, target) {
+    },
+    
+    deleteProject: function(data, evt, target) {
+    },
 });
 
 app.view('content-globalsearch', {
@@ -6311,7 +7645,7 @@ app.view('content-wrapper', {
     events: [
         {
             type: 'hashchange',
-            action: 'hashchange'
+            action: 'checkHash'
         },
         {
             type: 'showItem',
@@ -6483,7 +7817,7 @@ app.view('items-item', {
     },
 
 });
-app.view('items-list', {
+app.view('items-list', [app.view.smartscroll], {
     events: [
         {
             selector: 'span.glyphicon-ok',
@@ -6499,16 +7833,6 @@ app.view('items-list', {
             selector: '.panel-container',
             type: 'scroll',
             action: '__determineScrollPosition'
-        },
-        {
-            selector: '.dot',
-            type: 'click',
-            action: 'setScrollHandle'
-        },
-        {
-            selector: '.dot',
-            type: 'mousedown',
-            action: 'dragHandler'
         },
         {
             selector: '.header-panel',
@@ -6827,6 +8151,11 @@ app.view('sidebar-sidebar', {
             type: "click",
             action: "toggleLocaleInputField"
         },
+        {
+            action: 'importFile',
+            type: 'change',
+            selector: '#fileSelection'
+        }, 
 
         {
             type: 'openSidebar',
@@ -6921,231 +8250,166 @@ app.view('sidebar-sidebar', {
         }
     }
 });
-ion.View('usermanagement-usermanagement', {
-	events: [
-	// USER
-		{
-			selector: ".edituser",
-			type: "click",
-			action: "editUserButtonClick"
-		},
-		{
-			selector: ".deletuser",
-			type: "click",
-			action: "deleteUserButtonClick"
-		},
-		{
-			selector: "#roleselect",
-			type: "click",
-			action: "toggleRoleSelect"
-		},
-		{
-			selector: "#roleselect .item",
-			type: "click",
-			action: "selectRole"
-		},
-		{
-			selector: "#save",
-			type: "click",
-			action: "enterOnUserInputArea"
-		},
-		{
-			selector: "#add",
-			type: "click",
-			action: "addUserButtonClick"
-		},
-		{
-			selector: "#discard",
-			type: "click",
-			action: "closeUserEditArea"
-		},
+app.view('usermanagement-usermanagement', {
+    events: [
+    // GENERAL
+        {
+            selector: ".remove-new-card-button",
+            type: "click",
+            action: "removeNewCard"
+        },
+        {
+            selector: "input",
+            type: "keyup",
+            action: "keyUpOnInput"
+        },
 
-	// ROLE
-		{
-			selector: ".editrole",
-			type: "click",
-			action: "editRoleButtonClick"
-		},
-		{
-			selector: ".deleterole",
-			type: "click",
-			action: "deleteRoleButtonClick"
-		},
-		{
-			selector: "#save_role",
-			type: "click",
-			action: "enterOnRoleInputArea"
-		},
-		{
-			selector: "#add_role",
-			type: "click",
-			action: "addRoleButtonClick"
-		},
-		{
-			selector: "#discard_role",
-			type: "click",
-			action: "closeRoleEditArea"
-		},
-		{
-			selector: '.newrole, .newuser',
-			type: 'keyup',
-			action: 'keyUpOnInput'
-		},
-		{
-			selector: ".content-view",
-			type: "click",
-			action: "closeRoleSelect"
-		},
-	],
-	username: "#user_name",
-	password: "#password",
-	rolename: "#rolename",
-	roleSelect: false,
+    // USER
+        {
+            selector: ".add-new-card",
+            type: "click",
+            action: "addCard"
+        },
+        {
+            selector: ".edit-user-button",
+            type: "click",
+            action: "toggleUserEditing"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "handleUserInputArea"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "updateUser"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "deleteUser"
+        },
 
-	init: function() {
-		this.notify();
-	},
+    // Project
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "addProject"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "toggleProjectEditing"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "handleProjectInputArea"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "updateProject"
+        },
+        {
+            selector: ".edituser",
+            type: "click",
+            action: "deleteProject"
+        },
+    ],
+    username: "#username",
+    password: "#password",
 
-	// onrendered
-	notify: function() {
-		$(".list-group").sortable({
-			connectWith: ".list-group",
-			scroll:      false,
-			appendTo:    '.detail',
-			receive:     this.controller.rolesChanged.bind(this.controller),
-		});
+    init: function() {
+        this.notify();
+    },
 
-		$(".user.list-group-item" ).draggable({
-			connectToSortable: '.list-group',
-			helper: "clone",
-			revert: false,
-			scroll: false,
-			start: function(event, ui) {
-				ui.helper.find('.emil-btn').remove();
-				ui.helper.find('.role').remove();
-			}
-		});
-	},
-	
-	toggleRoleSelect: function() {
-		this.roleSelect = true;
-		$('#roleselect .dropdown-menu').toggle();
-	},
-	
-	closeRoleSelect: function() {
-		if (!this.roleSelect) {
-			$('#roleselect .dropdown-menu').hide();
-		}
-		this.roleSelect = false;
-	},
+    // onrendered
+    notify: function() {
+        var self = this;
+        $(".usermanagement-list-cards").sortable({
+            connectWith: ".usermanagement-list-cards",
+            scroll: false,
+            helper: "clone",
+            delay: 350,
+            zIndex: 9999,
+            start: function(event, ui) {
+                $(ui.item[0]).addClass('dragged');
+            },
+            stop: function(event, ui) {
+                $(ui.item[0]).removeClass('dragged');
+                self.controller.rolesChanged();
+            }
+        });
+    },
 
-	selectRole: function(data) {
-		var roleid = data.id;
-		var selectedRole = this.controller.getRole('name', roleid);
-		this.controller.set('selectedRole', selectedRole);
-	},
+    addCard: function(data, evt, target) {
+        if(data.target === 'user') {
+            this.__addUserCard(target);
+        } else if(data.target === 'project') {
+            this.__addProjectsCard();
+        }
+    },
 
-	keyUpOnInput: function(data, evt, target) {
-		var tgt = $(evt.target);
-		if (evt.which===13) {
-			if (tgt.parents('.newrole').length > 0) {
-				this.enterOnRoleInputArea(data, evt, target);
-			}
-			else if (tgt.parents('.newuser').length > 0) {
-				this.enterOnUserInputArea(data, evt, target);
-			}
-		} else {
-			if(tgt.is('input')) {
-				$('input').removeClass('danger');
-				this.trigger('closeNotification');
-				if (tgt.parents('.newuser').length > 0) {
-					var username = this.obj("username").val();
-					var password = this.obj("password").val();
-					this.controller._set('username', username, true);
-					this.controller._set('password', password, true);
-				}
-			}
-		}
-	},
+    __addUserCard: function(target) {
+        var list = target.closest('.usermanagement-list');
+        var role = list.attr('data-target');
 
-	// USER
-	enterOnUserInputArea: function() {
-		var username = this.obj("username").val();
-		var password = this.obj("password").val();
-		this.controller.handleUserInputArea(username, password); 
-	},
+        var card = "<div class='usermanagement-card open' data-target='0'><div class='usermanagement-card-information'>";
+        card += "<input class='new-username-input-field' placeholder='enter username' data-target='0'/>";
+        card += "<input placeholder='enter password' class='new-password-input-field' data-target='0'/>";
+        card += "<div class='usermanagement-card-actions-container'><button class='remove-new-card-button'><span class='cancel-card glyphicon glyphicon-remove'></button></div>";
+        card += "</div></div>";
 
-	closeUserEditArea: function() {
-		this.controller.set("userEditAreaOpen", false);
-	},
+        list.find('.usermanagement-list-cards').prepend(card);
+    },
 
-	openUserEditArea: function(username, roleid) {
-		this.controller.openUserEditArea(username, roleid);
-		var self = this;
-		this.__timer = setTimeout(function() {
-			self.obj("username").focus();
-			clearTimeout(self.__timer);
-			delete self.__timer;
-		}, 100);
-	},
+    removeNewCard: function(data, evt, target) {
+        target.closest('.usermanagement-card').remove();
+    },
 
-	addUserButtonClick: function(data, evt, target) {
-		var rolename = this.controller.getRole('name');
-		if (rolename) {
-			this.openUserEditArea();
-		} else {
-			var text = "There is no user-role available. Please add a new role first before adding a new user.";
-			this.trigger('showNotification', { text: text, type: 'danger' });
-		}
-	},
+    __addProjectsCard: function() {
 
-	editUserButtonClick: function(data, evt, target) {
-		var username = $(target).parent().data("user");
-		var roleid   = $(target).parent().data("origin");
-		this.openUserEditArea(username, roleid);
-	},
+    },
 
-	deleteUserButtonClick: function(data, evt, target) {
-		//var parent = $(target).parent();
-		var username = $(target).parent().data("user");
-		this.controller.removeUser(username);
-		this.closeUserEditArea();
-	},
+    keyUpOnInput: function(data, evt, target) {
+        var tgt = $(evt.target);
+        var type = data.target;
+        if (evt.which===13) {
+            if (tgt.parents('.newrole').length > 0) {
+                this.enterOnRoleInputArea(data, evt, target);
+            }
+            else if (tgt.parents('.newuser').length > 0) {
+                this.enterOnUserInputArea(data, evt, target);
+            }
+        } else {
+            if(tgt.is('input')) {
+                $('input').removeClass('danger');
+                this.trigger('closeNotification');
+                if (tgt.parents('.newuser').length > 0) {
+                    var username = this.obj("username").val();
+                    var password = this.obj("password").val();
+                    this.controller._set('username', username, true);
+                    this.controller._set('password', password, true);
+                }
+            }
+        }
+    },
 
-	// ROLE
-	closeRoleEditArea: function() {
-		this.controller.set("roleEditAreaOpen", false);
-	},
-
-	openRoleEditArea: function(rolename) {
-		this.controller.set("roleEditAreaOpen", true);
-		this.controller.set('rolename', rolename);
-		var self = this;
-		this.__timer = setTimeout(function(){
-			self.obj("rolename").focus();
-			clearTimeout(self.__timer);
-			delete self.__timer;
-		}, 100);
-	},
-
-	addRoleButtonClick: function(data, evt, target) {
-		this.controller.set('edit_role', '');
-		this.openRoleEditArea('');
-	},
-
-	enterOnRoleInputArea: function() {
-		var rolename = this.obj("rolename").val();
-		this.controller.handleRoleInputArea(rolename);
-	},
-
-	editRoleButtonClick: function(data, evt, target) {
-		var rolename = $(target).parent().data("role");
-		this.controller.set('edit_role', rolename);
-		this.openRoleEditArea(rolename);
-	},
-
-	deleteRoleButtonClick: function(data, evt, target) {
-		var rolename = $(target).parent().data("role");
-		this.controller.removeRole(rolename);
-	},
+    __tilt_direction: function(item) {
+        var left_pos = item.position().left,
+            move_handler = function (e) {
+                if (e.pageX >= left_pos) {
+                    item.addClass("right");
+                    item.removeClass("left");
+                } else {
+                    item.addClass("left");
+                    item.removeClass("right");
+                }
+                left_pos = e.pageX;
+            };
+        $("html").bind("mousemove", move_handler);
+        item.data("move_handler", move_handler);
+    },  
 });

@@ -1,13 +1,25 @@
-app.View('usermanagement-usermanagement', {
+app.view('usermanagement-usermanagement', {
     events: [
-    // USER
+    // GENERAL
         {
-            selector: ".edituser",
+            selector: ".remove-new-card-button",
             type: "click",
-            action: "addUser"
+            action: "removeNewCard"
         },
         {
-            selector: ".edituser",
+            selector: "input",
+            type: "keyup",
+            action: "keyUpOnInput"
+        },
+
+    // USER
+        {
+            selector: ".add-new-card",
+            type: "click",
+            action: "addCard"
+        },
+        {
+            selector: ".edit-user-button",
             type: "click",
             action: "toggleUserEditing"
         },
@@ -63,27 +75,55 @@ app.View('usermanagement-usermanagement', {
 
     // onrendered
     notify: function() {
-        $(".list-group").sortable({
-            connectWith: ".list-group",
-            scroll:      false,
-            appendTo:    '.detail',
-            receive:     this.controller.rolesChanged.bind(this.controller),
-        });
-
-        $(".user.list-group-item" ).draggable({
-            connectToSortable: '.list-group',
-            helper: "clone",
-            revert: false,
+        var self = this;
+        $(".usermanagement-list-cards").sortable({
+            connectWith: ".usermanagement-list-cards",
             scroll: false,
+            helper: "clone",
+            delay: 350,
+            zIndex: 9999,
             start: function(event, ui) {
-                ui.helper.find('.emil-btn').remove();
-                ui.helper.find('.role').remove();
+                $(ui.item[0]).addClass('dragged');
+            },
+            stop: function(event, ui) {
+                $(ui.item[0]).removeClass('dragged');
+                self.controller.rolesChanged();
             }
         });
     },
 
+    addCard: function(data, evt, target) {
+        if(data.target === 'user') {
+            this.__addUserCard(target);
+        } else if(data.target === 'project') {
+            this.__addProjectsCard();
+        }
+    },
+
+    __addUserCard: function(target) {
+        var list = target.closest('.usermanagement-list');
+        var role = list.attr('data-target');
+
+        var card = "<div class='usermanagement-card open' data-target='0'><div class='usermanagement-card-information'>";
+        card += "<input class='new-username-input-field' placeholder='enter username' data-target='0'/>";
+        card += "<input placeholder='enter password' class='new-password-input-field' data-target='0'/>";
+        card += "<div class='usermanagement-card-actions-container'><button class='remove-new-card-button'><span class='cancel-card glyphicon glyphicon-remove'></button></div>";
+        card += "</div></div>";
+
+        list.find('.usermanagement-list-cards').prepend(card);
+    },
+
+    removeNewCard: function(data, evt, target) {
+        target.closest('.usermanagement-card').remove();
+    },
+
+    __addProjectsCard: function() {
+
+    },
+
     keyUpOnInput: function(data, evt, target) {
         var tgt = $(evt.target);
+        var type = data.target;
         if (evt.which===13) {
             if (tgt.parents('.newrole').length > 0) {
                 this.enterOnRoleInputArea(data, evt, target);
@@ -105,37 +145,19 @@ app.View('usermanagement-usermanagement', {
         }
     },
 
-    // USER
-    enterOnUserInputArea: function() {
-        var username = this.obj("username").val();
-        var password = this.obj("password").val();
-        this.controller.handleUserInputArea(username, password); 
-    },
-
-    openUserEditArea: function(username, roleid) {
-        this.controller.openUserEditArea(username, roleid);
-        var self = this;
-        this.__timer = setTimeout(function() {
-            self.obj("username").focus();
-            clearTimeout(self.__timer);
-            delete self.__timer;
-        }, 100);
-    },
-
-    editUserButtonClick: function(data, evt, target) {
-        var username = $(target).parent().data("user");
-        var roleid   = $(target).parent().data("origin");
-        this.openUserEditArea(username, roleid);
-    },
-
-    enterOnRoleInputArea: function() {
-        var rolename = this.obj("rolename").val();
-        this.controller.handleRoleInputArea(rolename);
-    },
-
-    editRoleButtonClick: function(data, evt, target) {
-        var rolename = $(target).parent().data("role");
-        this.controller.set('edit_role', rolename);
-        this.openRoleEditArea(rolename);
-    },
+    __tilt_direction: function(item) {
+        var left_pos = item.position().left,
+            move_handler = function (e) {
+                if (e.pageX >= left_pos) {
+                    item.addClass("right");
+                    item.removeClass("left");
+                } else {
+                    item.addClass("left");
+                    item.removeClass("right");
+                }
+                left_pos = e.pageX;
+            };
+        $("html").bind("mousemove", move_handler);
+        item.data("move_handler", move_handler);
+    },  
 });

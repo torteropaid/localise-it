@@ -1,4 +1,4 @@
-app = app || {}
+app = app || {};
 
 app.locales = {
     "Afrikaans": "af_af", 

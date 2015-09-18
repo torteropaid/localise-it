@@ -10,7 +10,7 @@ app.viewHelper = {
         });
 
         $(window).on('hashchange', function() {
-            //app.controllerHelper.trigger('hashchange');
+            app.controllerHelper.trigger('hashchange');
         });
     },
     add: function (namespace, view) {

@@ -60,6 +60,11 @@ app.view('sidebar-sidebar', {
             type: "click",
             action: "toggleLocaleInputField"
         },
+        {
+            action: 'importFile',
+            type: 'change',
+            selector: '#fileSelection'
+        }, 
 
         {
             type: 'openSidebar',

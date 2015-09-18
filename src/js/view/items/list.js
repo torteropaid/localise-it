@@ -1,4 +1,4 @@
-app.view('items-list', {
+app.view('items-list', [app.view.smartscroll], {
     events: [
         {
             selector: 'span.glyphicon-ok',
@@ -14,16 +14,6 @@ app.view('items-list', {
             selector: '.panel-container',
             type: 'scroll',
             action: '__determineScrollPosition'
-        },
-        {
-            selector: '.dot',
-            type: 'click',
-            action: 'setScrollHandle'
-        },
-        {
-            selector: '.dot',
-            type: 'mousedown',
-            action: 'dragHandler'
         },
         {
             selector: '.header-panel',

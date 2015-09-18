@@ -22,3 +22,4 @@ assets/*
 bower_components
 backend/translation.leveldb
 backend/passwords.leveldb
+vendor
