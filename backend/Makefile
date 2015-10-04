@@ -1,8 +1,8 @@
-language_portal: **/*.go
-	go build -o language_portal
+localise_it: **/*.go
+	go build -o localise_it
 
 clean:
-	rm -rf language_portal
+	rm -rf localise_it
 	rm -rf translation.leveldb
 	rm -rf passwords.leveldb
 	rm -rf cert.pem
@@ -14,5 +14,5 @@ key.pem:
 cert.pem:
 	go run /usr/share/go/src/pkg/crypto/tls/generate_cert.go --host="localhost"
 
-run: language_portal key.pem cert.pem
-	./language_portal
+run: localise_it key.pem cert.pem
+	./localise_it

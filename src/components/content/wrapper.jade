@@ -1,11 +1,12 @@
 include ../spawn/spawn
 
 .wrapper
-    +spawn('search', 'search', {translations: translations, defaultLocale: defaultLocale, locales: locales, selectedLocale: selectedLocale})
-    if projects
+    +spawn('search', 'search', {translations: translations, defaultLocale: defaultLocale, locales: locales, selectedLocale: selectedLocale, resolution: resolution, currentPage: currentPage})
+    //-if projects
         +spawn('content', 'projects', {})
-    +spawn('items', 'list', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
+    +spawn('items', 'list', {defaultLocale: defaultLocale, selectedLocale: selectedLocale, resolution: resolution, currentPage: currentPage})
     +spawn('items', 'item', {defaultLocale: defaultLocale, selectedLocale: selectedLocale})
-    //-if admin
-        +spawn('usermanagement', 'usermanagement', {})
+    if admin
+        +spawn('usermanagement', 'usermanagement', {open: usermanagementopen, currentUser: currentUser})
     +spawn('sidebar', 'sidebar', {translations: translations, defaultLocale: defaultLocale, locales: locales, admin: admin})
+    +spawn('items', 'addpanel', {admin: admin})

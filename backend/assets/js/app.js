@@ -896,12 +896,16 @@ var app = app || {};
 
 app.apiAdapter = {
     token: app.cookie.get({cname: 'usertoken'}),
+    defaultToken: '73r253jcb1p3e423h3vptngr6qqpt',
     url: window.location.origin+'/api/ion-u',
 
     //API for new back-end
 
+    /////////////////////////////////////////
+    // Authorisation Handling
+    ////////////////////////////////////////
     checkLogin: function(successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/currentuser?token='+this.token;
+        var url  = window.location.origin+'/auth/currentuser';
         $.ajax ({
             type: "GET",
             url: url,
@@ -911,141 +915,6 @@ app.apiAdapter = {
             success: successCallback,
             error: errorCallback
         });
-    },
-
-    getCurrentUser: function(successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/currentuser?token='+this.token;
-        $.ajax ({
-            type: "GET",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: {}, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    getUserList: function(successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/user?token='+this.token;
-        $.ajax ({
-            type: "GET",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: {}, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    deleteUser: function(username, successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/user/'+username+'?token='+this.token;
-        $.ajax ({
-            type: "DELETE",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: {}, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    updateUser: function(obj, successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/update/?token='+this.token;
-        $.ajax ({
-            type: "POST",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: {}, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    allowUser: function(obj, successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/update/?token='+this.token;
-        $.ajax ({
-            type: "POST",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: {}, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    addUser: function(data, successCallback, errorCallback) {
-        var url  = window.location.origin+'/auth/user?token='+this.token;
-        $.ajax ({
-            type: "DELETE",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: data, 
-            success: successCallback,
-            error: errorCallback
-        });
-    },
-
-    putLocale: function(key, locale, data, cb) {
-        var url  = this.url+'/translation/'+key+'/'+locale+'?token='+this.token;
-        $.ajax ({
-            type: "PUT",
-            url: url,
-            async: true,
-            //json object to sent to the authentication url
-            data: data, 
-            success: cb
-        });
-        //$.get("http://localhost:3000/api/ion-u", cb);
-    },
-
-    postData: function(cb) {
-        var str  = window.location.origin;
-        var url  = this.url+'?token='+this.token;
-        $.ajax ({
-            type: "POST",
-            url: url,
-            dataType: 'json',
-            async: true,
-            //json object to sent to the authentication url
-            data: {
-            }, 
-            success: cb
-        });
-        //$.get("http://localhost:3000/api/ion-u", cb);
-    },
-
-    deleteKey: function(key, locales, cb) {
-        for(var i in locales) {
-            var url  = this.url+'/translation/'+key+'/'+locales[i]+'?token='+this.token;
-            $.ajax ({
-                type: "DELETE",
-                url: url,
-                dataType: 'json',
-                async: true,
-                //json object to sent to the authentication url
-                data: {
-                }, 
-                success: cb
-            });
-        }
-        //$.get("http://localhost:3000/api/ion-u", cb);
-    },
-
-    getData: function(successCallback) {
-        this.token = app.cookie.get({cname: 'usertoken'})
-        var url    = this.url+'?token='+this.token;
-        $.get(url, successCallback);
-    },
-
-    generateAuthToken: function(successCallback) {
-        var url  = window.location.origin+'/auth/token';
-        $.get(url, successCallback);
     },
 
     login: function(data, successCallback, errorCallback) {
@@ -1069,6 +938,252 @@ app.apiAdapter = {
             dataType: 'json',
             //json object to sent to the authentication url
             data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    getCurrentUser: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/currentuser';
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+
+
+    /////////////////////////////////////////
+    // Usermanagement Handling
+    ////////////////////////////////////////
+    getUserList: function(successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.defaultToken;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    deleteUser: function(username, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user/'+username+'?token='+this.defaultToken;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    updateUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user/'+obj.username+'?token='+this.defaultToken;
+        $.ajax ({
+            type: "PUT",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: obj, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    allowUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/allow';
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: obj, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    forbidUser: function(obj, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/forbid';
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: obj, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    addUser: function(data, successCallback, errorCallback) {
+        var url  = window.location.origin+'/auth/user?token='+this.defaultToken;
+        $.ajax ({
+            type: "POST",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: data, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+
+    /////////////////////////////////////////
+    // ProjectManagement Handling
+    ////////////////////////////////////////
+    getProjectData: function(name, successCallback, errorCallback) {
+        var url  = window.location.origin+'/api/project/'+name;
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+
+    },
+
+    createProject: function(name, successCallback, errorCallback) {
+        var url  = window.location.origin+'/api/'+name;
+        $.ajax ({
+            type: "PUT",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    alterProject: function(name, color, successCallback, errorCallback) {
+        var url  = window.location.origin+'/api/'+name;
+        $.ajax ({
+            type: "PUT",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+    deleteProject: function(name, successCallback, errorCallback) {
+        var url  = window.location.origin+'/api/'+name;
+        $.ajax ({
+            type: "DELETE",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {}, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+
+    /////////////////////////////////////////
+    // Translation and Key Handling
+    ////////////////////////////////////////
+    putLocale: function(key, locale, data, cb, ecb) {
+        var url  = this.url+'/translation/'+key+'/'+locale+'?token='+this.defaultToken;
+        $.ajax ({
+            type: "PUT",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: data, 
+            success: cb,
+            error: ecb,
+        });
+        //$.get("http://localhost:3000/api/ion-u", cb);
+    },
+
+    postData: function(cb) {
+        var str  = window.location.origin;
+        var url  = this.url+'';
+        $.ajax ({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            async: true,
+            //json object to sent to the authentication url
+            data: {
+            }, 
+            success: cb
+        });
+        //$.get("http://localhost:3000/api/ion-u", cb);
+    },
+
+    deleteKey: function(key, locales, cb) {
+        for(var i in locales) {
+            var url  = this.url+'/translation/'+key+'/'+locales[i]+'?token='+this.defaultToken;
+            $.ajax ({
+                type: "DELETE",
+                url: url,
+                dataType: 'json',
+                async: true,
+                //json object to sent to the authentication url
+                data: {
+                }, 
+                success: cb
+            });
+        }
+        //$.get("http://localhost:3000/api/ion-u", cb);
+    },
+
+    getData: function(successCallback, errorCallback) {
+        this.token = app.cookie.get({cname: 'usertoken'})
+        var url    = this.url+'?token='+this.defaultToken;
+        //$.get(url, successCallback, errorCallback);
+        $.ajax ({
+            type: "GET",
+            url: url,
+            async: true,
+            //json object to sent to the authentication url
+            data: {
+            }, 
+            success: successCallback,
+            error: errorCallback
+        });
+    },
+
+
+    /////////////////////////////////////////
+    // Token Handling
+    ////////////////////////////////////////
+    generateAuthToken: function(successCallback) {
+        var url  = window.location.origin+'/auth/token';
+        $.get(url, successCallback);
+    },
+
+
+    /////////////////////////////////////////
+    // File Handling
+    ////////////////////////////////////////
+    uploadFile: function(locale, fileData, successCallback, errorCallback) {
+        var url  = this.url+'/file/'+locale+'?token='+this.defaultToken;
+        $.ajax ({
+            type: "PUT",
+            url: url,
+            dataType: 'json',
+            //json object to sent to the authentication url
+            data: fileData, 
             success: successCallback,
             error: errorCallback
         });
@@ -2564,12 +2679,23 @@ app.locales = {
 app = app || {}
 
 app.meta = {
+    pageTitle: 'Commscope - Language Portal',
     userManagement: true,
-    addRole: true,
+    editName: true,
+    editPassword: true,
+    editRole: false,
+    addRole: false,
     projectManagement: false,
     addProject: false,
+    development: true,
     title: function() {
-        $('head title').text('Commscope - Language Portal');
+        $('head title').text(this.pageTitle);
+    },
+    logs: function() {
+        if (!this.development) {
+            console = console || {};
+            console.log = console.error = console.info = console.debug = console.warn = console.trace = console.dir = console.dirxml = console.group = console.groupEnd = console.time = console.timeEnd = console.assert = console.profile = function() {};
+        }
     },
     predefinedRoles: ["admin", "user"],
     exportofusermanagement: true,
@@ -3463,132 +3589,6 @@ app.view.Base = app._merge({
 }, app.view.Button, app.view.Widget);
 // add default functionality here
 
-app.view = app.view || {};
-
-app.view.Dragger = {
-	events: [
-		{
-			selector: '.dragPanel',
-			type: 'mousedown',
-			action: 'yDragging'
-		},
-		{
-			selector: '.xyDraggable',
-			type: 'mousedown',
-			action: 'xyDragging'
-		},
-		{
-			selector: '.mockUpDiv, .dragPanel, body',
-			type: 'mouseup',
-			action: 'stopDraggingUp'
-		},
-	
-	],
-
-	rackViewWidget: '.rackViewWidget',
-	dragPanel: '.dragPanel',
-	splitView: '.splitView',
-	subContent: '#subContent',
-
-	yDragging: function(opt, evt, target) {
-		opt = $.extend({handle:"",cursor:"move"}, opt);
-		var dragger = target.addClass('active-handle').parent().addClass('draggable');
-
-		if(opt.handle === "") {
-			dragger = target.addClass('draggable');
-		}
-
-		var z_idx = dragger.css('z-index'),
-			drg_h = dragger.outerHeight(),
-			pos_y = dragger.offset().top + drg_h - evt.pageY;
-			pos_target = target.parent()[0].offsetTop;
-
-		dragger.css('z-index', 1000).parents().on("mousemove", function(e) {
-			if (target.hasClass('draggable')) {
-				$('.draggable').offset({
-					top:e.pageY + pos_y - drg_h + 20
-				}).on("mouseup", function() {
-					$(this).removeClass('draggable');
-				});
-			}
-
-			if(target.parent()[0].offsetTop <= 30){
-				target.parent().removeClass('draggable');
-				target.removeClass('draggable');
-			}
-		});
-		evt.preventDefault();
-	},
-
-	xyDragging: function(data, evt, target) {
-		var dragger = target.addClass('active-handle').parent().addClass('draggable');
-
-		dragger = target.addClass('draggable');
-
-		var z_idx = dragger.css('z-index'),
-			drg_h = dragger.outerHeight(),
-			drg_w = dragger.outerWidth(),
-			pos_y = dragger.offset().top + drg_h - evt.pageY,
-			pos_x = dragger.offset().left + drg_w - evt.pageX;
-
-		dragger.css('z-index', 1000).parents().on("mousemove", function(e) {
-			$('.draggable').offset({
-				top: e.pageY + pos_y - drg_h,
-				left: e.pageX + pos_x - drg_w
-			}).on("mouseup", function() {
-				$(this).removeClass('draggable');
-			});
-		});
-		evt.preventDefault();
-	},
-
-	stopDragging: function(opt, evt, target) {
-		//console.log('__test');
-		this.obj('dragPanel').removeClass('draggable');
-		this.obj('dragPanel').removeClass('active-handle').parent().removeClass('draggable');
-		evt.preventDefault();
-	},
-
-	stopDraggingUp: function(opt, evt, target) {
-		this.obj('dragPanel').removeClass('draggable');
-		this.obj('dragPanel').removeClass('active-handle').parent().removeClass('draggable');
-		if(target.hasClass('draggable')) {
-			target.removeClass('draggable');
-		}
-		this.obj('dragPanel').removeClass('active-handle').parent().removeClass('draggable');
-	},
-
-};
-
-
-app.view = app.view || {};
-
-app.view.filebox = {
-    browseButton: '.ion-btn.browseForFile',
-    events: [
-        {
-            type: 'dragstart',
-            action: '_handleDragStart'
-        },
-        {
-            type: 'drag',
-            action: '_handleDrag'
-        },
-        {
-            type: 'dragover',
-            action: '_handleDragOver'
-        },
-        {
-            selector: '.ion-btn.browseForFile',
-            type: 'click',
-            action: '_handleDragOver'
-        }
-    ],
-    _handleDragStart: function (evt) {},
-    _handleDrag: function (evt) {},
-    _handleDragOver: function (evt) {}
-};
-
 
 app.view = function (namespace, mixin, view) {
     if(app.viewHelper.list[namespace]) {
@@ -4268,391 +4268,6 @@ app.viewHelper = {
             }
     }
 };
-app = app || {};
-
-app.view.smartscroll = {
-    events: [
-        {
-            type: 'dragstart',
-            action: '_handleDragStart'
-        },
-        {
-            type: 'drag',
-            action: '_handleDrag'
-        },
-        {
-            type: 'dragover',
-            action: '_handleDragOver'
-        },
-        {
-            selector: '.dot',
-            type: 'click',
-            action: 'setScrollHandle'
-        },
-        {
-            selector: '.dot',
-            type: 'mousedown',
-            action: 'dragHandler'
-        }
-    ],
-
-    generate: function(obj) {
-        var containerID = obj.containerID,
-            array       = obj.elements,
-            length      = obj.elements.length;
-
-        app.smartscroll.minimum     = 0;
-        app.smartscroll.maximum     = 199;
-        app.smartscroll.count       = elements.length;
-        app.smartscroll.elements    = elements;
-        app.smartscroll.containerID = obj.containerID;
-
-        $(containerID).append('<div class="">Please wait while the data is being loaded...</div>');
-
-        app.smartscroll.initDom({elements: array, containerID: containerID});
-    },
-
-    filter: function(obj) {
-    },
-
-    update: function(obj) {
-        if(obj.type == 'array') {
-            app.smartscroll.elements = obj.elements;
-        }
-    },
-
-
-    /////////////////////////////////////
-    // Dom Elements
-    ////////////////////////////////////
-    initDom: function(obj) {
-        var activityCounter  = 0;
-        var elementString    = '';
-        var elementCollector = app.smartscroll.elements || [];
-        var min              = app.smartscroll.minimum || 0;
-        var max              = app.smartscroll.maximum || 199;
-
-        for(var i in elementCollector) {
-            ++activityCounter;
-            if(i >= min && i <= max) {
-                elementString = elementString + elementCollector[i];
-
-                if(activityCounter == elementCollector.length) {
-                    $(obj.containerID).empty();
-                    $(obj.containerID).before('<div class="pseudo-scroll-element row top" style="height: 1px; width: 100%;"></div>');
-                    $(obj.containerID).after('<div class="pseudo-scroll-element row bottom" style="height: 100px; width: 100%;"></div>');
-                    $(obj.containerID).after('<div class="scrollbar-container"></div>');
-                    $(obj.containerID).append(elementString);
-                    app.smartscroll.generateScrollbar();
-                }
-            }
-        }
-
-    },
-
-    updateDom: function(opt) {
-        var min             = app.smartscroll.minimum;
-        var max             = app.smartscroll.maximum;
-        var version         = opt.version || null;
-        var type            = opt.type    || null;
-
-        var itemMin         = parseInt($('.item-panel').first().attr('data-id'));
-        var itemMax         = parseInt($('.item-panel').last().attr('data-id'));
-
-        var oldmin          = app.smartscroll.oldMinimum;
-        var oldmax          = app.smartscroll.oldMaximum;
-
-        if(type == 'scroll') {
-
-            if(opt.direction == 'down') {
-                app.smartscroll.__attacheElements({append: true, elements: app.smartscroll.elements, min: itemMax+1, max: itemMax+opt.counter});
-                for(var x = 0; x < ((opt.counter*3)/4); x++) {
-                    $('.item-panel[data-value='+x+']').remove();
-                }
-            } else if(opt.direction == 'up') {
-                app.smartscroll.__attacheElements({append: false, elements: app.smartscroll.element, min: itemMin-opt.counter, max: itemMin-1});
-                for(var y = itemMax; y < ((opt.counter*3)/4); y--) {
-                    $('.item-panel[data-value='+y+']').remove();
-                }
-            }
-
-        } else if(type == 'change') {
-
-            if(version == 'default') {
-                app.smartscroll.initDom({});
-            }
-
-        } else if(type == 'click') {
-            app.smartscroll.generateDom({});
-        } else if(type == 'drag') {
-
-            if(opt.direction == 1 && opt.append === true) {
-                app.smartscroll.__attacheElements({append: true, translations: translations, min: itemMax+1, max: itemMax+col});
-                for(var i = 0; i < col; i++) {
-                    $('.item-panel').first().remove();
-                }
-            } else if(opt.direction == 0 && opt.append === false) {
-                app.smartscroll.__attacheElements({append: false, translations: translations, min: itemMin-col, max: itemMin-1});
-                for(var i = 0; i < col; i++) {
-                    $('.item-panel').last().remove();
-                }
-            }
-
-        }
-    },
-
-    __attacheElements: function(opt) {
-        if(opt.append === true) {
-
-        } else if(opt.append === false) {
-
-        }
-    },
-
-
-    /////////////////////////////////////
-    // Scrollbar
-    ////////////////////////////////////
-    generateScrollbar: function(length) {
-        var length     = app.smartscroll.elements.length;
-        var snappingNz = length+1; // start + num + end
-        var stepsize   = 1.0/(snappingNz);
-        var height     = 100/length;
-        var active     = false;
-        
-        app.smartscroll.count = length;
-        
-        if(length > 100) {
-            var valueMin = ion.minimum + 25;
-
-            $('.scrollbar-container').empty();
-            //$('.scrollbar-container').empty();
-
-            for (var i = 0; i <= snappingNz; i++) {
-                var step       = (stepsize*(i))*100;
-                var activeFlag = active ? 'active' : '';
-                var hidden     = (i == 0 || i == snappingNz) ? 'hide' : '';
-                            
-                var dot = "<div class='dot snapping-dot "+hidden+" "+activeFlag+"' style='top: "+step+"%; height: "+height+"%;'  data-offset='"+step+"' data-snappos='"+i+"'></div>";
-
-                $('.scrollbar-container').append(dot);
-            }
-
-            app.smartscroll.__calcSnappingPosition(valueMin);
-            app.smartscroll.handleScroll();
-        } else {
-            $('.scrollbar-container').empty();
-        }
-
-    },
-
-    __calcSnappingPosition: function(value) {
-        var minimum    = parseInt(value) - 99;
-        var maximum    = parseInt(value) + 99;
-
-        app.smartscroll.oldMinimum = app.smartscroll.minimum;
-        app.smartscroll.oldMaximum = app.smartscroll.maximum;
-
-        if(minimum < 0) {
-            minimum    = 0;
-            maximum    = 200;
-        }
-        if(maximum >= app.smartscroll.elements.length) {
-            minimum    = app.smartscroll.elements.length - 198;
-            maximum    = app.smartscroll.elements.length;
-        }
-
-        $('.snapping-dot').each(function() {
-            var self    = $(this);
-            var snappos = parseInt(self.attr('data-snappos'));
-
-            if(snappos >= minimum && snappos <= maximum) {
-                self.addClass('active');
-            } else {
-                self.removeClass('active');
-            }
-        });
-
-        app.smartscroll.minimum = minimum;
-        app.smartscroll.maximum = maximum;
-
-    },
-
-
-    ////////////////////////////////////
-    // Click Action Handler
-    ///////////////////////////////////
-    handleClick: function (data) {
-        var snapValue = parseInt(data.snappos);
-
-        app.smartscroll.__calcSnappingPosition(snapValue);
-
-        app.smartscroll.__setPositionCookie();
-
-        app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'click'});
-
-        if(app.smartscroll.minimum !== 0) {
-            $('#items').scrollTop(330);
-        }
-    },
-
-
-    /////////////////////////////////////
-    // Scroll Action Handler
-    ////////////////////////////////////
-    handleScroll: function () {
-        var lastScrollTop    = app.smartscroll.lastScrollTop;
-        var singleItemHeight = 0;
-        var singleItem       = $('.item-panel');
-        var scrollPosition   = lastScrollTop + 182;
-
-        $('#items').scroll(function(event){
-            var st               = $(this).scrollTop();
-            var min              = parseInt($('.dot.active').first().attr('data-snappos'));
-            var max              = parseInt($('.dot.active').last().attr('data-snappos'));
-            var valuedown        = min;
-            var valueup          = max;
-
-            if (st > lastScrollTop && max <= app.smartscroll.count){
-                // scrolling down
-                var pseudoBottom = $('.pseudo-scroll-element.bottom');
-                var firstItem    = $('.item-panel').first();
-                var windowHeight = window.innerHeight;
-
-                if(lastScrollTop >= scrollPosition) {
-                    scrollPosition = lastScrollTop;
-                    app.smartscroll.__setScrollValues({type: null, value: valuedown});
-                }
-
-                if(pseudoBottom.position().top > windowHeight && pseudoBottom.position().top < (windowHeight + 2000)) {
-                    app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'scroll', direction: 'down', counter: itemCounter});
-                }
-
-            } else if(st < lastScrollTop && min >= 0) {
-                // scrolling up
-                var pseudoTop    = $('.pseudo-scroll-element.top');
-                var firstItem    = $('.item-panel').first();
-                var windowHeight = window.innerHeight;
-                var heighestItem = 0;
-
-                if(lastScrollTop <= scrollPosition) {
-                    scrollPosition = lastScrollTop;
-                    app.smartscroll.__setScrollValues({type: null, value: valueup});
-                }
-
-                if(pseudoTop.position().top < windowHeight && pseudoTop.position().top > (windowHeight - 3000)) {
-                    app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'scroll', direction: 'up', counter: itemCounter});
-                }
-
-            }
-            lastScrollTop = st;
-        });
-    },
-
-    __setScrollValues: function(opt) {
-        app.smartscroll.__calcSnappingPosition(opt.value);
-        app.smartscroll.__setPositionCookie();
-    },
-
-
-    /////////////////////////////////////
-    // Scroll Action Handler
-    ////////////////////////////////////
-    handleDrag: function (evt) {
-        var direction = 1; // 1 is for dragging down and 0 for dragging up
-        var start     = app.smartscroll.minimum;
-
-        $('.dot').on('mousedown', function() {
-            start          = app.smartscroll.minimum;
-            app.smartscroll.draggable = true;
-        }).on('mouseover', function(e){
-            if (app.smartscroll.draggable) {
-                var elem        = $(this);
-                var oldMinimum  = app.smartscroll.minimum;
-                var oldMaximum  = app.smartscroll.maximum;
-                var snapValue   = parseInt(elem.attr('data-snappos'));
-                var append      = null;
-
-                app.smartscroll.__calcSnappingPosition(snapValue);
-
-                if (!elem.hasClass('active')) {
-                    elem.addClass('active');
-                }
-
-                direction = app.smartscroll.__getDirection({oldMinimum: oldMinimum, oldMaximum: oldMaximum});
-
-                app.smartscroll.__setPositionCookie();
-
-                var validAppend  = start+col-1;
-                var validPrepend = start-col+1;
-
-                if(app.smartscroll.minimum >= validAppend) {
-                    append = true;
-                    start  = app.smartscroll.minimum;
-                }
-
-                if(app.smartscroll.minimum < validPrepend) {
-                    append = false;
-                    start  = app.smartscroll.minimum;
-                }
-
-                app.smartscroll.updateDom({min: app.smartscroll.minimum, max: app.smartscroll.maximum, type: 'drag', direction: direction, append: append});
-            }
-        }).on('mouseup', function() {
-            app.smartscroll.draggable = false;
-        });
-    },
-
-
-    ////////////////////////////////////
-    // General Private Functions
-    ///////////////////////////////////
-    __getDirection: function(opt) {
-        var direction = 1;
-
-        if(opt.oldMinimum < app.smartscroll.minimum) {
-            direction = 1;
-        } else if(opt.oldMaximum > app.smartscroll.maximum) {
-            direction = 0;
-        }
-
-        return direction;
-    },
-
-    __setPositionCookie: function() {
-        app.smartscroll.__cookie.set({cname: 'lastMinPosition', content: app.smartscroll.minimum});
-        app.smartscroll.__cookie.set({cname: 'lastMaxPosition', content: app.smartscroll.maximum});
-    },
-
-    __cookie: {
-    //var __cookie = {
-        set: function (opt) {
-            var d = new Date();
-            var cname = opt.cname;
-            d.setTime(d.getTime() + (opt.exdays*24*60*60*1000));
-            var expires = "expires="+d.toUTCString();
-            var path = "path=/";
-            document.cookie =cname + "=" + opt.content + "; " + expires + ";" + path;
-        },
-
-        get: function (opt) {
-            var name = opt.cname+'=';
-            var ca = document.cookie.split(';');
-            for(var i=0; i<ca.length; i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1);
-              if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
-            }
-            return "";
-        },
-
-        delete: function(opt) {
-            document.cookie = opt.cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-        }
-    },
-
-};
-
 app.Controller('content-globalsearch', {
 
     init: function() {
@@ -5044,29 +4659,55 @@ app.Controller('content-wrapper', {
             res = JSON.parse(res);
             if(res.role === 'admin') {
                 self.set('admin', true);
+                self.__initHashCheck();
             }
+            self.set('currentUser', res.name);
         }, function(res, message) {
             console.error('currentUser', res, message);
         });
         app.apiAdapter.getData(function(res) {
             self.__getCookieData(res);
+        }, function(res, message) {
+            if(message == 'error') {
+                if(res.status == 404 && res.responseText == 'no such project') {
+                    app.apiAdapter.createProject('ion-u', function(r, m) {
+                        console.log('createProject', r, m);
+                        self.init();
+                    }, function(res, message) {
+                        console.error('createProject', r, m);
+                    });
+                }
+            }
         });
-        this.checkHash();
+    },
+
+    updateView: function() {
+        var self = this;
+
+        app.apiAdapter.getData(function(res) {
+            self.init();
+            self.trigger('updateThis');
+        });
     },
 
 
     ////////////////////////////////////
     // Handle hashchange
     ///////////////////////////////////
+    __initHashCheck: function() {
+        var hash = window.location.hash;
+        if(hash === '#usermanagement') {
+            if(app.meta.userManagement === true && this.get('admin') === true) this.set('usermanagementopen', true);
+        }
+    },
+
     checkHash: function() {
         var hash = window.location.hash;
-        console.log(hash);
-        if(hash === 'usermanagement') {
+        if(hash === '#usermanagement') {
             if(app.meta.userManagement === true && this.get('admin') === true) $('#usermanagement-container').addClass('open');
         } else {
             $('#usermanagement-container').removeClass('open');
         }
-        //this.trigger('openSidebar');
     },
 
 
@@ -5082,6 +4723,8 @@ app.Controller('content-wrapper', {
         var selectedLanguages  = app.cookie.get({cname: 'selectedLanguages'});
         var locale             = app.cookie.get({cname: 'locale'});
         var selectedLocale     = app.cookie.get({cname: 'selectedLocale'});
+        var resolution         = parseInt(app.cookie.get({cname: 'resolution'}));
+        var page               = parseInt(app.cookie.get({cname: 'currentPage'}));
         var languages          = app.languages;
         
 
@@ -5107,6 +4750,24 @@ app.Controller('content-wrapper', {
         } else {
             app.selectedLocale         = 'en_gb';
             this.set('selectedLocale', 'en_gb');
+        }
+
+        // Getting the defaultLanguage value for dom panels 
+        if(resolution && resolution !== NaN) {
+            app.resolution = resolution;
+            this.set('resolution', resolution);
+        } else {
+            app.resolution = 250;
+            this.set('resolution', 250);
+        }
+
+        // Getting the defaultLanguage value for dom panels 
+        if(page && page !== NaN) {
+            app.currentPage = page;
+            this.set('currentPage', page);
+        } else {
+            app.currentPage = 0;
+            this.set('currentPage', 0);
         }
 
         var selected = app.selectedLanguages.split(',');
@@ -5189,6 +4850,44 @@ app.Controller('items-activityindicator', {
         this.set('loading', opt.flag);
     }
 
+});
+app.Controller('items-addpanel', {
+    approveKey: function() {
+        var translations = app.allTranslations;
+        var key          = this.view.obj('keyInput');
+        var translation  = this.view.obj('translationInput');
+
+        if(key.val() === '') {
+            key.val('').addClass('error');
+            key.attr('placeholder', 'Pleas add a key.');
+        } else if(translation.val() === '') {
+            translation.val('').addClass('error');
+            translation.attr('placeholder', 'Pleas add a key.');
+        } else if(translations[key.val()] !== undefined) {
+            key.val('').addClass('error');
+            key.attr('placeholder', 'Key already exists.');
+        } else {
+            this.__addKey();
+        }
+    },
+
+    __addKey: function(data, evt, target) {
+        var key   = this.view.obj('keyInput');
+        var value = this.view.obj('translationInput');
+        var self  = this;
+
+        app.apiAdapter.putLocale(key.val(), 'en_gb', value.val(), function(res, msg) {
+            console.log('__addKey', res, msg);
+            text = "Translation successfully added!";
+            self.trigger('showNotification', {text: text, type: 'success', time: 5});
+            self.trigger('updateView');
+            self.view.closeAddPanel();
+        }, function(res, msg) {
+            console.error('__addKey', res, msg);
+            text = "Translation could not be set: "+msg;
+            self.trigger('showNotification', {text: text, type: 'error', time: 5});
+        });
+    },
 });
 app.Controller('items-item', {
 
@@ -5354,6 +5053,7 @@ app.Controller('items-item', {
                 this.set('translation', translations[i]);
 
                 app.cookie.set({cname: 'selectedItem', content: direction});
+                this.trigger('updatePage', {id: direction});
                 this.trigger('scrollToNavigatedItem');
             }
         }
@@ -5422,7 +5122,7 @@ app.Controller('items-item', {
 
     saveChanges: function() {
         this.saveTranslations();
-        this.trigger('handleLog', { login: false });
+        this.trigger('updateThis', { login: false });
     },
 
     discardChanges: function() {
@@ -5439,763 +5139,21 @@ app.Controller('items-item', {
         this.set('showDialog', true);
     },
 });
-app.Controller('items-items', {
-    col: 0,
+app.Controller('items-list', {
+    update: false,
 
     init: function() {
-        ion.__scrollDirection = 1; // 1 is 'down' and 0 is 'up'
-
-        this.setSelectedLanguages();
-
-        this.changes         = false;
-        this.changedData     = [];
-
-        this.lastScrollTop   = 0;
-        this.setItems({});
+        this.trigger('toggleLoading', {flag: true});
 
         this.filterTranslations();
-        this.renderDom({min: ion.minimum, max: ion.maximum, filter: ion.filter, defaultLanguage: ion.defaultLanguage});
-        this.trigger('setSearchValue', {value: ion.filter});
+        this.__scrollToSelected();
+        this.trigger('toggleLoading', {flag: false});
     },
 
-
-    ////////////////////////////////////////////////////////////////////////
-    // Render all elements for rendering the dom initially or on filtering
-    ///////////////////////////////////////////////////////////////////////
-    renderDom: function(opt) {
-        $('.panel-container').empty();
-        this.trigger('toggleLoading', {flag: true});
-        var translations    = [];
-        var min             = opt.min || ion.minimum;
-        var max             = opt.max || ion.maximum;
-
-        translations = ion.filteredTranslationsArray;
-        ion.count    = translations.length;
-
-        this.__generateElements({min: min, max: max, translations: translations});
-
-        this.__generateScrollbar({});
-        
-        this.trigger('clearAutocomplete');
-
-        var self = this;
-
-        setTimeout(function() {
-            if(window.innerWidth <= 760) {
-                self.showDialogue({id: 0});
-            }
-        }, 200);
-    },
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Generate all elements for the scrollbar according to the total number of translations and for the item panels
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    __generateElements: function(opt) {
-        var id, key, defaultTranslation, selected, text, checked, name, languageKey, elementCounter = 0, loopCounter = 0, elementCollector = [];
-        var defaultLanguage = ion.defaultLanguage, translations = opt.translations, languages = ion.languages;
-        var max             = opt.max, min = opt.min;
-        var append          = opt.append || true;
-
-        for(var i in translations) {
-            if(parseInt(i) >= min && parseInt(i) <= max) {
-                id                 = translations[i].identifier;
-                key                = translations[i].namespace+'.<b>'+translations[i].name+'</b>';
-                defaultTranslation = translations[i].texts[defaultLanguage.id];
-
-                var translationsArray = []
-                for(var j in languages) {
-                    selected    = languages[j].selected;
-                    text        = translations[i].texts[languages[j].id] || "";
-                    checked     = translations[i].checks[languages[j].id] ? true : false;
-                    name        = languages[j].name;
-                    languageKey = j;
-                    translationsArray.push({selected: selected, text: text, checked: checked, name: name, languageKey: languageKey});
-                }
-                element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: translationsArray, counter: elementCounter});
-                elementCollector.push(element);
-                ++elementCounter;
-            }
-            
-            ++loopCounter;
-
-            this.__attachElements({loopCounter: loopCounter, count: ion.count, elementCollector: elementCollector, append: append});
-        }
-    },
-
-    __attacheElements: function(opt) {
-        var elementString    = '';
-        var activityCounter  = opt.activityCounter  || 0;
-        var elementCollector = opt.elementCollector || [];
-
-        if(opt.loopCounter == opt.count) {
-            for(var i in elementCollector) {
-                elementString = elementString + elementCollector[i];
-                ++activityCounter;
-            }
-
-            if(opt.append) {
-                $('.panel-container').append(elementString);
-                //$('.panel-container').html(elementString);
-            } else {
-                $('.panel-container').prepend(elementString);
-            }
-            
-            if(activityCounter == elementCollector.length) {
-                this.trigger('toggleLoading', {flag: false});
-            }
-        }
-    },
-
-    __generateScrollbar: function(opt) {
-        var count           = opt.count || ion.count;
-        var snappingNz      = count+1; // start + num + end
-        var stepsize        = 1.0/(snappingNz);
-        var height          = 100/count;
-        var active          = false;
-        
-        if(ion.count > 100) {
-            var valueMin = ion.minimum + 25;
-
-            for (var i = 0; i <= snappingNz; i++) {
-                var step = (stepsize*(i))*100;
-                var activeFlag = active ? 'active' : '';
-                var hidden = (i == 0 || i == snappingNz) ? 'hide' : '';
-                            
-                var dot = "<div class='dot snapping-dot "+hidden+" "+activeFlag+"' style='top: "+step+"%; height: "+height+"%;'  data-offset='"+step+"' data-snappos='"+i+"'></div>";
-
-                $('.scrollbar-container').append(dot);
-            }
-
-            this.__calcSnappingPosition(valueMin);
-            this.__scrollHandler();
-        } else {
-            $('.scrollbar-container').empty();
-        }
-
-    },
-
-
-    /////////////////////////////////////////////////////////////////
-    // Creating string of all selected languages to save in cookie
-    ////////////////////////////////////////////////////////////////
-    setSelectedLanguages: function() {
-        var languages     = ion.languages;
-        var selectedArray = [];
-        var counter       = 0;
-
-        for(var i in languages) {
-            if(languages[i].selected) {
-                selectedArray.push(i);
-                counter++;
-            }
-        }
-
-        var str = selectedArray.join(',');
-
-        ion.selectedLanguages = str;
-        ion.cookie.set({cname: 'selectedLanguages', content: str});
-    },
-
-
-    ///////////////////////////////////////////////////////////////
-    // Setting of global variables called by differnet controller
-    //////////////////////////////////////////////////////////////
-    setLanguages: function(opt) {
-        var languages = opt.languages;
-        ion.languages = languages;
-
-        this.setSelectedLanguages();
-    },
-
-    setItems: function(opt) {
-        ion.translations = opt.translations || ion.allTranslations;
-        ion.langauges    = opt.languages    || ion.languages;
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // Creating array of all translations that fit the filter data
-    ///////////////////////////////////////////////////////////////
-    filterTranslations: function() {
-        var counter                   = 0;
-        var translationsArray         = [];
-        var filteredTranslationsArray = [];
-        var tab                       = ion.tab;
-        var filter                    = ion.filter;
-        var translations              = ion.allTranslations;
-
-        var filteredByTab = this.__filterByTab({translations: translations, tab: tab});
-        
-        if(filter != '' && filter != null && filter.length > 0) {
-            
-            for(var i in filteredByTab) {
-                var str = filteredByTab[i].namespace+'.'+filteredByTab[i].name;
-
-                if(str.startsWith(filter)) {
-                    filteredTranslationsArray[counter] = filteredByTab[i];
-                    ++counter;
-                } else if(str.indexOf(filter) > 0) {
-                    filteredTranslationsArray[counter] = filteredByTab[i];
-                    ++counter;
-                }
-            }
-
-            ion.filteredTranslationsArray = filteredTranslationsArray;
-        } else {
-            ion.filteredTranslationsArray = filteredByTab;
-        }
-
-    },
-
-    __filterByTab: function(opt) {
-        var array              = opt.translations;
-        var i, j, trans, check, text;
-        var filteredByTabArray = [];
-
-        for (i in array) {
-            trans = array[i];
-            if (opt.tab==3) { // unchecked
-                var unchecked = false;
-
-                for (j=1; j<7; j++) {
-                    check = trans.checks[j];
-                    if (check==false || check==undefined) {
-                        unchecked = true;
-                    }
-                }
-                if (unchecked) filteredByTabArray.push(trans);
-            } else if (opt.tab==2) { // New
-                var newItem = false;
-
-                for (j=1; j<7; j++) {
-                    text = trans.texts[j];
-                    if (text=='' || text==undefined) {
-                        newItem = true;
-                    }
-                }
-                if (newItem) filteredByTabArray.push(trans);
-            } else filteredByTabArray = array;
-        }
-
-        return filteredByTabArray;
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // Display Dialogue according to clicked panel
-    ///////////////////////////////////////////////////////////////
-    showDialogue: function(data, evt, target) {
-        var id = data.id;
-
-        var defaultLanguage = ion.defaultLanguage;
-        var translations    = ion.allTranslations;
-        var languages       = ion.languages;
-        var count           = ion.count;
-
-        this.trigger('showOverlay', {
-            index: parseInt(id),
-            defaultLanguage: defaultLanguage,
-            translations: translations,
-            languages: languages,
-            count: count
-        });
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // Set scroll handle on click
-    ///////////////////////////////////////////////////////////////
-    setScrollHandle: function(data, evt, target) {
-        var snapValue = parseInt(data.snappos);
-
-        this.__calcSnappingPosition(snapValue);
-
-        this.__setPositionCookie();
-
-        this.updateDom({min: ion.minimum, max: ion.maximum, type: 'click'});
-
-        if(ion.minimum !== 0) {
-            $('#items').scrollTop(330);
-        }
-    },
-
-    __setPositionCookie: function() {
-        ion.cookie.set({cname: 'lastMinPosition', content: ion.minimum});
-        ion.cookie.set({cname: 'lastMaxPosition', content: ion.maximum});
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // Set scroll handle on drag
-    ///////////////////////////////////////////////////////////////
-    dragHandler: function(data, evt, target) {
-        var direction = 1; // 1 is for dragging down and 0 for dragging up
-        var col       = this.col
-        var self      = this;
-        var start     = ion.minimum;
-
-        $('.dot').on('mousedown', function() {
-            start          = ion.minimum;
-            self.draggable = true;
-        }).on('mouseover', function(e){
-            if (self.draggable) {
-                var elem        = $(this);
-                var oldMinimum  = ion.minimum;
-                var oldMaximum  = ion.maximum;
-                var snapValue   = parseInt(elem.attr('data-snappos'));
-                var append      = null;
-
-                self.__calcSnappingPosition(snapValue);
-
-                if (!elem.hasClass('active')) {
-                    elem.addClass('active');
-                }
-
-                direction = self.__getDirection({oldMinimum: oldMinimum, oldMaximum: oldMaximum});
-
-                self.__setPositionCookie();
-
-                var validAppend  = start+col-1;
-                var validPrepend = start-col+1;
-
-                if(ion.minimum >= validAppend) {
-                    append = true;
-                    start  = ion.minimum;
-                }
-
-                if(ion.minimum < validPrepend) {
-                    append = false;
-                    start  = ion.minimum;
-                }
-
-                self.updateDom({min: ion.minimum, max: ion.maximum, type: 'drag', direction: direction, append: append});
-            }
-        }).on('mouseup', function() {
-            self.draggable = false;
-        });
-    },
-
-    __getDirection: function(opt) {
-        var direction = 1;
-
-        if(opt.oldMinimum < ion.minimum) {
-            direction = 1;
-        } else if(opt.oldMaximum > ion.maximum) {
-            direction = 0;
-        }
-
-        return direction;
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // private function to catch scroll event and scroll direction
-    ///////////////////////////////////////////////////////////////
-    __scrollHandler: function() {
-        var lastScrollTop    = this.lastScrollTop;
-        var self             = this;
-        var col              = 0;
-        var singleItemHeight = 0;
-        var singleItem       = $('.item-panel');
-        var scrollPosition   = lastScrollTop + 182;
-        
-        singleItem.each(function() { 
-            if($(this).position().top == 0) { 
-                ++col; // number of elements next to each other
-            } 
-        });
-
-        this.col            = col;
-
-        $('#items').scroll(function(event){
-            var st               = $(this).scrollTop();
-            var min              = parseInt($('.dot.active').first().attr('data-snappos'));
-            var max              = parseInt($('.dot.active').last().attr('data-snappos'));
-            var valuedown        = min + (25 + col);
-            var valueup          = max - (25 + col);
-
-            if (st > lastScrollTop && max <= ion.count){
-                // scrolling down
-                var pseudoBottom = $('.pseudo-scroll-element.bottom');
-                var firstItem    = $('.item-panel').first();
-                var windowHeight = window.innerHeight;
-                var heighestItem = 0;
-
-                if(lastScrollTop >= scrollPosition) {
-                    singleItem.each(function() {
-                        var item = $(this);
-                        if(item.position().top >= 0 && item.position().top < 182) {
-                            singleItemHeight = item.innerHeight();
-                            if(item.innerHeight() >= heighestItem) {
-                                heighestItem = item.innerHeight();
-                            }
-                        }
-                    });
-
-                    scrollPosition = lastScrollTop + singleItemHeight;
-                    self.__setScrollValues({type: null, value: valuedown});
-                }
-
-                if(pseudoBottom.position().top > windowHeight && pseudoBottom.position().top < (windowHeight + 2000)) {
-                    var itemCounter = 0;
-                    singleItem.each(function() {
-                        var item = $(this);
-                        if(item.position().top < windowHeight) {
-                            itemCounter++;
-                        }
-                    });
-                    self.updateDom({min: ion.minimum, max: ion.maximum, type: 'scroll', direction: 'down', counter: itemCounter});
-                }
-            } else if(st < lastScrollTop && min >= 0) {
-                // scrolling up
-                var pseudoTop    = $('.pseudo-scroll-element.top');
-                var firstItem    = $('.item-panel').first();
-                var windowHeight = window.innerHeight;
-                var heighestItem = 0;
-
-                if(lastScrollTop <= scrollPosition) {
-                    singleItem.each(function() {
-                        var item = $(this);
-                        if(item.position().top < 0 && item.position().top < -182) {
-                            singleItemHeight = item.innerHeight();
-                            if(item.innerHeight() >= heighestItem) {
-                                heighestItem = item.innerHeight();
-                            }
-                        }
-                    });
-
-                    scrollPosition = lastScrollTop - singleItemHeight;
-                    self.__setScrollValues({type: null, value: valueup});
-                }
-
-                if(pseudoTop.position().top < windowHeight && pseudoTop.position().top > (windowHeight - 3000)) {
-                    var itemCounter = 0;
-                    singleItem.each(function() {
-                        var item = $(this);
-                        if(item.position().top > windowHeight) {
-                            itemCounter++;
-                        }
-                    });
-                    self.updateDom({min: ion.minimum, max: ion.maximum, type: 'scroll', direction: 'up', counter: itemCounter});
-                }
-            }
-            lastScrollTop = st;
-        });
-    },
-
-    __setScrollValues: function(opt) {
-        this.__calcSnappingPosition(opt.value);
-        this.__setPositionCookie();
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // calculating the position of the scroll handle 
-    ///////////////////////////////////////////////////////////////
-    __calcSnappingPosition: function(value) {
-        var minimum    = parseInt(value) - 25;
-        var maximum    = parseInt(value) + 25;
-
-        ion.oldMinimum = ion.minimum;
-        ion.oldMaximum = ion.maximum;
-
-        if(minimum < 0) {
-            minimum    = 0;
-            maximum    = 50;
-        }
-        if(maximum >= ion.count) {
-            minimum    = ion.count - 50;
-            maximum    = ion.count;
-        }
-
-        $('.snapping-dot').each(function() {
-            var self    = $(this);
-            var snappos = parseInt(self.attr('data-snappos'));
-
-            if(snappos >= minimum && snappos <= maximum) {
-                self.addClass('active');
-            } else {
-                self.removeClass('active');
-            }
-        });
-
-        ion.minimum = minimum;
-        ion.maximum = maximum;
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // private function to update the dom according to scrollbar
-    ///////////////////////////////////////////////////////////////
-    updateDom: function(opt) {
-        var min     = opt.min     || ion.minimum;
-        var max     = opt.max     || ion.maximum;
-        var version = opt.version || null;
-        var type    = opt.type    || null;
-
-        var itemMin = parseInt($('.item-panel').first().attr('data-id'));
-        var itemMax = parseInt($('.item-panel').last().attr('data-id'));
-
-        var oldmin          = ion.oldMinimum;
-        var oldmax          = ion.oldMaximum;
-        var translations    = ion.filteredTranslationsArray;
-        var defaultLanguage = ion.defaultLanguage;
-        var languages       = ion.languages;
-        var count           = ion.count;
-        var col             = this.col;
-
-        if(type == 'scroll') {
-
-            if(opt.direction == 'down') {
-                this.__generateElements({append: true, translations: translations, min: itemMax+1, max: itemMax+opt.counter});
-                for(var x = 0; x < ((opt.counter*3)/4); x++) {
-                    $('.item-panel[data-value='+x+']').remove();
-                }
-            } else if(opt.direction == 'up') {
-                this.__generateElements({append: false, translations: translations, min: itemMin-opt.counter, max: itemMin-1});
-                for(var y = itemMax; y < ((opt.counter*3)/4); y--) {
-                    $('.item-panel[data-value='+y+']').remove();
-                }
-            }
-
-        } else if(type == 'change') {
-
-            if(version == 'default') {
-                this.renderDom({});
-            } else if(version == 'language') {
-                this.__hideShowTranslations();
-            }
-
-        } else if(type == 'click') {
-            this.renderDom({});
-        } else if(type == 'drag') {
-
-            if(opt.direction == 1 && opt.append === true) {
-                this.__generateElements({append: true, translations: translations, min: itemMax+1, max: itemMax+col});
-                for(var i = 0; i < col; i++) {
-                    $('.item-panel').first().remove();
-                }
-            } else if(opt.direction == 0 && opt.append === false) {
-                this.__generateElements({append: false, translations: translations, min: itemMin-col, max: itemMin-1});
-                for(var i = 0; i < col; i++) {
-                    $('.item-panel').last().remove();
-                }
-            }
-
-        }
-
-    },
-
-
-    ////////////////////////////////////////////////////////////////////////
-    // private functions to append, prepend and remove elements in the dom 
-    ///////////////////////////////////////////////////////////////////////
-    __hideShowTranslations: function() {
-        var selectedLanguages = ion.selectedLanguages;
-        var languageArray     = selectedLanguages.split(',');
-
-        $('.item-panel').each(function() {
-            var self          = $(this);
-            var translations  = self.find('.translation-field');
-
-            translations.each(function() {
-                var trans     = $(this);
-                var key       = trans.attr('data-target');
-
-                trans.addClass('hidden');
-                for(var i in languageArray) {
-                    if(languageArray[i] == key) {
-                        if(trans.hasClass('hidden')) {
-                            trans.removeClass('hidden');
-                        }
-                    }
-                }
-            });
-        });
-    },
-
-    __appendElements: function(opt) {
-        //append new elements due to scroll direction down and remove old elements that are out of range
-        //each language in languages -> if language.selected
-        var elemnt = null;
-
-        if(opt.itemMin >= (opt.currentMin - 20)) {
-            /* Add Element via append*/
-            //@TODO add for loop for each element that fits condition and get data for create Element 
-
-            //@TODO push values for languages and translations into global array and splice elements from array that don't fit the conditions anymore
-
-            //var key = trans.namespace+'.<b>'+trans.name+'</b>';
-            //element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: transArray});
-
-            //$('.panel-container').append(element);
-
-            //this.__removeElements({min: opt.itemMin, max: opt.itemMax});
-        }
-
-    },
-
-    __prependElements: function(opt) {
-        //prepend new elements due to scroll direction up and remove old elements that are out of range
-        //each language in languages -> if language.selected
-        var elemnt = null;
-
-        if(opt.itemMax <= (opt.currentMax + 20)) {
-            /* Add Element via prepend*/
-
-            //@TODO add for loop for each element that fits condition and get data for create Element 
-
-            //@TODO push values for languages and translations into global array and splice elements from array that don't fit the conditions anymore
-
-            //element = this.__createElement({id: id, key: key, defaultTranslation: defaultTranslation, translations: transArray});
-
-            //$('.panel-container').prepend(element);
-
-            //this.__removeElements({min: opt.itemMin, max: opt.itemMax});
-        }
-    },
-
-    __removeElements: function(opt) {
-        var items = $('.item-panel');
-        var min   = opt.min;
-        var max   = opt.max;
-
-        items.each(function() {
-            var item = $(this);
-
-            if((parseInt(item.attr('data-id')) >= max) || (parseInt(item.attr('data-id')) <= min)) {
-                item.remove();
-            }
-        });
-    },
-
-
-    ////////////////////////////////////////////////////////////////
-    // private function to create translation panels
-    ///////////////////////////////////////////////////////////////
-    __createElement: function(opt) {
-        var element            = null;
-        var data               = opt                     || {};
-
-        var id                 = data.id;
-        var key                = data.key                || null;
-        var counter            = data.counter            || 0;
-        var translations       = data.translations;
-        var defaultTranslation = data.defaultTranslation || null;
-
-        element = '<div data-id="'+id+'" data-value="'+counter+'" class="col-lg-4 col-md-6 col-sm-12 item-panel">' +
-                '<dl>' +
-                    '<div class="header-panel" data-id="'+id+'">'+
-                        '<dt>' +
-                            '<label>Key:</label><span>'+key+'</span>' +
-                        '</dt>' +
-                        '<dt>' +
-                            '<label>Default:</label><span>'+defaultTranslation+'</span>' +
-                        '</dt>'+
-                    '</div>' +
-                    '<div class="translations-panel">';
-
-                    for(var i in translations) {
-                        element = element + 
-                        '<dd class="'+(translations[i].checked ? 'checked' : '')+' translation-field '+(translations[i].selected ? '' : 'hidden')+'" data-target="'+translations[i].languageKey+'">' +
-                            '<label>'+translations[i].name+':</label><input data-target="'+id+'" type="text" class="translations-panel-inputfield" value="'+translations[i].text+'"><span data-target="'+id+'" data-key="'+i+'" data-type="check" class="glyphicon glyphicon-ok"></span>' +
-                        '</dd>';
-                    }
-
-                    element = element+'</div>' +
-                '</dl>' +
-            '</div>';
-        return element;
-    },
-
-
-    ///////////////////////////////////////////////////////////////////
-    // collecting the ids of all changed translations
-    //////////////////////////////////////////////////////////////////
-    changedTranslationsCollector: function(data, evt, target) {
-        var id              = data.target;
-        var translations    = ion.allTranslations;
-        var defaultLanguage = ion.defaultLanguage;
-        var string          = target.val();
-        var comparison      = null;
-        var changedTrans    = ion.changedTranslations || [];
-
-        for(var i in translations) {
-            if(i == id) {
-                comparison = translations[i].texts[defaultLanguage.id];
-                
-                if(string != comparison) {
-                    changedTrans.push(id);
-                    translations[i].texts[defaultLanguage.id] = string;
-                    ion.changedTranslations = changedTrans;
-                    ion.translations = translations;
-                    this.trigger('showSaveButtonBar', {});
-                } else {
-                    for(var x in changedTrans) {
-                        var index = changedTrans[x].indexOf(id);
-                        if(index >= 0) {
-                            changedTrans.splice(index, 1);
-                        }
-                    }
-                    if(changedTrans.length == 0) this.trigger('hideSaveButtonBar');
-                }
-            }
-        }
-
-    },
-
-    checkTranslation: function(data, evt, target) {
-        var parent       = target.closest('dd');
-        var checked      = true;
-        var id           = parseInt(data.target);
-        var key          = parseInt(data.key);
-        var trans        = ion.allTranslations; 
-        var languages    = ion.languages;
-        var changedTrans = ion.changedTranslations || [];
-
-        parent.toggleClass('checked');
-        
-        if(target.hasClass('checked')) {
-            checked = false;
-        }
-        
-        for(var i in trans) {
-            if(i == id) {
-                for(var j in languages) {
-                    if(key == languages[j].id) {
-                        trans[i].checks[languages[j].id] = checked;
-                    }
-                }
-            }
-        }
-
-        changedTrans.push(id);
-        ion.changedTranslations = changedTrans;
-        this.trigger('showSaveButtonBar', {});
-    },
-
-
-    ///////////////////////////////////////////////////////////////////
-    // reset of changesTranslations array to an empty array on cancel
-    //////////////////////////////////////////////////////////////////
-    discardChanges: function() {
-        this.trigger('hideSaveButtonBar');
-        ion.changedTranslations = [];
-    },
-
-});
-app.Controller('items-list', {
-    init: function() {
-        this.scrollInitialized = false;
-        this.trigger('toggleLoading', {flag: true});
-        this.__filterTranslations();
-        this.scrollToSelected();
-
-        var self = this;
-    },
-
-    notify: function() {
+    updateThis: function() {
+        this.set('update', !this.update);
+        this.filterTranslations();
+        this.update = !this.update;
     },
 
     toggleLocale: function(opt) {
@@ -6204,7 +5162,7 @@ app.Controller('items-list', {
         for(var i in languages) {
             if(opt.key == languages[i]) {
                 this.set('selectedLocale', languages[i]);
-                this.scrollToSelected();
+                this.__scrollToSelected();
             }
         }
     },
@@ -6251,136 +5209,125 @@ app.Controller('items-list', {
     ////////////////////////////////////////////////////////////////
     // Creating array of all translations that fit the filter data
     ///////////////////////////////////////////////////////////////
-    __filterTranslations: function() {
-        var counter                   = 0;
-        var translationsArray         = [];
+    filterTranslations: function() {
+        var translationsArray          = [];
         var filteredTranslationsObject = {};
-        //var tab                       = parseInt(app.tab);
-        var filter                    = app.filter;
-        var translations              = app.allTranslations;
-        var localeId                  = app.selectedLocale;
+        var filter                     = app.cookie.get({cname: 'globalSearchValue'});
+        var translations               = app.allTranslations;
+        var localeId                   = app.selectedLocale;
+        var length                     = Object.size(translations);
 
-        //var filteredByTab = this.__filterByTab({translations: translations, tab: tab});
-        // @TODO if filteredtranslatinslength > 1 and key >1 and str >1 introduce tab to switch between key starting with and containing filter
-        // and translation starting with and containing filter
-        // add count of translations and keys as well
-        
-        if(filter != '' && filter != null && filter.length > 0) {
+        if(filter && filter != '' && filter != null && filter != undefined) {
+            var counter = 0;
             
             for(var i in translations) {
-                var key = i;
+                var key    = i;
+                var str    = translations[i].mapping[localeId];
                 var exists = false;
-                var newObj = {};
 
-                for(var x in filteredTranslationsObject) {
-                    var index = x.indexOf(filter);
-                    if(index >= 0) {
-                        exists = true;
-                    }
-                }
 
                 if(key && key.startsWith(filter)) {
-                    newObj[key] = translations[i];
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var key = i;
-                var newObj = {};
-
-                if(key && key.indexOf(filter) > 0) {
-                    newObj[key] = translations[i];
+                } else if(key && key.indexOf(filter) > 0) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var str = translations[i].mapping[localeId];
-                var newObj = {};
-
-                if(str && str.startsWith(filter)) {
-                    newObj[key] = translations[i];
+                } else if(str && str.startsWith(filter)) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var str = translations[i].mapping[localeId];
-                var newObj = {};
-
-                if(str && str.indexOf(filter) > 0) {
-                    newObj[key] = translations[i];
+                } else if(str && str.indexOf(filter) > 0) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
+                }
+                counter++;
+
+                if(counter == length) {
+                    app.filteredTranslationsObject = filteredTranslationsObject;
+
+                    this.__paginateTranslations(filteredTranslationsObject);
                 }
             }
 
-            app.filteredTranslationsObject = filteredTranslationsObject;
-            if(filteredTranslationsObject.length == 1) {
-                for(var i in filteredTranslationsObject) {
-                    this.showSelectedItem({id: filteredTranslationsObject[i].id});
-                }
-            }
-
-            //this.__renderDom(filteredTranslationsObject);
-            this.set('allTranslations', filteredTranslationsObject);
         } else {
             app.filteredTranslationsObject = translations;
-            //this.__renderDom(translations);
-            this.set('allTranslations', translations);
+            this.__paginateTranslations(translations);
+            if(Object.size(translations) == 0) {
+                this.set('pagedTranslationsLength', 0);
+            }
         }
-
-        this.trigger('toggleLoading', {flag: false});
-
     },
 
-    __renderDom: function(obj) {
-        var strArray       = [];
-        var size           = Object.size(obj);
-        var selectedLocale = this.get('selectedLocale');
-        var cluster;
+    __paginateTranslations: function(translations) {
+        var resolution        = this.get('resolution');
+        var page              = this.get('currentPage');
+        var pagedTranslations = {};
+        var size              = Object.size(translations);
+        var counter           = 0;
+        var pager             = [];
+        var min               = page === 0 ? 0 : resolution*page;
+        var max               = resolution*(page+1);
 
-        for(var i in obj) {
-            var str = '<div class="item-panel col-md-12" data-id="'+obj[i].id+'" data-value="'+i+'">';
-                str += '<dl class="'+(obj[i].selected ? 'selected' : '')+'" data-value="'+i+'" data-id="'+obj[i].id+'">';
-                    str += '<div class="header-panel" data-id="'+obj[i].id+'">';
-                        str += '<dt>';
-                            str += '<label>Key:</label><span>'+i+'</span>';
-                        str += '</dt>';
+        var maxNumberOfPages  = Math.ceil(size/resolution);
 
-                        for(var l in obj[i].mapping) {
-                            str += '<dt class="'+(selectedLocale == i ? '' : 'hidden')+'">';
-                                str += '<label>Locale:</label><span>'+obj[i].mapping[j]+'</span>';
-                            str += '</dt>';
-                        }
-                    str += '</div>';
+        for(var i = 1; i <= maxNumberOfPages; i++) pager.push(i);
 
-                    str += '<div class="item-button-panel" data-id="'+i+'">';
-                        str += '<dt class="item-delete-panel" data-id="'+i+'">';
-                            str += '<span class="item-delete-icon"><span class="icon glyphicon glyphicon-trash"></span></span>';
-                        str += '</dt>';
+        if(size < resolution) {
+            resolution = size;
+            min = 0
+            max = Object.size(app.allTranslations);
+        } else if(max > size) {
+            max = size;
+            resolution = max - min;
+        }
 
-                        str += '<dt class="item-status-panel" data-id="'+i+'">';
-                            str += '<span class="item-delete-icon"><span class="icon glyphicon '+(obj[i].done ? 'glyphicon-ok ok' : 'glyphicon-exclamation-sign new')+'"></span></span>';
-                        str += '</dt>';
-                    str += '</div>';
-                str += '</dl>';
-
-                str += '<div class="item-confirm-delete-panel" data-target="'+i+'">';
-                    str += '<div class="item-confirm-text">Confirm</div>';
-                str += '</div>';
-            str += '</div>';
-
-            strArray.push(str);
-            $('#main').append(str);
-
-            if(strArray.length == size) {
-                this.__initializeScroll();
+        for(var t in translations) {
+            if(translations[t].id >= min && translations[t].id < max) {
+                pagedTranslations[t] = translations[t];
+                counter++;
             }
+
+            if(counter == resolution) {
+                app.pagedTranslations = pagedTranslations;
+                app.pager             = pager;
+
+                this.set('pagedTranslations', pagedTranslations);
+                this.set('pager', pager);
+                    
+                if(Object.size(translations) == 1) {
+                    this.showSelectedItem({id: translations[t].id});
+                }
+
+                return;
+            }
+        }
+    },
+
+    changePage: function(data, evt, target) {
+        var id   = data.target;
+        var page = this.get('currentPage');
+        var newPage;
+
+        if(id == 'previous') {
+            newPage = page-1;
+        } else if(id == 'next') {
+            newPage = page+1;
+        } else {
+            id = parseInt(id);
+            if(page !== id) {
+                newPage = id;
+            }
+        }
+
+        if(page !== newPage && newPage !== NaN && newPage !== undefined && newPage !== null) {
+            app.cookie.set({cname: 'currentPage', content: newPage});
+            app.currentPage = newPage;
+            this.set('currentPage', newPage);
+            this.__paginateTranslations(app.filteredTranslationsObject);
+        }
+    },
+
+    __updatePage: function(payload) {
+        if(payload.id) {
+            var resolution = this.get('resolution');
+            var page       = parseInt(payload.id/resolution);
+
+            if(page !== app.currentPage) this.changePage({target: page});
         }
     },
 
@@ -6396,7 +5343,7 @@ app.Controller('items-list', {
         var languages       = app.languages;
         var count           = app.count;
 
-        this.triggerSiblings('toggleShowItem', {
+        this.trigger('toggleShowItem', {
             show: true,
             index: id,
             defaultLanguage: defaultLanguage,
@@ -6404,6 +5351,7 @@ app.Controller('items-list', {
             languages: languages,
             count: count
         });
+
         for(var i in translations) {
             translations[i].selected = false;
             if(translations[i].id == id) {
@@ -6417,7 +5365,7 @@ app.Controller('items-list', {
         $('dl[data-id="'+id+'"]').addClass('selected');
     },
 
-    scrollToSelected: function() {
+    __scrollToSelected: function() {
         var selectedItem = app.cookie.get({cname: 'selectedItem'});
 
         if(selectedItem && selectedItem !== NaN && selectedItem !== "NaN" && selectedItem.length > 0) {
@@ -6435,13 +5383,8 @@ app.Controller('items-list', {
 
 
     ///////////////////////////////////////////////////////////////////
-    // reset of changesTranslations array to an empty array on cancel
+    // delete item
     //////////////////////////////////////////////////////////////////
-    discardChanges: function() {
-        this.trigger('hideSaveButtonBar');
-        app.changedTranslations = [];
-    },
-
     deleteItem: function(data, evt, target) {
         var self         = this;
         var translations = app.allTranslations;
@@ -6456,7 +5399,7 @@ app.Controller('items-list', {
                 }
             }
         }
-        app.apiAdapter.deleteData(data.target, locales, function(res) {
+        app.apiAdapter.deleteKey(data.target, locales, function(res) {
             if(res === true) {
                 target.closest('.item-panel').animate({
                     opacity: 0.25,
@@ -6467,7 +5410,94 @@ app.Controller('items-list', {
                 });
             }
         })
-    }
+    },
+
+    importInitFile: function() {
+        var fileInput = this.view.obj("input");
+        var newFile   = fileInput.prop('files')[0];
+        var filename  = newFile.name;
+        var filetype;
+        if (filename.substr(-4) == '.json') {
+            filetype = 'json';
+            filename = filename.slice(0,-4);
+        }
+        var textType = /.json/;
+        var existant = false;
+        var files    = this.get('files') || [];
+        var text, i, file;
+        for (i in files) {
+            file = files[i];
+            if (file.name==filename) {
+                existant = true;
+            }
+        }
+        
+        if (newFile.type.match(textType)) {
+            this.readInitFile(files, newFile);
+        } else if (filetype=='json') {
+            var self = this;
+            var options = {
+                title:   'Import URF',
+                message: 'Please enter the password to decrypt the file:',
+                input:   'password',
+                cancel:  'Cancel',
+                ok:      'Import',
+                callback: function(result) {
+                    if (result===false) return;
+                    /*var password = result.input;
+                    if (password) {
+                        self.readInitFile(files, newFile, password);
+                    } else {
+                        text = 'You must enter a password to decrypt this file!';
+                        this.trigger('setResponseContentDialog', text);
+                    }*/
+                    console.log(result);
+                }
+            };
+            //this.trigger('showContentDialog', options);
+        } else {
+            text = "This file type is not supported!";
+            this.trigger('showNotification', {text: text, type: 'danger', time: 5});
+        }
+
+        return false;
+    },
+
+    readInitFile: function (files, newFile, password) {
+        var self     = this;
+        var existant = false;
+        var text, filename;
+        var reader   = new FileReader();
+        this.view.obj('noDataOverlay').removeClass('hidden');
+        reader.onload = function(e) {
+            var file = {};
+            if (password) {
+                // Dycrypt with user-password
+                file.name = newFile.name.substr(0, newFile.name.length-4);
+                file.data = app.crypter.aesDecrypt(reader.result, password);
+            } else {
+                file.name = newFile.name;
+                file.data = reader.result;
+            }
+
+            if (file.data) {
+                app.apiAdapter.uploadFile(file.name.split('.json')[0], file.data, function(res, msg) {
+                    text = "File correctly loaded!";
+                    self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                    self.trigger('updateView');
+                    self.view.obj('noDataOverlay').addClass('hidden');
+                }, function(res, msg) {
+                    console.error(res, msg);
+                    text = "File not uploaded: "+msg;
+                    self.trigger('showNotification', {text: text, type: 'error', time: 5});
+                })
+            } else {
+                text = 'Import failed. Your file seems to not have the correct data.';
+                //self.trigger('setResponseContentDialog', text);
+            }
+        };
+        reader.readAsText(newFile);
+    },
 
 });
 app.Controller('login-login', {
@@ -6503,55 +5533,23 @@ app.Controller('login-login', {
         app.apiAdapter.login(
             data, 
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                console.log('checkLogin', jqXHR, exception);
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
                 }
             },
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                console.error('checkLogin', jqXHR, exception);
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
+                } else {
+                    self.view.obj('root').find('.error-message').removeClass('hidden');
                 }
             }
         );
@@ -6587,9 +5585,11 @@ app.Controller('main-main', {
         this.globalSearch = false;
         this.__checkLogin();
         app.meta.title();
+        app.meta.logs();
     },
 
     __checkLogin: function() {
+        var self     = this;
         var user     = app.cookie.get({cname: 'user'});
         var loggedin = parseInt(app.cookie.get({cname: 'logged_in'}));
         var value    = false;
@@ -6599,10 +5599,10 @@ app.Controller('main-main', {
         } else {
             this.trigger('toggleLoggedIn', {flag: false});
             app.apiAdapter.logout(function(res, message) {
-                console.log('cookie expired so you have been logged out:', res, message);
                 app.cookie.delete({cname: 'user'});
                 app.cookie.delete({cname: 'logged_in'});
                 app.cookie.delete({cname: 'usertoken'});
+                self.toggleLoggedIn({flag: false});
             }, function(res, message) {
                 console.log('logout out failed:', res, message);
             });
@@ -6613,58 +5613,38 @@ app.Controller('main-main', {
         var self = this;
         app.apiAdapter.checkLogin(
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
                 }
             },
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                console.error('apiLoggedInCheck', jqXHR, exception);
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
+                } else {
+                    self.__logout();
                 }
             }
         );
+    },
+
+    __logout: function() {
+        var self = this;
+
+        app.apiAdapter.logout(function(res, message) {
+            app.cookie.delete({cname: 'user'});
+            app.cookie.delete({cname: 'logged_in'});
+            app.cookie.delete({cname: 'usertoken'});
+            self.toggleLoggedIn({flag: false});
+        }, function(res, message) {
+            console.log('logout out failed:', res, message);
+        });
     },
 
     toggleLoggedIn: function(payload) {
@@ -6728,8 +5708,6 @@ app.Controller('main-main', {
         }
         changes = JSON.stringify(changes)
 
-        console.log('saveData triggered', payload);
-
         app.apiAdapter.postData({
             data: changes,
             url: url,
@@ -6782,6 +5760,7 @@ app.Controller('notification-notification', {
 });
 
 app.Controller('search-search', {
+    update: false,
 
     init: function() {
         this.set('clean', false);
@@ -6807,12 +5786,13 @@ app.Controller('search-search', {
             app.selectedLocale = 'en_gb';
             this.set('localeId', 'en_gb');
         }
-        
-        if(searchType && searchType !== NaN && searchType !== "NaN" && searchType.length > 0) {
-            this.__fillResultList(searchValue, searchType);
-        }
 
         this.__mapLocale();
+    },
+
+    updateThis: function() {
+        this.set('update', !this.update);
+        this.update = !this.update;
     },
 
 
@@ -6898,7 +5878,7 @@ app.Controller('search-search', {
 
     __generateGlobalSearchAutocomplete: function(search) {
         var translations           = app.allTranslations;
-        var defaultLanguage        = app.defaultLanguage;
+        var selectedLocale        = app.selectedLocale;
         var counter                = 0;
         var autocompleteTransArray = [];
         var autocompleteKeyArray   = [];
@@ -6906,7 +5886,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -6917,14 +5897,31 @@ app.Controller('search-search', {
                     }
                 }
 
-                if(str && str.startsWith(search) && !exists) {
+                for(var x in autocompleteKeyArray) {
+                    var compareX = autocompleteKeyArray[x];
+                    var indexX = compareX.indexOf(str);
+                    if(indexX >= 0) {
+                        exists = true;
+                    }
+                }
+
+                if(str && str.startsWith(search)) {
                     autocompleteTransArray[counter] = str;
+                    ++counter;
+                } else if(key && key.startsWith(search)) {
+                    autocompleteKeyArray[counter] = key;
+                    ++counter;
+                } else if(str && str.indexOf(search) > 0) {
+                    autocompleteTransArray[counter] = str;
+                    ++counter;
+                } else if(key && key.indexOf(search) > 0) {
+                    autocompleteKeyArray[counter] = key;
                     ++counter;
                 }
             }
         }
 
-        for(var i in translations) {
+        /*for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
                 var key    = i;
@@ -6939,7 +5936,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -6960,7 +5957,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -6976,7 +5973,7 @@ app.Controller('search-search', {
                     ++counter;
                 }
             }
-        }
+        }*/
 
         this.__buildGlobalAutocompleteDropDown(autocompleteTransArray, autocompleteKeyArray);
     },
@@ -7060,13 +6057,7 @@ app.Controller('search-search', {
         $('.global-search-autocomplete-panel').empty();
     },
 
-    __fillResultList: function(search, value) {
-        var translations    = app.allTranslations;
-        var defaultLanguage = app.defaultLanguage;
-        var resultList      = [];
-        var counter         = 0;
-        var type, content, key, trans;
-
+    __handleSearchValue: function(search) {
         if(search.startsWith('add:')) {
             //locale and key
             type = search.split(':')[1];
@@ -7158,14 +6149,23 @@ app.Controller('search-search', {
 
         } else {
             if(value == 'string' || value == 'key' || value == 'all') {
-                app.filter = search;
-                this.triggerSiblings('filterTranslations', {});
             }
         }
+    },
 
+    __fillResultList: function(search, value) {
+        var translations    = app.allTranslations;
+        var defaultLanguage = app.defaultLanguage;
+        var resultList      = [];
+        var counter         = 0;
+        var type, content, key, trans;
+
+        app.filter = search;
+        console.log('__fillResultList', search);
 
         app.cookie.set({cname: 'globalSearchValue', content: search});
         app.cookie.set({cname: 'globalSearchType', content: value});
+        this.triggerParents('filterTranslationsHelper', {});
         this.set('searchValue', search);
 
     },
@@ -7238,13 +6238,18 @@ app.Controller('sidebar-sidebar', {
         });
     },
 
+    showAddPanelKey: function() {
+        this.trigger('openAddPanel', {type: 'key'});
+        this.view.closeMenu();
+    },
+
     importFile: function() {
         var fileInput = this.view.obj("input");
         var newFile   = fileInput.prop('files')[0];
         var filename  = newFile.name;
         var filetype;
-        if (filename.substr(-4) == '.lea') {
-            filetype = 'lea';
+        if (filename.substr(-4) == '.json') {
+            filetype = 'json';
             filename = filename.slice(0,-4);
         }
         var textType = /.json/;
@@ -7260,7 +6265,7 @@ app.Controller('sidebar-sidebar', {
         
         if (newFile.type.match(textType)) {
             this.readFile(files, newFile);
-        } else if (filetype=='lea') {
+        } else if (filetype=='json') {
             var self = this;
             var options = {
                 title:   'Import URF',
@@ -7292,7 +6297,7 @@ app.Controller('sidebar-sidebar', {
     readFile: function (files, newFile, password) {
         var self     = this;
         var existant = false;
-        var text;
+        var text, filename;
         var reader   = new FileReader();
         reader.onload = function(e) {
             var file = {};
@@ -7304,20 +6309,19 @@ app.Controller('sidebar-sidebar', {
                 file.name = newFile.name;
                 file.data = reader.result;
             }
-            //Enforce file name to be the same as filename tag in URF payload
-            //var serializer = new XMLSerializer();
-            //file.data = serializer.serializeToString(newDom);
-
-            console.log('readFile', file.data);
 
             if (file.data) {
-                app.urfHandler.create(file, files, function(res) {
-                });
-                text = "File correctly loaded!";
-                //self.trigger('closeContentDialog');
-                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                app.apiAdapter.uploadFile(file.name.split('.json')[0], file.data, function(res, msg) {
+                    text = "File correctly loaded!";
+                    self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                    self.trigger('updateView');
+                }, function(res, msg) {
+                    console.error(res, msg);
+                    text = "File not uploaded: "+msg;
+                    self.trigger('showNotification', {text: text, type: 'error', time: 5});
+                })
             } else {
-                text = 'Import failed. Your password seems to be incorrect.';
+                text = 'Import failed. Your file seems to not have the correct data.';
                 //self.trigger('setResponseContentDialog', text);
             }
         };
@@ -7327,8 +6331,6 @@ app.Controller('sidebar-sidebar', {
 app.Controller('usermanagement-usermanagement', {
     
     init: function() {
-        // get projects and user data here with mapping
-        // implement initial a to z sorting here
         var self = this;
         app.apiAdapter.getUserList(function(res, message) {
             res = JSON.parse(res);
@@ -7339,15 +6341,24 @@ app.Controller('usermanagement-usermanagement', {
         });
     },
 
+    closeUsermanagement: function() {
+        window.location.hash = '';
+    },
+
+
     __mapUsers: function(res) {
         var users   = res;
         var roles   = [];
         var counter = 0;
         var size    = Object.size(res);
+        var userExists = false;
 
         for(var u in res) {
             if(roles.indexOf(res[u].role) == -1) {
                 roles.push(res[u].role);
+            }
+            if(res[u].role == 'user') {
+                userExists = true;
             }
 
             counter++;
@@ -7355,6 +6366,7 @@ app.Controller('usermanagement-usermanagement', {
             if(counter == size) {
                 this.set('users', users);
                 this.set('roles', roles);
+                this.set('userExists', userExists);
                 this.set('projectManagement', app.meta.projectManagement);
                 this.set('addRoleEnabled', app.meta.addRole);
                 this.set('addRoleEnabled', app.meta.addRole);
@@ -7370,13 +6382,11 @@ app.Controller('usermanagement-usermanagement', {
     ////////////////////////////////
     // User Related Part
     ///////////////////////////////
-    addUser: function(data, evt, target) {
-    },
-
     toggleUserEditing: function(data, evt, target) {
         var card = target.closest('.usermanagement-card');
         
-        target.find('.glyphicon').toggleClass('glyphicon-pencil glyphicon-remove');
+        target.find('.glyphicon').toggleClass('glyphicon-pencil glyphicon-ok');
+        target.toggleClass('approve-user-button edit-user-button');
 
         if(card.hasClass('open')) {
             card.removeClass('open');
@@ -7388,67 +6398,79 @@ app.Controller('usermanagement-usermanagement', {
             card.find('.username-input-field').show();
         }
     },
-    
-    handleUserInputArea: function(username, password) {
-        var edit_user = this.get('edit_user');
-        var selectedRole = this.get('selectedRole');
-        var roleid = this.getRole('id', selectedRole);
-        
-        if(this.checkUser(username)) {
-            if (edit_user) {
-                if (password === ""){
-                    this.updateUser(edit_user, username, this.getUser('', edit_user).password, roleid);
-                    this.set('selectedRole', this.getRole('name'));
-                    return;
-                }
-            }
-            else {
-                if(this.checkPwd(password)) {
-                    this.addUser(username, password, roleid);
-                    this.set('selectedRole', this.getRole('name'));
-                    return;
-                } 
-            }
+
+    approveExistingUser: function(data, evt, target) {
+        var self  = this;
+        var role  = data.target;
+        var name  = target.closest('.usermanagement-card').find('.username-input-field');
+        var pwd   = target.closest('.usermanagement-card').find('.password-input-field');
+
+        var valid = this.__checkUserInput(data, evt, target);
+
+        if(valid === true) {
+            var obj = {username: name.val(), password: pwd.val(), role: role};
+            app.apiAdapter.updateUser(obj, function(res, msg) {
+                console.log('changeUser', res, msg);
+                text = 'User "'+name.val()+'" successfully updated.';
+                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+            }, function(res, msg) {
+                console.error('changeUser', res, msg);
+                text = "User data could not be updated: "+msg;
+                self.trigger('showNotification', {text: text, type: 'error', time: 5});
+            });
         }
-        console.error("Save failed!");
     },
-    
-    checkUser: function(username) {
-        var message = "";
-        var edit_user = this.get('edit_user');
 
-        if (username === "") {
-            message = "Please enter a username";
-        }
-        else if (username.length <= 3) {
-            message = "Username must have at least 4 characters";
-        }
-        else if (edit_user!=username && this.itemExists(username, 'users')) { 
-            message = "Username is already taken";
-        }
+    approveNewUser: function(data, evt, target) {
+        var self  = this;
+        var role  = data.target;
+        var name  = target.closest('.usermanagement-card').find('.username-input-field');
+        var pwd   = target.closest('.usermanagement-card').find('.password-input-field');
 
-        if (message) {
-            $('#user_name').addClass('danger');
-            this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-            return false;
-        } 
-        else return true;
+        var valid = this.__checkUserInput(data, evt, target);
+
+        if(valid === true) {
+            var obj = {username: name.val(), password: pwd.val(), role: role};
+            app.apiAdapter.addUser(obj, function(res, msg) {
+                console.log('addUser', res, msg);
+                text = 'User "'+name.val()+'" successfully added to '+role;
+                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                target.closest('.usermanagement-card').remove();
+                self.view.__generateNewCard(name.val(), role);
+            }, function(res, msg) {
+                console.error('addUser', res, msg);
+                text = "User could not be saved: "+msg;
+                self.trigger('showNotification', {text: text, type: 'error', time: 5});
+            });
+        }
     },
-    
-    checkPwd: function(password) {
-        var message = "";
-        if(password === "") {
-            message = "Please enter a password";
-        }
-        else if(password.length <= 3) {
-            message = "The password must contain at least 4 characters!";
+
+    __checkUserInput: function(data, evt, target) {
+        var users = this.get('users');
+        var name  = target.closest('.usermanagement-card').find('.username-input-field');
+        var pwd   = target.closest('.usermanagement-card').find('.password-input-field');
+        var check = false;
+
+        if(name.val() === '') {
+            name.val('');
+            name.attr('placeholder', 'Please add username');
+            name.addClass('error');
+        } else if(pwd.val() === '') {
+            pwd.val('');
+            pwd.attr('placeholder', 'Please add a password');
+            pwd.addClass('error');
+        } else if(pwd.val().length < 5) {
+            pwd.val('');
+            pwd.attr('placeholder', 'Minimum 5 characters');
+            pwd.addClass('error');
+        } else if(users[name] !== undefined) {
+            text = "Username is already in use.";
+            this.trigger('showNotification', {text: text, type: 'error', time: 5});
+        } else {
+            check = true;
         }
 
-        if (message) {
-            $('#password').addClass('danger');
-            this.trigger('showNotification', { text: message, type: 'danger', time: 5 });
-            return false;
-        } else return true;
+        return check;
     },
 
     rolesChanged: function() {
@@ -7514,15 +6536,22 @@ app.Controller('usermanagement-usermanagement', {
     },
     
     deleteUser: function(data, evt, target) {
-        /*app.apiAdapter.deleteUser(
+        var self = this;
+
+        app.apiAdapter.deleteUser(
             data.target,
             function(res, message) {
-                console.log('deleteUser', res, message):
+                text = 'User "'+data.target+'" has been successfully deleted.';
+                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                target.closest('.usermanagement-card').remove();
+                console.log('deleteUser', res, message);
             },
             function(res, message) {
-                console.error('deleteUser', res, message):
+                text = 'An error occured while deleting user "'+data.target+'"'+msg;
+                self.trigger('showNotification', {text: text, type: 'error', time: 5});
+                console.error('deleteUser', res, message);
             }
-        );*/
+        );
     },
 
 
@@ -7531,6 +6560,13 @@ app.Controller('usermanagement-usermanagement', {
     // Project Related Part
     ///////////////////////////////
     addProject: function(data, evt, target) {
+        var name = target.val();
+
+        app.apiAdapter.createProject(name, function(res, msg) {
+            console.log('createProject success', res, msg);
+        }, function(res, msg) {
+            console.error('createProject error', res, msg);
+        })
     },
 
     toggleProjectEditing: function(data, evt, target) {
@@ -7662,6 +6698,18 @@ app.view('content-wrapper', {
         {
             type: 'scrollToNavigatedItem',
             action: 'scrollToNavigatedItem'
+        },
+        {
+            type: 'updateView',
+            action: 'updateView'
+        },
+        {
+            type: 'toggleShowItemHelper',
+            action: '__toggleShowItemHelper'
+        },
+        {
+            type: 'filterTranslationsHelper',
+            action: '__filterTranslationsHelper'
         }
     ],
 
@@ -7678,6 +6726,15 @@ app.view('content-wrapper', {
 
     scrollToNavigatedItem: function() {
         this.trigger('scrollToSelected')
+    },
+
+    __toggleShowItemHelper: function(payload) {
+        this.trigger('toggleShowItem', payload);
+    },
+
+    __filterTranslationsHelper: function(payload) {
+        console.log('filterTranslations');
+        this.trigger('filterTranslations', payload);
     }
 
 });
@@ -7720,6 +6777,60 @@ app.view('items-activityindicator', {
             action: 'toggleLoading'
         },
     ],
+});
+app.view('items-addpanel', {
+    events: [
+        {
+            action: 'approveKey',
+            type: 'click',
+            selector: '#approve-add-key-button'
+        }, 
+        {
+            action: 'approveLoclae',
+            type: 'click',
+            selector: '#approve-add-locale-button'
+        }, 
+        {
+            action: 'closeAddPanel',
+            type: 'click',
+            selector: '#add-panel-cancel-button'
+        }, 
+
+        {
+            type: 'openAddPanel',
+            action:'openAddPanel'
+        }
+    ],
+
+    keyInput: '#add-key-input',
+    translationInput: '#add-translation-input',
+    localeInput: '#add-locale-input',
+    addKeyPanel: '#add-key-panel',
+    addLocalePanel: '#add-locale-panel',
+
+    openAddPanel: function(obj) {
+        this.type = obj.type;
+        this.obj('addKeyPanel').addClass('hidden');
+        this.obj('addLocalePanel').addClass('hidden');
+
+        if(obj.type == 'key') {
+            this.obj('root').addClass('open');
+            this.obj('addKeyPanel').removeClass('hidden');
+        } else if(obj.type == 'locale') {
+            this.obj('root').addClass('open');
+            this.obj('addLocalePanel').removeClass('hidden');
+        }
+    },
+
+    closeAddPanel: function(obj) {
+        this.obj('root').removeClass('open');
+        this.obj('addKeyPanel').addClass('hidden');
+        this.obj('addLocalePanel').addClass('hidden');
+        this.obj('keyInput').val('');
+        this.obj('translationInput').val('');
+        this.obj('localeInput').val('');
+    }
+
 });
 app.view('items-item', {
     events: [
@@ -7817,7 +6928,7 @@ app.view('items-item', {
     },
 
 });
-app.view('items-list', [app.view.smartscroll], {
+app.view('items-list', {
     events: [
         {
             selector: 'span.glyphicon-ok',
@@ -7854,6 +6965,16 @@ app.view('items-list', [app.view.smartscroll], {
             type: 'click',
             action: 'deleteItem'
         },
+        {
+            selector: '.pager-list-item',
+            type: 'click',
+            action: 'changePage'
+        },
+        {
+            action: 'importInitFile',
+            type: 'change',
+            selector: '#import-init-file'
+        }, 
 
         //////////////////////////
         // Event Listener
@@ -7876,7 +6997,7 @@ app.view('items-list', [app.view.smartscroll], {
         },
         {
             type: 'filterTranslations',
-            action: '__filterTranslations'
+            action: 'filterTranslations'
         },
         {
             type: 'renderDom',
@@ -7892,11 +7013,21 @@ app.view('items-list', [app.view.smartscroll], {
         },
         {
             type: 'scrollToSelected',
-            action: 'scrollToSelected'
+            action: '__scrollToSelected'
+        },
+        {
+            type: 'updatePage',
+            action: '__updatePage'
+        },
+        {
+            type: 'updateThis',
+            action: 'updateThis'
         },
     ],
 
+    input: '#import-init-file',
     snappingPoint: '.snapping-dot',
+    noDataOverlay: '.no-data-overlay',
 
     toggleDelete: function(data, evt, target) {
         var id = data.id;
@@ -8073,6 +7204,10 @@ app.view('search-search', {
             type: 'triggerLocaleChange',
             action: 'changeLocale'
         },
+        {
+            type: 'updateThis',
+            action: 'updateThis'
+        },
     ],
 
     toggleDropdown: function() {
@@ -8117,11 +7252,6 @@ app.view('sidebar-sidebar', {
             action: "toggleDropdown"
         },
         {
-            selector: "#geneate-auth-token-button",
-            type: "click",
-            action: "generateAuthToken"
-        },
-        {
             selector: "li.locale",
             type: "click",
             action: "changeLocale"
@@ -8129,32 +7259,22 @@ app.view('sidebar-sidebar', {
         {
             selector: "#add-key-button",
             type: "click",
-            action: "toggleKeyInputFields"
-        },
-        {
-            selector: "#add-user-button",
-            type: "click",
-            action: "toggleAddUserInputFields"
-        },
-        {
-            selector: "#close-add-key-button",
-            type: "click",
-            action: "toggleKeyInputFields"
-        },
-        {
-            selector: "#add-locale-button",
-            type: "click",
-            action: "toggleLocaleInputField"
-        },
-        {
-            selector: "#close-add-locale-button",
-            type: "click",
-            action: "toggleLocaleInputField"
+            action: "showAddPanelKey"
         },
         {
             action: 'importFile',
             type: 'change',
-            selector: '#fileSelection'
+            selector: '#import-file'
+        }, 
+        {
+            action: 'openUserManagement',
+            type: 'click',
+            selector: '#user-management-button'
+        }, 
+        {
+            action: 'generateAuthToken',
+            type: 'click',
+            selector: '#generate-auth-token-button'
         }, 
 
         {
@@ -8163,24 +7283,14 @@ app.view('sidebar-sidebar', {
         }
     ],
 
-    addKeyButton: '#add-key-button',
-    closeAddKeyButton: '#close-add-key-button',
-    addLocaleButton: '#add-locale-button',
-    closeAddLocaleButton: '#close-add-locale-button',
-    addUserButton: '#add-user-button',
-    closeAddUserButton: '#close-add-user-button',
-
-    addKeyInputFieldsWrapper: '.add-key-input-fields',
-    addLocaleInputFieldWrapper: '.add-locale-input-field',
-    addKeyInputField: '#sidebar-add-key-input-field',
-    addDefaultTranslationInputField: '#sidebar-key-value-input-field',
-    addLocaleInputField: '#sidebar-add-locale-input-field',
-
-    addUserInputField: '#sidebar-add-user-input-field',
-    addUserPasswordInputField: '#sidebar-user-password-input-field',
-    addUserInputFields: '.add-user-input-fields',
+    input: '#import-file',
 
     authToken: '.auth-token',
+
+    openUserManagement: function() {
+        this.closeMenu();
+        window.location.hash = 'usermanagement';
+    },
 
     openSidebar: function(payload) {
         $('#menu-container').addClass('open');
@@ -8209,45 +7319,6 @@ app.view('sidebar-sidebar', {
             $('.locale-selector-btn-group').removeClass('open');
         }
         this.showSelect = false;
-    },
-
-    toggleLocaleInputField: function(data, evt, target) {
-        var input = this.obj('addLocaleInputFieldWrapper');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddLocaleButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addLocaleButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
-    },
-
-    toggleKeyInputFields: function(data, evt, target) {
-        var input = this.obj('addKeyInputFieldsWrapper');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddKeyButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addKeyButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
-    },
-
-    toggleAddUserInputFields: function(data, evt, target) {
-        var input = this.obj('addUserInputFields');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddUserButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addUserButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
     }
 });
 app.view('usermanagement-usermanagement', {
@@ -8263,6 +7334,11 @@ app.view('usermanagement-usermanagement', {
             type: "keyup",
             action: "keyUpOnInput"
         },
+        {
+            selector: ".go-back-wrapper",
+            type: "click",
+            action: "closeUsermanagement"
+        },
 
     // USER
         {
@@ -8276,19 +7352,19 @@ app.view('usermanagement-usermanagement', {
             action: "toggleUserEditing"
         },
         {
-            selector: ".edituser",
-            type: "click",
-            action: "handleUserInputArea"
-        },
-        {
-            selector: ".edituser",
-            type: "click",
-            action: "updateUser"
-        },
-        {
-            selector: ".edituser",
+            selector: ".delete-user-button",
             type: "click",
             action: "deleteUser"
+        },
+        {
+            selector: ".approve-new-card-button",
+            type: "click",
+            action: "approveNewUser"
+        },
+        {
+            selector: ".approve-user-button",
+            type: "click",
+            action: "approveExistingUser"
         },
 
     // Project
@@ -8317,6 +7393,8 @@ app.view('usermanagement-usermanagement', {
             type: "click",
             action: "deleteProject"
         },
+
+    // Events
     ],
     username: "#username",
     password: "#password",
@@ -8327,21 +7405,25 @@ app.view('usermanagement-usermanagement', {
 
     // onrendered
     notify: function() {
-        var self = this;
-        $(".usermanagement-list-cards").sortable({
-            connectWith: ".usermanagement-list-cards",
-            scroll: false,
-            helper: "clone",
-            delay: 350,
-            zIndex: 9999,
-            start: function(event, ui) {
-                $(ui.item[0]).addClass('dragged');
-            },
-            stop: function(event, ui) {
-                $(ui.item[0]).removeClass('dragged');
-                self.controller.rolesChanged();
-            }
-        });
+        if(app.meta.editRole === true) {
+            var self = this;
+            $(".usermanagement-list-cards").sortable({
+                connectWith: ".usermanagement-list-cards",
+                scroll: false,
+                delay: 350,
+                zIndex: 9999,
+                accept: ":not(.usermanagement-list-card.currentUser)",
+                start: function(event, ui) {
+                    $(ui.item[0]).addClass('dragged');
+                    $('.usermanagement-list-cards').addClass('dragStarted');
+                },
+                stop: function(event, ui) {
+                    $(ui.item[0]).removeClass('dragged');
+                    $('.usermanagement-list-cards').removeClass('dragStarted');
+                    self.controller.rolesChanged();
+                }
+            });
+        }
     },
 
     addCard: function(data, evt, target) {
@@ -8353,16 +7435,37 @@ app.view('usermanagement-usermanagement', {
     },
 
     __addUserCard: function(target) {
-        var list = target.closest('.usermanagement-list');
+        var list = target.closest('.usermanagement-list-wrapper');
         var role = list.attr('data-target');
 
-        var card = "<div class='usermanagement-card open' data-target='0'><div class='usermanagement-card-information'>";
-        card += "<input class='new-username-input-field' placeholder='enter username' data-target='0'/>";
-        card += "<input placeholder='enter password' class='new-password-input-field' data-target='0'/>";
-        card += "<div class='usermanagement-card-actions-container'><button class='remove-new-card-button'><span class='cancel-card glyphicon glyphicon-remove'></button></div>";
-        card += "</div></div>";
+        var card = "<div class='usermanagement-card open' data-target='"+role+"'>";
+                card += "<div class='usermanagement-card-information'>";
+                    card += "<input class='username-input-field' placeholder='Enter username' data-target='"+role+"' style='display: inline-block'/>";
+                card += "</div>";
+                card += "<input placeholder='Enter password' class='password-input-field' data-target='"+role+"'/>";
+                card += "<div class='usermanagement-card-actions-container'>";
+                    card += "<button class='approve-new-card-button col-md-6' data-target='"+role+"'><span class='cancel-card glyphicon glyphicon-ok'></button>";
+                    card += "<button class='remove-new-card-button col-md-6'><span class='cancel-card glyphicon glyphicon-remove'></button>";
+                card += "</div>";
+        card += "</div>";
 
         list.find('.usermanagement-list-cards').prepend(card);
+    },
+
+    __generateNewCard: function(name, role) {
+        var card = "<div class='usermanagement-card' data-target='"+name+"'>";
+                card += "<div class='usermanagement-card-information'>";
+                    card += "<span class='username-title'>"+name+"</span>";
+                    card += "<input class='username-input-field' value='"+name+"' data-target='"+name+"' data-type='user'/>";
+                card += "</div>";
+                card += "<input type='text' placeholder='Change password' class='password-input-field' data-target='"+name+"'/>";
+                card += "<div class='usermanagement-card-actions-container'>";
+                    card += "<button class='edit-user-button col-md-6'><span class='cancel-card glyphicon glyphicon-pencil'></button>";
+                    card += "<button class='delete-user-button col-md-6' data-target='"+name+"'><span class='cancel-card glyphicon glyphicon-trash'></button>";
+                card += "</div>";
+        card += "</div>";
+
+        $('.usermanagement-list-wrapper[data-target="'+role+'"]').find('.usermanagement-list-cards').prepend(card);
     },
 
     removeNewCard: function(data, evt, target) {

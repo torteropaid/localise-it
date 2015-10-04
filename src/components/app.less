@@ -8,7 +8,6 @@
 
 @import 'items/list.less';
 @import 'items/activityIndicator.less';
-@import 'items/scrollbar.less';
 @import 'main/menu.less';
 @import 'main/main.less';
 @import 'notification/notification.less';
@@ -23,3 +22,13 @@
 @import 'search/search.less';
 @import 'login/login.less';
 @import 'usermanagement/usermanagement.less';
+@import 'items/addpanel.less';
+
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

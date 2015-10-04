@@ -8,7 +8,6 @@
         .row
             button.login-button Log In
         .row
-           if loginfail
-                .row.error-message(style="margin: 15px 10px; background-color: #d9534f; border-radius: 4px;")
-                    h4(style="padding: 5px; font-size: 16px; font-weight: bold; margin: 6px 0px 0px; color: white; line-height: 20px;") Attention
-                    p.msg(style="padding: 5px; font-size: 14px; color: white; line-height: 20px;") Please check the correct usage of upper and lower cases and check the "CAPS LOCK" key on your keyboard.
+            .row.error-message.hidden(style="margin: 15px 10px; background-color: #d9534f; border-radius: 4px;")
+                h4(style="padding: 5px; font-size: 16px; font-weight: bold; margin: 6px 0px 0px; color: white; line-height: 20px;") Attention
+                p.msg(style="padding: 5px; font-size: 14px; color: white; line-height: 20px;") Please check the correct usage of upper and lower cases and check the "CAPS LOCK" key on your keyboard.

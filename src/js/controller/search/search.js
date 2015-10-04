@@ -1,4 +1,5 @@
 app.Controller('search-search', {
+    update: false,
 
     init: function() {
         this.set('clean', false);
@@ -24,12 +25,13 @@ app.Controller('search-search', {
             app.selectedLocale = 'en_gb';
             this.set('localeId', 'en_gb');
         }
-        
-        if(searchType && searchType !== NaN && searchType !== "NaN" && searchType.length > 0) {
-            this.__fillResultList(searchValue, searchType);
-        }
 
         this.__mapLocale();
+    },
+
+    updateThis: function() {
+        this.set('update', !this.update);
+        this.update = !this.update;
     },
 
 
@@ -115,7 +117,7 @@ app.Controller('search-search', {
 
     __generateGlobalSearchAutocomplete: function(search) {
         var translations           = app.allTranslations;
-        var defaultLanguage        = app.defaultLanguage;
+        var selectedLocale        = app.selectedLocale;
         var counter                = 0;
         var autocompleteTransArray = [];
         var autocompleteKeyArray   = [];
@@ -123,7 +125,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -134,14 +136,31 @@ app.Controller('search-search', {
                     }
                 }
 
-                if(str && str.startsWith(search) && !exists) {
+                for(var x in autocompleteKeyArray) {
+                    var compareX = autocompleteKeyArray[x];
+                    var indexX = compareX.indexOf(str);
+                    if(indexX >= 0) {
+                        exists = true;
+                    }
+                }
+
+                if(str && str.startsWith(search)) {
                     autocompleteTransArray[counter] = str;
+                    ++counter;
+                } else if(key && key.startsWith(search)) {
+                    autocompleteKeyArray[counter] = key;
+                    ++counter;
+                } else if(str && str.indexOf(search) > 0) {
+                    autocompleteTransArray[counter] = str;
+                    ++counter;
+                } else if(key && key.indexOf(search) > 0) {
+                    autocompleteKeyArray[counter] = key;
                     ++counter;
                 }
             }
         }
 
-        for(var i in translations) {
+        /*for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
                 var key    = i;
@@ -156,7 +175,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -177,7 +196,7 @@ app.Controller('search-search', {
         for(var i in translations) {
             if(counter < 10) {
                 var exists = false;
-                var str    = translations[i].mapping[defaultLanguage];
+                var str    = translations[i].mapping[selectedLocale];
                 var key    = i;
 
                 for(var i in autocompleteTransArray) {
@@ -193,7 +212,7 @@ app.Controller('search-search', {
                     ++counter;
                 }
             }
-        }
+        }*/
 
         this.__buildGlobalAutocompleteDropDown(autocompleteTransArray, autocompleteKeyArray);
     },
@@ -277,13 +296,7 @@ app.Controller('search-search', {
         $('.global-search-autocomplete-panel').empty();
     },
 
-    __fillResultList: function(search, value) {
-        var translations    = app.allTranslations;
-        var defaultLanguage = app.defaultLanguage;
-        var resultList      = [];
-        var counter         = 0;
-        var type, content, key, trans;
-
+    __handleSearchValue: function(search) {
         if(search.startsWith('add:')) {
             //locale and key
             type = search.split(':')[1];
@@ -375,14 +388,23 @@ app.Controller('search-search', {
 
         } else {
             if(value == 'string' || value == 'key' || value == 'all') {
-                app.filter = search;
-                this.triggerSiblings('filterTranslations', {});
             }
         }
+    },
 
+    __fillResultList: function(search, value) {
+        var translations    = app.allTranslations;
+        var defaultLanguage = app.defaultLanguage;
+        var resultList      = [];
+        var counter         = 0;
+        var type, content, key, trans;
+
+        app.filter = search;
+        console.log('__fillResultList', search);
 
         app.cookie.set({cname: 'globalSearchValue', content: search});
         app.cookie.set({cname: 'globalSearchType', content: value});
+        this.triggerParents('filterTranslationsHelper', {});
         this.set('searchValue', search);
 
     },

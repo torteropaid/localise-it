@@ -15,29 +15,16 @@ include ../content/dropdown
 
         .action-button-container
             button#add-key-button.btn.btn-primary(type="button") Add Key
-            button#close-add-key-button.btn.btn-danger.hidden(type="button")
-                +icon({type: "close-add-key glyphicon glyphicon-remove"})
-            .add-key-input-fields.hidden
-                input.sidebar-input-field#sidebar-add-key-input-field.form-control(type="text", placeholder="insert.key.here")
-                input.sidebar-input-field#sidebar-key-value-input-field.form-control(type="text", placeholder="Default English translation")
-            //-button#add-locale-button.btn.btn-primary(type="button") Add Locale
-            //-button#close-add-locale-button.btn.btn-danger.hidden(type="button")
-                +icon({type: "close-add-key glyphicon glyphicon-remove"})
-            //-.add-locale-input-field.hidden
-                input.sidebar-input-field#sidebar-add-locale-input-field.form-control(type="text", placeholder="Insert locale name here")
-            button#import-button.btn.btn-primary(type="button") Import
-            button#export-button.btn.btn-primary(type="button") Export
-            if admin
-                button#add-user-button.btn.btn-primary(type="button") Add User
-                button#close-add-user-button.btn.btn-danger.hidden(type="button")
-                .add-user-input-fields.hidden
-                    input.sidebar-input-field#sidebar-add-user-input-field.form-control(type="text", placeholder="add username")
-                    input.sidebar-input-field#sidebar-user-password-input-field.form-control(type="text", placeholder="add password")
-            //-button#genrate-auth-token-button.btn.btn-primary(type="button") Generate Auth Token
+            if admin && admin == true
+                button#user-management-button.btn.btn-primary(type="button") User Management
+                button#import-button.btn.btn-primary(type="button") Import
+                    input#import-file(type="file", name="filesToUpload[]", multiple)
+            //-button#export-button.btn.btn-primary(type="button") Export
+            //-button#generate-auth-token-button.btn.btn-primary(type="button") Generate Auth Token
             //-.auth-token
 
-        //-.user-management-button-container
-            button#user-management-button.btn.btn-primary(type="button") User Management
+        if admin && admin == true
+            .user-management-button-container
 
         .logout-button-container
             button#logout-button.btn.btn-primary(type="button") Logout

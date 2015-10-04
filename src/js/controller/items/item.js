@@ -162,6 +162,7 @@ app.Controller('items-item', {
                 this.set('translation', translations[i]);
 
                 app.cookie.set({cname: 'selectedItem', content: direction});
+                this.trigger('updatePage', {id: direction});
                 this.trigger('scrollToNavigatedItem');
             }
         }
@@ -230,7 +231,7 @@ app.Controller('items-item', {
 
     saveChanges: function() {
         this.saveTranslations();
-        this.trigger('handleLog', { login: false });
+        this.trigger('updateThis', { login: false });
     },
 
     discardChanges: function() {

@@ -49,13 +49,18 @@ app.Controller('sidebar-sidebar', {
         });
     },
 
+    showAddPanelKey: function() {
+        this.trigger('openAddPanel', {type: 'key'});
+        this.view.closeMenu();
+    },
+
     importFile: function() {
         var fileInput = this.view.obj("input");
         var newFile   = fileInput.prop('files')[0];
         var filename  = newFile.name;
         var filetype;
-        if (filename.substr(-4) == '.lea') {
-            filetype = 'lea';
+        if (filename.substr(-4) == '.json') {
+            filetype = 'json';
             filename = filename.slice(0,-4);
         }
         var textType = /.json/;
@@ -71,7 +76,7 @@ app.Controller('sidebar-sidebar', {
         
         if (newFile.type.match(textType)) {
             this.readFile(files, newFile);
-        } else if (filetype=='lea') {
+        } else if (filetype=='json') {
             var self = this;
             var options = {
                 title:   'Import URF',
@@ -103,7 +108,7 @@ app.Controller('sidebar-sidebar', {
     readFile: function (files, newFile, password) {
         var self     = this;
         var existant = false;
-        var text;
+        var text, filename;
         var reader   = new FileReader();
         reader.onload = function(e) {
             var file = {};
@@ -115,20 +120,19 @@ app.Controller('sidebar-sidebar', {
                 file.name = newFile.name;
                 file.data = reader.result;
             }
-            //Enforce file name to be the same as filename tag in URF payload
-            //var serializer = new XMLSerializer();
-            //file.data = serializer.serializeToString(newDom);
-
-            console.log('readFile', file.data);
 
             if (file.data) {
-                app.urfHandler.create(file, files, function(res) {
-                });
-                text = "File correctly loaded!";
-                //self.trigger('closeContentDialog');
-                self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                app.apiAdapter.uploadFile(file.name.split('.json')[0], file.data, function(res, msg) {
+                    text = "File correctly loaded!";
+                    self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                    self.trigger('updateView');
+                }, function(res, msg) {
+                    console.error(res, msg);
+                    text = "File not uploaded: "+msg;
+                    self.trigger('showNotification', {text: text, type: 'error', time: 5});
+                })
             } else {
-                text = 'Import failed. Your password seems to be incorrect.';
+                text = 'Import failed. Your file seems to not have the correct data.';
                 //self.trigger('setResponseContentDialog', text);
             }
         };

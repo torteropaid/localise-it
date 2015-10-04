@@ -4,12 +4,13 @@
   "dependencies": {
     "lightbox2": "~2.7.1",
     "jquery": "~2.1.1",
+    "jqueryui": "*",
     "lodash": "~2.4.1",
     "jade": "~1.7.0",
     "chance": "*",
     "FileSaver": "*",
     "jquery-ui": "*",
     "fuse": "*",
-    "clusterize": "*" 
+    "jqueryui-touch-punch": "*"
   }
 }

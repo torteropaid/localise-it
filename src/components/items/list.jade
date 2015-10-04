@@ -3,28 +3,64 @@ include ../modules/icon/icon
 
 div#item-list
     #main.container-fluid.row.panel-container
-        if allTranslations
-            each translation, id in allTranslations
-                if translation.id < 200
-                    .item-panel.col-md-12(data-id=translation.id, data-value=id)
-                        dl(data-value=id, data-id=translation.id, class="#{translation.selected ? 'selected' : ''}")
-                            .header-panel(data-id=translation.id)
-                                dt
-                                    label Key:
-                                    span #{id}
-                                dt
-                                    label Locale:
-                                    span #{translation.mapping[selectedLocale]}
+        if pagedTranslationsLength == 0
 
-                            .item-button-panel(data-id=id)
-                                dt.item-delete-panel(data-id=id)
-                                    span.item-delete-icon
-                                        +icon({type: "glyphicon glyphicon-trash"})
-                                dt.item-status-panel(data-id=id)
-                                    if translation.done
-                                        +icon({type: "ok glyphicon glyphicon-ok"})
-                                    else
-                                        +icon({type: "new glyphicon glyphicon-exclamation-sign"})
-                                    //-.item-status-icon(class="#{status}")
-                        .item-confirm-delete-panel(data-target="#{id}")
-                            .item-confirm-text Confirm
+            .no-data-available.col-md-12
+                dl
+                    .no-data-header
+                        dt
+                            label No data available for this project.
+                        dt
+                            label Please upload the en_gb file first.
+                        dt
+                            button#import-init-button.btn.btn-primary(type="button") Select
+                                input#import-init-file(type="file", name="filesToUpload[]", multiple)
+                .no-data-overlay.hidden
+                    .activity-indicator-overlay.loading
+                        .activity-indicator-box
+                            .circleG_1.circleG
+                            .circleG_2.circleG
+                            .circleG_3.circleG
+        else if pagedTranslations
+            each translation, id in pagedTranslations
+                .item-panel.col-md-12(data-id=translation.id, data-value=id)
+                    dl(data-value=id, data-id=translation.id, class="#{translation.selected ? 'selected' : ''}")
+                        .header-panel(data-id=translation.id)
+                            dt
+                                label Key:
+                                span #{id}
+                            dt
+                                label Locale:
+                                if translation.mapping[selectedLocale] && translation.mapping[selectedLocale] != ''
+                                    span #{translation.mapping[selectedLocale]}
+                                else
+                                    span(class="empty-locale") No translation set for this locale
+
+                        .item-button-panel(data-id=id)
+                            dt.item-delete-panel(data-id=id)
+                                span.item-delete-icon
+                                    +icon({type: "glyphicon glyphicon-trash"})
+                            dt.item-status-panel(data-id=id)
+                                if translation.done
+                                    +icon({type: "ok glyphicon glyphicon-ok"})
+                                else
+                                    +icon({type: "new glyphicon glyphicon-exclamation-sign"})
+                                //-.item-status-icon(class="#{status}")
+                    .item-confirm-delete-panel(data-target="#{id}")
+                        .item-confirm-text Confirm
+        else
+            .activity-indicator-overlay.loading
+                .activity-indicator-box
+                    .circleG_1.circleG
+                    .circleG_2.circleG
+                    .circleG_3.circleG
+    if pager
+        if pager.length > 0
+            .pager-container
+                ul.pager-list
+                    li.pager-list-item(data-target="previous", class="#{currentPage == 0 ? 'disabled' : ''}")
+                        span.glyphicon.glyphicon-chevron-left
+                    each pageId, id in pager
+                        li.pager-list-item(class="#{id == currentPage ? 'selected' : ''}" data-target=id) #{pageId}
+                    li.pager-list-item(data-target="next", class="#{currentPage == pager.length-1 ? 'disabled' : ''}")
+                        span.glyphicon.glyphicon-chevron-right

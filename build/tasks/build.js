@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     '<%= pkg.project.directories.vendor %>lodash/dist/lodash.js',
     '<%= pkg.project.directories.vendor %>jade/runtime.js',
     '<%= pkg.project.directories.vendor %>jquery-ui/jquery-ui.js',
+    '<%= pkg.project.directories.vendor %>jquery.ui.touch-punch/jquery.ui.touch-punch.min.js',
     '<%= pkg.project.directories.vendor %>fuse.min.js',
     '<%= pkg.project.directories.vendor %>clusterize/clusterize.min.js'
   ];

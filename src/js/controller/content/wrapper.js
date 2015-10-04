@@ -5,29 +5,55 @@ app.Controller('content-wrapper', {
             res = JSON.parse(res);
             if(res.role === 'admin') {
                 self.set('admin', true);
+                self.__initHashCheck();
             }
+            self.set('currentUser', res.name);
         }, function(res, message) {
             console.error('currentUser', res, message);
         });
         app.apiAdapter.getData(function(res) {
             self.__getCookieData(res);
+        }, function(res, message) {
+            if(message == 'error') {
+                if(res.status == 404 && res.responseText == 'no such project') {
+                    app.apiAdapter.createProject('ion-u', function(r, m) {
+                        console.log('createProject', r, m);
+                        self.init();
+                    }, function(res, message) {
+                        console.error('createProject', r, m);
+                    });
+                }
+            }
         });
-        this.checkHash();
+    },
+
+    updateView: function() {
+        var self = this;
+
+        app.apiAdapter.getData(function(res) {
+            self.init();
+            self.trigger('updateThis');
+        });
     },
 
 
     ////////////////////////////////////
     // Handle hashchange
     ///////////////////////////////////
+    __initHashCheck: function() {
+        var hash = window.location.hash;
+        if(hash === '#usermanagement') {
+            if(app.meta.userManagement === true && this.get('admin') === true) this.set('usermanagementopen', true);
+        }
+    },
+
     checkHash: function() {
         var hash = window.location.hash;
-        console.log(hash);
-        if(hash === 'usermanagement') {
+        if(hash === '#usermanagement') {
             if(app.meta.userManagement === true && this.get('admin') === true) $('#usermanagement-container').addClass('open');
         } else {
             $('#usermanagement-container').removeClass('open');
         }
-        //this.trigger('openSidebar');
     },
 
 
@@ -43,6 +69,8 @@ app.Controller('content-wrapper', {
         var selectedLanguages  = app.cookie.get({cname: 'selectedLanguages'});
         var locale             = app.cookie.get({cname: 'locale'});
         var selectedLocale     = app.cookie.get({cname: 'selectedLocale'});
+        var resolution         = parseInt(app.cookie.get({cname: 'resolution'}));
+        var page               = parseInt(app.cookie.get({cname: 'currentPage'}));
         var languages          = app.languages;
         
 
@@ -68,6 +96,24 @@ app.Controller('content-wrapper', {
         } else {
             app.selectedLocale         = 'en_gb';
             this.set('selectedLocale', 'en_gb');
+        }
+
+        // Getting the defaultLanguage value for dom panels 
+        if(resolution && resolution !== NaN) {
+            app.resolution = resolution;
+            this.set('resolution', resolution);
+        } else {
+            app.resolution = 250;
+            this.set('resolution', 250);
+        }
+
+        // Getting the defaultLanguage value for dom panels 
+        if(page && page !== NaN) {
+            app.currentPage = page;
+            this.set('currentPage', page);
+        } else {
+            app.currentPage = 0;
+            this.set('currentPage', 0);
         }
 
         var selected = app.selectedLanguages.split(',');

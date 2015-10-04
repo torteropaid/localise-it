@@ -28,9 +28,11 @@ app.Controller('main-main', {
         this.globalSearch = false;
         this.__checkLogin();
         app.meta.title();
+        app.meta.logs();
     },
 
     __checkLogin: function() {
+        var self     = this;
         var user     = app.cookie.get({cname: 'user'});
         var loggedin = parseInt(app.cookie.get({cname: 'logged_in'}));
         var value    = false;
@@ -40,10 +42,10 @@ app.Controller('main-main', {
         } else {
             this.trigger('toggleLoggedIn', {flag: false});
             app.apiAdapter.logout(function(res, message) {
-                console.log('cookie expired so you have been logged out:', res, message);
                 app.cookie.delete({cname: 'user'});
                 app.cookie.delete({cname: 'logged_in'});
                 app.cookie.delete({cname: 'usertoken'});
+                self.toggleLoggedIn({flag: false});
             }, function(res, message) {
                 console.log('logout out failed:', res, message);
             });
@@ -54,58 +56,38 @@ app.Controller('main-main', {
         var self = this;
         app.apiAdapter.checkLogin(
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
                 }
             },
             function(jqXHR, exception) {
-                if(exception && exception == 'success') {
+                console.error('apiLoggedInCheck', jqXHR, exception);
+                if((exception && exception == 'success') || jqXHR.status == 200) {
                     self.trigger('toggleLoggedIn', {flag: true});
                     app.cookie.set({cname: 'user', content: 'commscope'});
                     app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
                     app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status == 200) {
-                    self.trigger('toggleLoggedIn', {flag: true});
-                    app.cookie.set({cname: 'user', content: username});
-                    app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                    app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                } else if(jqXHR.status !== 200){
-                    if(exception === 'success') {
-                        jqXHR = JSON.parse(jqXHR);
-                        self.trigger('toggleLoggedIn', {flag: true});
-                        app.cookie.set({cname: 'user', content: jqXHR.name});
-                        app.cookie.set({cname: 'logged_in', content: 1, exdays: 0.25});
-                        app.cookie.set({cname: 'usertoken', content: '73r253jcb1p3e423h3vptngr6qqpt'});
-                    } else {
-                        self.trigger('toggleLoggedIn', {flag: false});
-                        app.cookie.delete({cname: 'user'});
-                        app.cookie.delete({cname: 'logged_in'});
-                        app.cookie.delete({cname: 'usertoken'});
-                    }
+                } else {
+                    self.__logout();
                 }
             }
         );
+    },
+
+    __logout: function() {
+        var self = this;
+
+        app.apiAdapter.logout(function(res, message) {
+            app.cookie.delete({cname: 'user'});
+            app.cookie.delete({cname: 'logged_in'});
+            app.cookie.delete({cname: 'usertoken'});
+            self.toggleLoggedIn({flag: false});
+        }, function(res, message) {
+            console.log('logout out failed:', res, message);
+        });
     },
 
     toggleLoggedIn: function(payload) {
@@ -168,8 +150,6 @@ app.Controller('main-main', {
             changes[obj.namespace+'.'+obj.name] = obj;
         }
         changes = JSON.stringify(changes)
-
-        console.log('saveData triggered', payload);
 
         app.apiAdapter.postData({
             data: changes,

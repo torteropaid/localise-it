@@ -1,4 +1,4 @@
-app.view('items-list', [app.view.smartscroll], {
+app.view('items-list', {
     events: [
         {
             selector: 'span.glyphicon-ok',
@@ -35,6 +35,16 @@ app.view('items-list', [app.view.smartscroll], {
             type: 'click',
             action: 'deleteItem'
         },
+        {
+            selector: '.pager-list-item',
+            type: 'click',
+            action: 'changePage'
+        },
+        {
+            action: 'importInitFile',
+            type: 'change',
+            selector: '#import-init-file'
+        }, 
 
         //////////////////////////
         // Event Listener
@@ -57,7 +67,7 @@ app.view('items-list', [app.view.smartscroll], {
         },
         {
             type: 'filterTranslations',
-            action: '__filterTranslations'
+            action: 'filterTranslations'
         },
         {
             type: 'renderDom',
@@ -73,11 +83,21 @@ app.view('items-list', [app.view.smartscroll], {
         },
         {
             type: 'scrollToSelected',
-            action: 'scrollToSelected'
+            action: '__scrollToSelected'
+        },
+        {
+            type: 'updatePage',
+            action: '__updatePage'
+        },
+        {
+            type: 'updateThis',
+            action: 'updateThis'
         },
     ],
 
+    input: '#import-init-file',
     snappingPoint: '.snapping-dot',
+    noDataOverlay: '.no-data-overlay',
 
     toggleDelete: function(data, evt, target) {
         var id = data.id;

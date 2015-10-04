@@ -1,14 +1,18 @@
 app.Controller('items-list', {
-    init: function() {
-        this.scrollInitialized = false;
-        this.trigger('toggleLoading', {flag: true});
-        this.__filterTranslations();
-        this.scrollToSelected();
+    update: false,
 
-        var self = this;
+    init: function() {
+        this.trigger('toggleLoading', {flag: true});
+
+        this.filterTranslations();
+        this.__scrollToSelected();
+        this.trigger('toggleLoading', {flag: false});
     },
 
-    notify: function() {
+    updateThis: function() {
+        this.set('update', !this.update);
+        this.filterTranslations();
+        this.update = !this.update;
     },
 
     toggleLocale: function(opt) {
@@ -17,7 +21,7 @@ app.Controller('items-list', {
         for(var i in languages) {
             if(opt.key == languages[i]) {
                 this.set('selectedLocale', languages[i]);
-                this.scrollToSelected();
+                this.__scrollToSelected();
             }
         }
     },
@@ -64,136 +68,125 @@ app.Controller('items-list', {
     ////////////////////////////////////////////////////////////////
     // Creating array of all translations that fit the filter data
     ///////////////////////////////////////////////////////////////
-    __filterTranslations: function() {
-        var counter                   = 0;
-        var translationsArray         = [];
+    filterTranslations: function() {
+        var translationsArray          = [];
         var filteredTranslationsObject = {};
-        //var tab                       = parseInt(app.tab);
-        var filter                    = app.filter;
-        var translations              = app.allTranslations;
-        var localeId                  = app.selectedLocale;
+        var filter                     = app.cookie.get({cname: 'globalSearchValue'});
+        var translations               = app.allTranslations;
+        var localeId                   = app.selectedLocale;
+        var length                     = Object.size(translations);
 
-        //var filteredByTab = this.__filterByTab({translations: translations, tab: tab});
-        // @TODO if filteredtranslatinslength > 1 and key >1 and str >1 introduce tab to switch between key starting with and containing filter
-        // and translation starting with and containing filter
-        // add count of translations and keys as well
-        
-        if(filter != '' && filter != null && filter.length > 0) {
+        if(filter && filter != '' && filter != null && filter != undefined) {
+            var counter = 0;
             
             for(var i in translations) {
-                var key = i;
+                var key    = i;
+                var str    = translations[i].mapping[localeId];
                 var exists = false;
-                var newObj = {};
 
-                for(var x in filteredTranslationsObject) {
-                    var index = x.indexOf(filter);
-                    if(index >= 0) {
-                        exists = true;
-                    }
-                }
 
                 if(key && key.startsWith(filter)) {
-                    newObj[key] = translations[i];
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var key = i;
-                var newObj = {};
-
-                if(key && key.indexOf(filter) > 0) {
-                    newObj[key] = translations[i];
+                } else if(key && key.indexOf(filter) > 0) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var str = translations[i].mapping[localeId];
-                var newObj = {};
-
-                if(str && str.startsWith(filter)) {
-                    newObj[key] = translations[i];
+                } else if(str && str.startsWith(filter)) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
-                }
-            }
-            
-            for(var i in translations) {
-                var str = translations[i].mapping[localeId];
-                var newObj = {};
-
-                if(str && str.indexOf(filter) > 0) {
-                    newObj[key] = translations[i];
+                } else if(str && str.indexOf(filter) > 0) {
                     filteredTranslationsObject[key] = translations[i];
-                    ++counter;
+                }
+                counter++;
+
+                if(counter == length) {
+                    app.filteredTranslationsObject = filteredTranslationsObject;
+
+                    this.__paginateTranslations(filteredTranslationsObject);
                 }
             }
 
-            app.filteredTranslationsObject = filteredTranslationsObject;
-            if(filteredTranslationsObject.length == 1) {
-                for(var i in filteredTranslationsObject) {
-                    this.showSelectedItem({id: filteredTranslationsObject[i].id});
-                }
-            }
-
-            //this.__renderDom(filteredTranslationsObject);
-            this.set('allTranslations', filteredTranslationsObject);
         } else {
             app.filteredTranslationsObject = translations;
-            //this.__renderDom(translations);
-            this.set('allTranslations', translations);
+            this.__paginateTranslations(translations);
+            if(Object.size(translations) == 0) {
+                this.set('pagedTranslationsLength', 0);
+            }
         }
-
-        this.trigger('toggleLoading', {flag: false});
-
     },
 
-    __renderDom: function(obj) {
-        var strArray       = [];
-        var size           = Object.size(obj);
-        var selectedLocale = this.get('selectedLocale');
-        var cluster;
+    __paginateTranslations: function(translations) {
+        var resolution        = this.get('resolution');
+        var page              = this.get('currentPage');
+        var pagedTranslations = {};
+        var size              = Object.size(translations);
+        var counter           = 0;
+        var pager             = [];
+        var min               = page === 0 ? 0 : resolution*page;
+        var max               = resolution*(page+1);
 
-        for(var i in obj) {
-            var str = '<div class="item-panel col-md-12" data-id="'+obj[i].id+'" data-value="'+i+'">';
-                str += '<dl class="'+(obj[i].selected ? 'selected' : '')+'" data-value="'+i+'" data-id="'+obj[i].id+'">';
-                    str += '<div class="header-panel" data-id="'+obj[i].id+'">';
-                        str += '<dt>';
-                            str += '<label>Key:</label><span>'+i+'</span>';
-                        str += '</dt>';
+        var maxNumberOfPages  = Math.ceil(size/resolution);
 
-                        for(var l in obj[i].mapping) {
-                            str += '<dt class="'+(selectedLocale == i ? '' : 'hidden')+'">';
-                                str += '<label>Locale:</label><span>'+obj[i].mapping[j]+'</span>';
-                            str += '</dt>';
-                        }
-                    str += '</div>';
+        for(var i = 1; i <= maxNumberOfPages; i++) pager.push(i);
 
-                    str += '<div class="item-button-panel" data-id="'+i+'">';
-                        str += '<dt class="item-delete-panel" data-id="'+i+'">';
-                            str += '<span class="item-delete-icon"><span class="icon glyphicon glyphicon-trash"></span></span>';
-                        str += '</dt>';
+        if(size < resolution) {
+            resolution = size;
+            min = 0
+            max = Object.size(app.allTranslations);
+        } else if(max > size) {
+            max = size;
+            resolution = max - min;
+        }
 
-                        str += '<dt class="item-status-panel" data-id="'+i+'">';
-                            str += '<span class="item-delete-icon"><span class="icon glyphicon '+(obj[i].done ? 'glyphicon-ok ok' : 'glyphicon-exclamation-sign new')+'"></span></span>';
-                        str += '</dt>';
-                    str += '</div>';
-                str += '</dl>';
-
-                str += '<div class="item-confirm-delete-panel" data-target="'+i+'">';
-                    str += '<div class="item-confirm-text">Confirm</div>';
-                str += '</div>';
-            str += '</div>';
-
-            strArray.push(str);
-            $('#main').append(str);
-
-            if(strArray.length == size) {
-                this.__initializeScroll();
+        for(var t in translations) {
+            if(translations[t].id >= min && translations[t].id < max) {
+                pagedTranslations[t] = translations[t];
+                counter++;
             }
+
+            if(counter == resolution) {
+                app.pagedTranslations = pagedTranslations;
+                app.pager             = pager;
+
+                this.set('pagedTranslations', pagedTranslations);
+                this.set('pager', pager);
+                    
+                if(Object.size(translations) == 1) {
+                    this.showSelectedItem({id: translations[t].id});
+                }
+
+                return;
+            }
+        }
+    },
+
+    changePage: function(data, evt, target) {
+        var id   = data.target;
+        var page = this.get('currentPage');
+        var newPage;
+
+        if(id == 'previous') {
+            newPage = page-1;
+        } else if(id == 'next') {
+            newPage = page+1;
+        } else {
+            id = parseInt(id);
+            if(page !== id) {
+                newPage = id;
+            }
+        }
+
+        if(page !== newPage && newPage !== NaN && newPage !== undefined && newPage !== null) {
+            app.cookie.set({cname: 'currentPage', content: newPage});
+            app.currentPage = newPage;
+            this.set('currentPage', newPage);
+            this.__paginateTranslations(app.filteredTranslationsObject);
+        }
+    },
+
+    __updatePage: function(payload) {
+        if(payload.id) {
+            var resolution = this.get('resolution');
+            var page       = parseInt(payload.id/resolution);
+
+            if(page !== app.currentPage) this.changePage({target: page});
         }
     },
 
@@ -209,7 +202,7 @@ app.Controller('items-list', {
         var languages       = app.languages;
         var count           = app.count;
 
-        this.triggerSiblings('toggleShowItem', {
+        this.trigger('toggleShowItem', {
             show: true,
             index: id,
             defaultLanguage: defaultLanguage,
@@ -217,6 +210,7 @@ app.Controller('items-list', {
             languages: languages,
             count: count
         });
+
         for(var i in translations) {
             translations[i].selected = false;
             if(translations[i].id == id) {
@@ -230,7 +224,7 @@ app.Controller('items-list', {
         $('dl[data-id="'+id+'"]').addClass('selected');
     },
 
-    scrollToSelected: function() {
+    __scrollToSelected: function() {
         var selectedItem = app.cookie.get({cname: 'selectedItem'});
 
         if(selectedItem && selectedItem !== NaN && selectedItem !== "NaN" && selectedItem.length > 0) {
@@ -248,13 +242,8 @@ app.Controller('items-list', {
 
 
     ///////////////////////////////////////////////////////////////////
-    // reset of changesTranslations array to an empty array on cancel
+    // delete item
     //////////////////////////////////////////////////////////////////
-    discardChanges: function() {
-        this.trigger('hideSaveButtonBar');
-        app.changedTranslations = [];
-    },
-
     deleteItem: function(data, evt, target) {
         var self         = this;
         var translations = app.allTranslations;
@@ -269,7 +258,7 @@ app.Controller('items-list', {
                 }
             }
         }
-        app.apiAdapter.deleteData(data.target, locales, function(res) {
+        app.apiAdapter.deleteKey(data.target, locales, function(res) {
             if(res === true) {
                 target.closest('.item-panel').animate({
                     opacity: 0.25,
@@ -280,6 +269,93 @@ app.Controller('items-list', {
                 });
             }
         })
-    }
+    },
+
+    importInitFile: function() {
+        var fileInput = this.view.obj("input");
+        var newFile   = fileInput.prop('files')[0];
+        var filename  = newFile.name;
+        var filetype;
+        if (filename.substr(-4) == '.json') {
+            filetype = 'json';
+            filename = filename.slice(0,-4);
+        }
+        var textType = /.json/;
+        var existant = false;
+        var files    = this.get('files') || [];
+        var text, i, file;
+        for (i in files) {
+            file = files[i];
+            if (file.name==filename) {
+                existant = true;
+            }
+        }
+        
+        if (newFile.type.match(textType)) {
+            this.readInitFile(files, newFile);
+        } else if (filetype=='json') {
+            var self = this;
+            var options = {
+                title:   'Import URF',
+                message: 'Please enter the password to decrypt the file:',
+                input:   'password',
+                cancel:  'Cancel',
+                ok:      'Import',
+                callback: function(result) {
+                    if (result===false) return;
+                    /*var password = result.input;
+                    if (password) {
+                        self.readInitFile(files, newFile, password);
+                    } else {
+                        text = 'You must enter a password to decrypt this file!';
+                        this.trigger('setResponseContentDialog', text);
+                    }*/
+                    console.log(result);
+                }
+            };
+            //this.trigger('showContentDialog', options);
+        } else {
+            text = "This file type is not supported!";
+            this.trigger('showNotification', {text: text, type: 'danger', time: 5});
+        }
+
+        return false;
+    },
+
+    readInitFile: function (files, newFile, password) {
+        var self     = this;
+        var existant = false;
+        var text, filename;
+        var reader   = new FileReader();
+        this.view.obj('noDataOverlay').removeClass('hidden');
+        reader.onload = function(e) {
+            var file = {};
+            if (password) {
+                // Dycrypt with user-password
+                file.name = newFile.name.substr(0, newFile.name.length-4);
+                file.data = app.crypter.aesDecrypt(reader.result, password);
+            } else {
+                file.name = newFile.name;
+                file.data = reader.result;
+            }
+
+            if (file.data) {
+                app.apiAdapter.uploadFile(file.name.split('.json')[0], file.data, function(res, msg) {
+                    text = "File correctly loaded!";
+                    self.trigger('showNotification', {text: text, type: 'success', time: 5});
+                    self.trigger('updateView');
+                    self.view.obj('noDataOverlay').addClass('hidden');
+                }, function(res, msg) {
+                    console.error(res, msg);
+                    text = "File not uploaded: "+msg;
+                    self.trigger('showNotification', {text: text, type: 'error', time: 5});
+                })
+            } else {
+                text = 'Import failed. Your file seems to not have the correct data.';
+                //self.trigger('setResponseContentDialog', text);
+            }
+        };
+        reader.readAsText(newFile);
+    },
 
 });

@@ -15,9 +15,8 @@ div#item(class="#{displayItem ? 'isOpened' : 'isClosed'}")
                         if defaultText
                             span#item-default-field #{defaultText}
                         else
-                            span#item-default-field No translation for this locale set yet
+                            span#item-default-field No translation set for this locale
                     div#item-translations-container
-                        -console.log(locales, translation, selectedLanguages)
                         if locales && translation && selectedLanguages
                             //-div#item-language-selection.col-12
                                 each language, index in languages

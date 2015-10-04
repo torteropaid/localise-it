@@ -26,11 +26,6 @@ app.view('sidebar-sidebar', {
             action: "toggleDropdown"
         },
         {
-            selector: "#geneate-auth-token-button",
-            type: "click",
-            action: "generateAuthToken"
-        },
-        {
             selector: "li.locale",
             type: "click",
             action: "changeLocale"
@@ -38,32 +33,22 @@ app.view('sidebar-sidebar', {
         {
             selector: "#add-key-button",
             type: "click",
-            action: "toggleKeyInputFields"
-        },
-        {
-            selector: "#add-user-button",
-            type: "click",
-            action: "toggleAddUserInputFields"
-        },
-        {
-            selector: "#close-add-key-button",
-            type: "click",
-            action: "toggleKeyInputFields"
-        },
-        {
-            selector: "#add-locale-button",
-            type: "click",
-            action: "toggleLocaleInputField"
-        },
-        {
-            selector: "#close-add-locale-button",
-            type: "click",
-            action: "toggleLocaleInputField"
+            action: "showAddPanelKey"
         },
         {
             action: 'importFile',
             type: 'change',
-            selector: '#fileSelection'
+            selector: '#import-file'
+        }, 
+        {
+            action: 'openUserManagement',
+            type: 'click',
+            selector: '#user-management-button'
+        }, 
+        {
+            action: 'generateAuthToken',
+            type: 'click',
+            selector: '#generate-auth-token-button'
         }, 
 
         {
@@ -72,24 +57,14 @@ app.view('sidebar-sidebar', {
         }
     ],
 
-    addKeyButton: '#add-key-button',
-    closeAddKeyButton: '#close-add-key-button',
-    addLocaleButton: '#add-locale-button',
-    closeAddLocaleButton: '#close-add-locale-button',
-    addUserButton: '#add-user-button',
-    closeAddUserButton: '#close-add-user-button',
-
-    addKeyInputFieldsWrapper: '.add-key-input-fields',
-    addLocaleInputFieldWrapper: '.add-locale-input-field',
-    addKeyInputField: '#sidebar-add-key-input-field',
-    addDefaultTranslationInputField: '#sidebar-key-value-input-field',
-    addLocaleInputField: '#sidebar-add-locale-input-field',
-
-    addUserInputField: '#sidebar-add-user-input-field',
-    addUserPasswordInputField: '#sidebar-user-password-input-field',
-    addUserInputFields: '.add-user-input-fields',
+    input: '#import-file',
 
     authToken: '.auth-token',
+
+    openUserManagement: function() {
+        this.closeMenu();
+        window.location.hash = 'usermanagement';
+    },
 
     openSidebar: function(payload) {
         $('#menu-container').addClass('open');
@@ -118,44 +93,5 @@ app.view('sidebar-sidebar', {
             $('.locale-selector-btn-group').removeClass('open');
         }
         this.showSelect = false;
-    },
-
-    toggleLocaleInputField: function(data, evt, target) {
-        var input = this.obj('addLocaleInputFieldWrapper');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddLocaleButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addLocaleButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
-    },
-
-    toggleKeyInputFields: function(data, evt, target) {
-        var input = this.obj('addKeyInputFieldsWrapper');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddKeyButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addKeyButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
-    },
-
-    toggleAddUserInputFields: function(data, evt, target) {
-        var input = this.obj('addUserInputFields');
-
-        target.addClass('hidden');
-        if(input.hasClass('hidden')) {
-            this.obj('closeAddUserButton').removeClass('hidden');
-            input.removeClass('hidden');
-        } else {
-            this.obj('addUserButton').removeClass('hidden');
-            input.addClass('hidden');
-        }
     }
 });

@@ -19,6 +19,18 @@ app.view('content-wrapper', {
         {
             type: 'scrollToNavigatedItem',
             action: 'scrollToNavigatedItem'
+        },
+        {
+            type: 'updateView',
+            action: 'updateView'
+        },
+        {
+            type: 'toggleShowItemHelper',
+            action: '__toggleShowItemHelper'
+        },
+        {
+            type: 'filterTranslationsHelper',
+            action: '__filterTranslationsHelper'
         }
     ],
 
@@ -35,6 +47,15 @@ app.view('content-wrapper', {
 
     scrollToNavigatedItem: function() {
         this.trigger('scrollToSelected')
+    },
+
+    __toggleShowItemHelper: function(payload) {
+        this.trigger('toggleShowItem', payload);
+    },
+
+    __filterTranslationsHelper: function(payload) {
+        console.log('filterTranslations');
+        this.trigger('filterTranslations', payload);
     }
 
 });

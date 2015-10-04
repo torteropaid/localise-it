@@ -7,13 +7,16 @@ mixin dropdown(options)
     - options['classes']  = options.classes  || '';
     - options['selected'] = options.selected || 0;
     - options['items']    = options.items    || '';
-    - options['current']  = options.current  || 'English';
+    - options['current']  = options.current  || null;
 
     .locale-dropdown(id=options.id)
         +button-group({ size: options.size, classes: options.classes })
             +button({ classes: 'dropdown-toggle input-box', toggle: 'dropdown' })
                 span.caret
-                span.locale-title #{options.current}
+                if options.current && options.current != '' && options.current != null
+                    span.locale-title #{options.current}
+                else
+                    span.locale-title No locale available
             ul(class='dropdown-menu', role='menu')
                 if options.items==''
                     li(class='item') no items available

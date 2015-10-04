@@ -56,6 +56,10 @@ app.view('search-search', {
             type: 'triggerLocaleChange',
             action: 'changeLocale'
         },
+        {
+            type: 'updateThis',
+            action: 'updateThis'
+        },
     ],
 
     toggleDropdown: function() {
